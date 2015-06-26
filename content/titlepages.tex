@@ -1,0 +1,60 @@
+% !TEX root = ../thesis-example.tex
+%
+% ------------------------------------  --> cover title page
+\begin{titlepage}
+	\pdfbookmark[0]{Cover}{Cover}
+	\flushright
+	\hfill
+	\vfill
+	{\LARGE\thesisTitle} \par
+	\rule[5pt]{\textwidth}{.4pt} \par
+	{\Large\thesisName}
+	\vfill
+	\textit{\large\thesisDate} \\
+\end{titlepage}
+
+
+% ------------------------------------  --> main title page
+\begin{titlepage}
+	\pdfbookmark[0]{Titlepage}{Titlepage}
+	\tgherosfont
+	\centering
+
+	{\Large \thesisUniversity} \\[4mm]
+	\includegraphics[width=12cm]{gfx/logopp} \\[2mm]
+	\textsf{\thesisUniversityDepartment} \\
+
+	\vfill
+	{\LARGE \color{ctcolormain}\textbf{\thesisTitle} \\[10mm]}
+	{\Large \thesisName} \\
+
+	\vfill
+	\hspace*{15pt}
+
+	\begin{minipage}[t]{.27\textwidth}
+		\raggedleft
+		\textit{Promotor}
+	\end{minipage}
+	\hspace*{10pt}
+	\begin{minipage}[t]{.65\textwidth}
+		\thesisFirstSupervisor
+	\end{minipage} \\[10mm]
+
+	\thesisDate \\
+
+\end{titlepage}
+
+
+% ------------------------------------  --> lower title back for single page layout
+\hfill
+\vfill
+{
+	\small
+	\textbf{\thesisName} \\
+	\textit{\thesisTitle} \\
+	\thesisDate \\
+	Promotor: \thesisFirstSupervisor \\
+	\textbf{\thesisUniversity} \\
+	\thesisUniversityDepartment \\
+	\thesisUniversityCity \\
+}
