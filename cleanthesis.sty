@@ -114,7 +114,7 @@
 % OPTION bibstyle
 % --> values = alphabetic|numeric|authoryear
 \define@choicekey*[ct]{cthesis}{bibstyle}[\val\bibstylenr]{alphabetic,numeric,authoryear}[alphabetic]{\def\cthesis@bibstyle{#1}}
-\setkeys[ct]{cthesis}{bibstyle=alphabetic}
+\setkeys[ct]{cthesis}{bibstyle=numeric}
 
 
 \DeclareOptionX*{
@@ -303,24 +303,19 @@
 	style=\cthesis@bibstyle,		% 	- use alphabetic (or numeric) bib style
 	natbib=true,					% 	- allow natbib commands
 	hyperref=true,					% 	- activate hyperref support
-	backref=true,					% 	- activate backrefs
+	backref=false,					% 	- activate backrefs
 	isbn=false,						% 	- don't show isbn tags
 	url=false,						% 	- don't show url tags
 	doi=false,						% 	- don't show doi tags
 	urldate=long,					% 	- display type for dates
-	maxnames=3,%
+	maxnames=10,%
 	minnames=1,%
-	maxbibnames=5,%
-	minbibnames=3,%
-	maxcitenames=2,%
+	maxbibnames=10,%
+	minbibnames=1,%
+	maxcitenames=10,%
 	mincitenames=1%
 ]{biblatex}
 \bibliography{\cthesis@bibfile}
-\DefineBibliographyStrings{ngerman}{%
-	andothers = {{et\,al\adddot}}, % 'et al.' instead of 'u.a.'
-	backrefpage = {{zitiert auf Seite}},%
-	backrefpages = {{zitiert auf den Seiten}},%
-}
 
 % **************************************************
 % Text Format
