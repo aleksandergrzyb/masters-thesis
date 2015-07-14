@@ -77,7 +77,7 @@ Większa szybkość oraz rozdzielczość FdOCT w porównaniu do TdOCT jest możl
 
 FdOCT posiada również wady. Jest droższy od TdOCT ze względu na wykorzystanie drogiego lasera jako źródła światła co powoduje, że jest wykorzystywany tylko w celach badawczych. Następna wada wynika z szybkości powstawania A-skanów. Szybsze skanowanie może prowadzić do utraty jakości obrazów OCT, natomiast utrata tej jakość może być zmniejszona poprzez użycie techniki przetwarzania sygnałów zwanej \textit{oversampling}.
 
-% Wyjaśnia zasadę powstawania obrazów angiograficznych z danych 7OCT
+% Wyjaśnia zasadę powstawania obrazów angiograficznych z danych OCT
 
 \section{Angiografia OCT}
 \label{sec:obrazowanie_oct:angiografia_oct}
@@ -88,7 +88,22 @@ Angiografia OCT jest metodą, która opiera się na A-skanach i B-skanach OCT i 
 
 \subsection{Sposób powstania obrazu angiograficznego}
 
+Obrazy angiograficznie, które zostały użyte w niniejszej pracy powstały za pomocą metody zwanej \textit{Speckle Variance Detection}, która polega na liczeniu wariancji dla każdego piksela pomiędzy sąsiadującymi B-skanami. Ta technika została wykorzystana, ponieważ lokalna wariancja dla obszarów gdzie występuje przypływ krwi (naczynia krwionośne) ma wyższą wartość w porównaniu do obszarów gdzie występuje struktura statyczna. Rezultatem tej metody jest obraz przepływowy, którego piksele mają wartość wariancji sąsiadujących B-skanów. Na rysunku \ref{fig:obrazowanie_oct:speckle_variance} został przedstawiony przykładowy zbiór sąsiadujących B-skanów.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=4cm]{gfx/speckle_variance}
+	\caption{Trzy sąsiadujące B-skany na postawie których powstaje jeden obraz przepływowy.}
+	\label{fig:obrazowanie_oct:speckle_variance}
+\end{figure}
+
+Wartości intensywności pikseli $V_{jk}$ obrazu przepływowego liczone są na podstawie wartości intensywności pikseli $I_{ijk}$ sąsiadujących $N$ B-skanów za pomocą wzoru (na rysunku \ref{fig:obrazowanie_oct:speckle_variance} $N=3$):
+
+$$ V_{jk} = \frac{1}{N} \displaystyle\sum_{i=1}^{N}(I_{ijk} - I_{mean})^2 $$
+
+Gdzie $j$ i $k$ to indeksy boczne i głębokościowe B-skanu (współrzędne pikseli), a $I_{mean}$ to średnia intensywność zbioru tych samych pikseli, dla których liczona jest wariancja.
+
+Rezultatem połączenia sąsiadujących obrazów przepływowych obliczonych ze wszystkich B-skanów jest trójwymiarowy obraz przepływowy. Następnie poprzez użycie projekcji maksymalnego natężenia (ang. \textit{maximum intensity projection, MIP}), która polega na projekcji woksela o najwyższej intensywności z obrazu 3D na obraz 2D. W przypadku trójwymiarowego obrazu przepływowego będzie to woksel, którego wartość była największą wartością wariancji pikseli sąsiadujących B-skanów. Po zastosowaniu projekcji maksymalnego natężenia na trójwymiarowym obrazie przepływowym otrzymujemy angiograficzny obraz \textit{en face} naczyń krwionośnych.
 
 % Opisuje zastosowania OCT
 
