@@ -14,13 +14,46 @@ W niniejszej pracy celem jest stworzenie mozaiki OCT (przykład na rysunku \ref{
   \label{fig:algorytmy_korejestracji:mosaic}
 \end{figure}
 
-Proces automatycznego stworzenia mozaiki takiej jak na rysunku \ref{fig:algorytmy_korejestracji:mosaic} jest zadaniem nietrywialnym i wymaga dokładnej analizy wiedzy dziedzinowej oraz precyzyjnego wyboru metod. Pierwszym krokiem jest wybór modelu deformacji kafelek (sekcja \ref{sec:algorytmy_korejestracji:model_deformacji}), następnym etapem, który jest jednocześnie najbardziej wymagającym jest wybór metody wzajemnej korejestracji kafelek (sekcja \ref{sec:algorytmy_korejestracji:korejestracja_kafelek}). Posiadając zdefiniowane wzajemne relacje kafelek oraz ich docelowe położenie w finalnej mozaice należy wykonać proces łączenia kafelek (sekcja \ref{sec:algorytmy_korejestracji:laczenie_kafelek}). W każdej z tych sekcji zostały przedstawione obecnie dostępne i wykorzystywane rozwiązania i algorytmy, natomiast szczegółowy opis metod wykorzystanych w niniejszej pracy znajduje się w rozdziale \ref{sec:proponowane_algorytmy}.
+Proces automatycznego stworzenia mozaiki takiej jak na rysunku \ref{fig:algorytmy_korejestracji:mosaic} jest zadaniem nietrywialnym i wymaga dokładnej analizy wiedzy dziedzinowej oraz precyzyjnego wyboru metod. Pierwszym krokiem jest wybór modelu deformacji kafelek (sekcja \ref{sec:algorytmy_korejestracji:model_deformacji}), następnym etapem, który jest jednocześnie najbardziej wymagającym jest wybór metody wzajemnej korejestracji kafelek (sekcja \ref{sec:algorytmy_korejestracji:korejestracja_kafelek}). Posiadając zdefiniowane wzajemne relacje kafelek oraz ich docelowe położenie w finalnej mozaice należy wykonać proces łączenia kafelek (sekcja \ref{sec:algorytmy_korejestracji:laczenie_kafelek}). W każdej z tych sekcji została wyjaśniona idea metody w kontekście stworzenia mozaiki OCT, natomiast szczegółowy opis zaimplementowanych metod znajduje się w rozdziale \ref{sec:proponowane_algorytmy}.
 
 \section{Model deformacji kafelek}
 \label{sec:algorytmy_korejestracji:model_deformacji}
+
+Model deformacji kafelek określa dozwolone przekształcenia geometryczne, które odwzorują piksele kafelka do pikseli kafelka w finalnej mozaice. Ze względu na to, że angiograficzne obrazy OCT znajdują się na jednej płaszczyźnie zbiór modeli deformacji ogranicza nam się do transformacji dwuwymiarowych, które zostały zobrazowane na rysunku \ref{fig:algorytmy_korejestracji:trans}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{gfx/trans}
+  \caption{Zbiór transformacji dwuwymiarowych dla przykładowego angiograficznego obrazu OCT.}
+  \label{fig:algorytmy_korejestracji:trans}
+\end{figure}
+
+Idealnie OCT powinno tworzyć angiograficzne obrazy, które są względem siebie tylko przesunięte, natomiast w rzeczywistości pojawiają się zniekształcenia wynikające z niedokładności urządzenia oraz ruchu oka pacjenta przez co niektóre kafelki są nieznacznie obrócone względem siebie. Z tego względu wybranym modelem deformacji kafelek został \textbf{model transformacji ciała sztywnego}, czyli połączenie translacji i rotacji.
 
 \section{Korejestracja kafelek}
 \label{sec:algorytmy_korejestracji:korejestracja_kafelek}
 
 \section{Łączenie kafelek}
 \label{sec:algorytmy_korejestracji:laczenie_kafelek}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
