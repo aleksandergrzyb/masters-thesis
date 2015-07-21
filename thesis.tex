@@ -114,7 +114,9 @@
 	pdftitle={\thesisTitle},	% 	- title (PDF meta)
 	pdfauthor={\thesisName},	% 	- author (PDF meta)
 	plainpages=false,			% 	-
-	colorlinks=false,			% 	- colorize links?
+	colorlinks=true,			% 	- colorize links?
+	linkcolor=blue,
+	citecolor=blue,
 	pdfborder={0 0 0},			% 	-
 	breaklinks=true,			% 	- allow line break inside links
 	bookmarksnumbered=true,		%
@@ -146,7 +148,7 @@
 \pagestyle{plain}				% display just page numbers
 
 \setcounter{tocdepth}{2}		% define depth of toc
-\tableofcontents				% display table of contents
+\tableofcontents				% display table of contents\tabularnewline
 \cleardoublepage
 
 % --------------------------
@@ -156,9 +158,9 @@
 \setcounter{page}{1}			% set page counter
 \pagestyle{maincontentstyle} 	% fancy header and footer
 
-\input{content/cel_i_zakres_pracy} 
-\input{content/obrazowanie_oct} 
-\input{content/algorytmy_korejestracji}	
+\input{content/cel_i_zakres_pracy}
+\input{content/obrazowanie_oct}
+\input{content/algorytmy_korejestracji}
 \input{content/proponowane_algorytmy}
 \input{content/wyniki_eksperymentow}
 \input{content/podsumowanie_i_wnioski}
