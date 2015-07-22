@@ -19,7 +19,7 @@ Proces automatycznego stworzenia mozaiki takiej jak na rysunku \ref{fig:algorytm
 \section{Model deformacji kafelek}
 \label{sec:algorytmy_korejestracji:model_deformacji}
 
-Model deformacji kafelek określa dozwolone przekształcenia geometryczne, które odwzorują piksele kafelka do pikseli kafelka w finalnej mozaice. Ze względu na to, że angiograficzne obrazy OCT znajdują się na jednej płaszczyźnie zbiór modeli deformacji ogranicza nam się do transformacji dwuwymiarowych, które zostały zobrazowane na rysunku \ref{fig:algorytmy_korejestracji:trans}.
+Model deformacji kafelek określa dozwolone przekształcenia geometryczne, które odwzorują piksele kafelka do pikseli kafelka w finalnej mozaice. Ze względu na to, że angiograficzne obrazy OCT znajdują się na jednej płaszczyźnie możliwy zbiór modeli deformacji ogranicza nam się do transformacji dwuwymiarowych, które zostały zobrazowane na rysunku \ref{fig:algorytmy_korejestracji:trans}.
 
 \begin{figure}[H]
   \centering
@@ -28,7 +28,7 @@ Model deformacji kafelek określa dozwolone przekształcenia geometryczne, któr
   \label{fig:algorytmy_korejestracji:trans}
 \end{figure}
 
-Idealnie OCT powinno tworzyć angiograficzne obrazy, które są względem siebie tylko przesunięte, natomiast w rzeczywistości pojawiają się zniekształcenia wynikające z niedokładności urządzenia oraz ruchu oka pacjenta przez co niektóre kafelki są nieznacznie obrócone względem siebie. Z tego względu wybranym modelem deformacji kafelek został \textbf{model transformacji ciała sztywnego}, czyli połączenie translacji i rotacji.
+Idealnie OCT powinno tworzyć angiograficzne obrazy, które są względem siebie tylko przesunięte, natomiast w rzeczywistości pojawiają się zniekształcenia wynikające z niedokładności urządzenia oraz ruchu oka pacjenta, przez co niektóre kafelki są nieznacznie obrócone względem siebie. Z tego względu wybranym modelem deformacji kafelek został \textbf{model transformacji ciała sztywnego}, czyli połączenie translacji i rotacji.
 
 \section{Korejestracja kafelek}
 \label{sec:algorytmy_korejestracji:korejestracja_kafelek}
