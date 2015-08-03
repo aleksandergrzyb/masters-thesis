@@ -60,20 +60,20 @@ Po wyborze modelu deformacji kafelków można przejść do wyboru metody, która
   \label{fig:algorytmy_korejestracji:reference_tile}
 \end{figure}
 
-Dopasowanie dwóch kafelków do siebie nazywa się również ich korejestracją, czyli przeniesieniem dwóch kafelek do wspólnego układu współrzędnych w taki sposób by były względem siebie dopasowane. Prosty przykład korejestracji przedstawiony jest na rysunku \ref{fig:algorytmy_korejestracji:align}, gdzie dwie kafelki mają wspólny obszar nałożenia.
+Dopasowanie dwóch kafelków do siebie nazywa się również ich korejestracją, czyli przeniesieniem dwóch kafelków do wspólnego układu współrzędnych w taki sposób by były względem siebie dopasowane. Prosty przykład korejestracji przedstawiony jest na rysunku \ref{fig:algorytmy_korejestracji:align}, gdzie dwie kafelki mają wspólny obszar nałożenia.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=7cm]{gfx/align}
-  \caption{Przykładowa korejestracja dwóch kafelek ze wspólnym obszarem nałożenia.}
+  \caption{Przykładowa korejestracja dwóch kafelków ze wspólnym obszarem nałożenia.}
   \label{fig:algorytmy_korejestracji:align}
 \end{figure}
 
-Dopasowanie kafelków z rysunku \ref{fig:algorytmy_korejestracji:align} jest przykładem bardzo prostym, ponieważ wymaga tylko translacji jednej kafelki względem drugiej. W rzeczywistości pomiary OCT nie są tak dokładne przez co prosta translacja wzdłuż jednej z osi nie wystarcza i wymagane jest automatyczne wyznaczenie translacji wzdłuż z każdej z osi oraz parametru rotacji. Algorytmy korejestracji umożliwiające automatyczne dopasowanie można podzielić na dwie dziedziny:
+Dopasowanie kafelków z rysunku \ref{fig:algorytmy_korejestracji:align} jest przykładem bardzo prostym, ponieważ wymaga tylko translacji jednego kafelka względem drugiego. W rzeczywistości pomiary OCT nie są tak dokładne przez co prosta translacja wzdłuż jednej z osi nie wystarcza i wymagane jest automatyczne wyznaczenie parametrów translacji i rotacji, które może być wykonane na wiele sposobów. Dwie najpopularniejsze metody to:
 
 \begin{enumerate}
-\item Korejestracja na podstawie wartości pikseli (bezpośrednia).
-\item Korejestracja na podstawie cech.
+\item \textbf{Korejestracja na podstawie wartości pikseli} (sekcja \ref{sec:algorytmy_korejestracji:korejestracja_na_podstawie_wartosci}) - Metoda przesuwająca jeden obraz względem drugiego i następnie oceniająca jak nałożone piksele obrazów pasują do siebie na podstawie ich wartości.
+\item \textbf{Korejestracja na podstawie cech} (sekcja \ref{sec:algorytmy_korejestracji:korejestracja_na_podstawie_cech}) - Metoda wyodrębniająca charakterystyczne cechy z każdego obrazu i następnie dopasowująca te cechy by osiągnąć globalną spójność. Dopasowania są później użyte przez algorytm do wyznaczenia macierzy transformacji pomiędzy obrazami.
 \end{enumerate}
 
 \subsection{Korejestracja na podstawie wartości pikseli (bezpośrednie)}
@@ -84,8 +84,6 @@ Dopasowanie kafelków z rysunku \ref{fig:algorytmy_korejestracji:align} jest prz
 
 \section{Łączenie kafelków}
 \label{sec:algorytmy_korejestracji:laczenie_kafelkow}
-
-
 
 
 
