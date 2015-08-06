@@ -338,6 +338,12 @@ INPUT ./gfx/reference_tile.pdf
 INPUT gfx/align.pdf
 INPUT ./gfx/align.pdf
 INPUT ./gfx/align.pdf
+INPUT gfx/canny.pdf
+INPUT ./gfx/canny.pdf
+INPUT ./gfx/canny.pdf
+INPUT gfx/match.pdf
+INPUT ./gfx/match.pdf
+INPUT ./gfx/match.pdf
 INPUT content/proponowane_algorytmy.tex
 INPUT content/proponowane_algorytmy.tex
 INPUT content/wyniki_eksperymentow.tex

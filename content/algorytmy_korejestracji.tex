@@ -76,11 +76,79 @@ Dopasowanie kafelków z rysunku \ref{fig:algorytmy_korejestracji:align} jest prz
 \item \textbf{Korejestracja na podstawie cech} (sekcja \ref{sec:algorytmy_korejestracji:korejestracja_na_podstawie_cech}) - Metoda wyodrębniająca charakterystyczne cechy z każdego obrazu i następnie dopasowująca te cechy by osiągnąć globalną spójność. Dopasowania są później użyte przez algorytm do wyznaczenia macierzy transformacji pomiędzy obrazami.
 \end{enumerate}
 
-\subsection{Korejestracja na podstawie wartości pikseli (bezpośrednie)}
+W niniejszej pracy do osiągnięcia żądanego rezultatu zostało wykorzystane połączenie podejścia tych dwóch metod. Wykorzystane techniki dokładnie opisane są w rozdziale \ref{sec:proponowane_algorytmy}.
+
+\subsection{Korejestracja na podstawie wartości pikseli}
 \label{sec:algorytmy_korejestracji:korejestracja_na_podstawie_wartosci}
+
+Korejestracja na podstawie wartości pikseli jest często nazywana metodą bezpośrednią, ponieważ wymaga bezpośredniego porównania wartości pikseli nakładających się obrazów. Pierwszym krokiem w tej metodzie jest wybranie odpowiedniej miary błędu. Taką miarą błędu może być funkcja suma błędów kwadratowych $E_{RSS}$ (ang. \textit{residual sum of squares, RSS}). Mając daną funkcję $I_{S}(w_{i})$, która zwraca wartość piksela w obrazie źródłowym (przesuwanym) w lokacji $w_{i}=(x_{i}, y_{i})$ oraz funkcję $I_{T}(w_{i})$, która zwraca wartość piksela w obrazie docelowym (referencyjnym, pozostającym na miejscu) $E_{RSS}$ można zdefiniować jako:
+
+\begin{equation}
+E_{RSS}=\sum_{i}[I_{S}(w_{i}+u)-I_{T}(w_{i})]^2=\sum_{i}e_{i}^2
+\end{equation}
+
+gdzie $u=(t_{x}, t_{y})$ to wartość przesunięcia obrazu źródłowego, a $e_{i}=I_{S}(w_{i}+u)-I_{T}(w_{i})$ to błąd resztowy pomiędzy wartościami pikseli przesuniętego obrazu źródłowego i docelowego.
+
+Mając tak zdefiniowaną miarę błędu najprostszą metodą, która wyznaczyłaby najlepsze dopasowanie obrazów byłoby obliczenie błędu dla każdego możliwego przesunięcia obrazu źródłowego. Posiadając wartości wszystkich błędów z odpowiednimi dla nich wartościami przesunięcia można by wybrać wartość najmniejszego błędu. Takie podejście natomiast wiąże się z ogromnym kosztem obliczeniowym w przypadku, gdy obrazy są dużej rozdzielczości i jest ich wiele. Proces można przyspieszyć używając algorytm optymalizacji Levenberga-Marquardta \cite{unser:07} albo poprzez wykorzystanie piramid obrazu w metodzie \textit{Hierarchical Motion Estimation} \cite{export:70092}.
+
+Ze względu na specyficzny charakter problemu niniejszej pracy została zaimplementowana autorska metoda, która również bazuje na bezpośrednim odczytaniu wartości pikseli i jest opisana w sekcji \ref{sec:proponowane_algorytmy:depth_first_search}, natomiast różni się znacząco od metod wymienionych w niniejszej sekcji.
 
 \subsection{Korejestracja na podstawie cech}
 \label{sec:algorytmy_korejestracji:korejestracja_na_podstawie_cech}
+
+Korejestracja na podstawie cech jest techniką, której pierwszym krokiem jest wyekstrahowanie charakterystycznych cech z każdego obrazu i następnie ich dopasowanie. Na podstawie tej informacji można wyestymować macierz transformacji jednego obrazu względem drugiego. W niniejszej sekcji zostaną opisane metody, które realizują wymienione kroki.
+
+\subsubsection{Ekstrakcja cech}
+
+Ekstrakcja cech (ang. \textit{keypoints detection}) jest techniką, w której algorytm poprzez skanowanie obrazu piksel po pikselu podejmuje decyzję, czy dany punkt jest określoną cechą, czy nie. Rezultatem tej techniki może być zbiór punktów, krawędzi, rogów, czy obszarów. Każda cecha ma swój deskryptor (ang. \textit{keypoint descriptor}), który ją określa. W dziedzinie wizji komputerowej zostało zaimplementowanych wiele algorytmów, które ekstrahują cechy obrazów. Poniżej zostały wymienione niektóre algorytmy, które są zaimplementowane przez bibliotekę przetwarzania obrazów OpenCV:
+
+\begin{itemize}
+\item \textbf{SIFT} \cite{Lowe:1999} - algorytm, który potrafi znaleźć charakterystyczne cechy niezależnie od lokalizacji, rotacji, czy skali obrazu. Jest jednym z najpopularniejszych algorytmów i jest wykorzystywany w niniejszej pracy. Został opisany dokładniej w sekcji \ref{sec:proponowane_algorytmy:sift}.
+\item \textbf{SURF} \cite{Bay:2008} - SURF jest oparty na tych samych zasadach co algorytm SIFT, natomiast detale poszczególnych kroków są różne. Autorzy algorytmu w swojej pracy pokazali, że SURF potrafi być szybszy of SIFT nie tracąc przy tym jakości. Tak jak SIFT jest niezależny od lokalizacji, rotacji, czy skali obrazu.
+\item \textbf{Canny} \cite{Canny:1986} - Algorytm, który potrafi wykryć krawędzie obiektów w obrazie, przez co dostarcza dużo informacji o ich strukturze. Na rysunku \ref{fig:algorytmy_korejestracji:canny} zostało zaprezentowane działanie algorytmu Canny.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{gfx/canny}
+  \caption{\textbf{Lewy obraz:} Wynik zaaplikowanego algorytmu Canny na kolorowym obrazie z prawej strony. \textbf{Prawy obraz:} Oryginalny obraz.}
+  \label{fig:algorytmy_korejestracji:canny}
+\end{figure}
+
+\end{itemize}
+
+\subsubsection{Dopasowanie wyekstrahowanych cech}
+
+Następnym krokiem po wyekstrahowaniu cech w dwóch obrazach jest ich dopasowanie na podstawie deskryptorów. Najprostszym rozwiązaniem byłoby porównanie każdej cechy z pierwszego obrazu do każdej cechy z drugiego obrazu, natomiast dla niektórych zastosowań jest to rozwiązanie zbyt wymagające obliczeniowo. Przez co zostały opracowane bardziej wydajne techniki. Przykładem takiej metody jest wykorzystanie drzewa k-d przez Beis i Lowe \cite{Beis:1997}.
+
+Kolejnym wyzwaniem w dopasowaniu cech jest wykrycie obserwacji odstających (ang. \textit{outliners}). Problem obrazuje rysunek \ref{fig:algorytmy_korejestracji:outliners}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=6cm]{gfx/match}
+  \caption{Dwa obrazy, w których zostały wykryte po trzy cechy (na rysunku oznaczone jako gwiazdy). Algorytm szukający dopasowań wykrył dopasowania (na rysunku oznaczone jako strzałki) pomiędzy cechami: 1 i 4, 2 i 5, 3 i 5. Z wiedzy dziedzinowej wiemy, że obrazy nachodzą na siebie (tak jak angiograficzne obrazy OCT). Patrząc na dopasowania pomiędzy obrazami można zauważyć, że jedno z nich nie pasuje do reszty (strzałka narysowana przerywaną linią). Zakładając, że możemy tylko obracać i przesuwać obrazy niemożliwa jest estymacja macierzy transformacji biorąc pod uwagę wszystkie dopasowania. Niepoprawne dopasowanie trzeba odrzucić by otrzymać poprawną macierz transformacji.}
+  \label{fig:algorytmy_korejestracji:outliners}
+\end{figure}
+
+Problem z rysunku \ref{fig:algorytmy_korejestracji:outliners} można rozwiązać poprzez odpowiednie filtrowanie dopasowań. Jedną z takich metod jest RANSAC (ang. \textit{random sample consensus, RANSAC}), który jest algorytmem iteracyjnym i jego zadaniem jest eliminacja obserwacji odstających (w naszym przypadku są to dopasowania, które nie pasują do większości). RANSAC jest wykorzystywany w niniejszej pracy i jest dokładniej opisy w sekcji \ref{sec:proponowane_algorytmy:ransac}. Do rozwiązania tego problemu można również wykorzystać relacje geometryczne (wiedza dziedzinowa) pomiędzy obrazami, których cechy są dopasowywane. Taką relacją geometryczną może być np. informacja, że obraz nie może się przesunąć dalej niż 10 pikseli. Dzięki temu wiemy, że wszystkie dopasowania cech, które znajdują się dalej niż 10 pikseli są niepoprawne. Filtracja na podstawie wiedzy dziedzinowej również jest wykorzystywana w niniejszej pracy i jest opisana dokładniej w sekcji \ref{sec:proponowane_algorytmy:filtrowanie}.
+
+\subsubsection{Estymacja macierzy transformacji na podstawie dopasowań}
+
+Po wyznaczeniu dopasowań pomiędzy dwoma obrazami można przejść do estymacji macierzy transformacji jednego obrazu względem drugiego. Estymacja macierzy transformacji odbywa się na podstawie ustalonego modelu deformacji (sekcja \ref{sec:algorytmy_korejestracji:model_deformacji}). Biorąc pod uwagę jako model transformacji ciało sztywne (dozwolona rotacja i translacja) równanie pozwalające obliczyć parametry rotacji i translacji można zapisać jako:
+
+\begin{equation}
+T=SR+t
+\end{equation}
+
+gdzie $T$ to zbiór cech w obrazie docelowym, $S$ to zbiór cech w obrazie źródłowym, $R$ to macierz rotacji, a $t$ to wektor translacji. Wyznaczenie $R$ i $t$ z tego równania byłoby proste, jeżeli wszystkie cechy z obrazu źródłowego dałoby się idealnie przekształcić na cechy obrazu docelowego. Załóżmy, że do obliczenia parametrów rotacji i translacji zostanie wzięte pod uwagę tylko jedno dopasowanie. Następnie wyznaczoną macierz transformacji stosujemy do cechy z obrazu źródłowego innego dopasowania. Istnieje bardzo mało szansa, że wynikiem będzie cecha obrazu docelowego z tego dopasowania (będzie blisko niej, ale nie idealnie w tym samym miejscu). Ta różnica wynika z tego, że obrazy posiadają szum oraz algorytmy zwracające cechy nie są tak dokładne. Jednym z prostszych rozwiązań tego problemu jest wykorzystanie metody minimalizacji błędu średniokwadratowego, który polega na znalezieniu takiej macierzy transformacji dla której błąd średniokwadratowy pomiędzy cechą w obrazie docelowym, a cechą z obrazu źródłowego po transformacji jest najmniejszy. Mając dane współrzędne cechy w obrazie docelowym $T_{i}$ oraz współrzędne odpowiadającej cechy w obrazie źródłowym $S_{i}$ oraz macierz transformacji $M$ błąd średniokwadratowy można zapisać jako:
+
+\begin{equation}
+E_{LS}=\sum_{i}d(T_{i}, MS_{i})^2
+\label{eq:estimate}
+\end{equation}
+
+gdzie $E_{LS}$ to minimalny błąd średniokwadratowy, a funkcja $d(...)$ to odległość euklidesowa pomiędzy dwoma punktami.
+
+Równanie \ref{eq:estimate} można rozwiązać algorytmami optymalizacji. W niniejszej pracy do wyznaczenia parametrów rotacji i translacji została wykorzystana funkcja OpenCV, której użycie jest opisane w sekcji \ref{sec:proponowane_algorytmy:estymacja}.
 
 \section{Łączenie kafelków}
 \label{sec:algorytmy_korejestracji:laczenie_kafelkow}
