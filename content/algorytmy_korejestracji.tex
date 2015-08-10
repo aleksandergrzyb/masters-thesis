@@ -153,8 +153,14 @@ Równanie \ref{eq:estimate} można rozwiązać algorytmami optymalizacji. W nini
 \section{Łączenie kafelków}
 \label{sec:algorytmy_korejestracji:laczenie_kafelkow}
 
+Po wyznaczeniu macierzy translacji pomiędzy dwoma kafelkami następnym krokiem jest ich złączenie w obszarze, w którym na siebie nachodzą. Problem by nie istniał jeżeli dopasowanie byłoby idealne oraz ekspozycja dwóch kafelków byłaby identyczna. Niestety w rzeczywistym świecie po złączeniu widoczne są krawędzie kafelków oraz inne artefakty wynikające z błędu rejestracji, czy niedokładności aparatu. Stworzenie ładnej oraz jednorodnej mozaiki wymaga określenia, które piksele z dwóch kafelków należy wykorzystać w procesie łączenia oraz jakie przypisać im wagi. Najprostszą metodą jest wzięcie średniej ważonej każdego piksela z dwóch łączonych kafelków:
 
+\begin{equation}
+f(x)=\frac{\sum_{i}\omega_{i}(x)f_{i}(x)}{\sum_{i}\omega_{i}(x)}
+\label{eq:blending}
+\end{equation}
 
+gdzie $i$ to liczba nakładających się kafelków, $f(x)$ to wartość piksela $x$ w finalnej mozaice, $f_{i}(x)$ to wartość piksela $x$ w kolejnych nakładających się kafelkach, a $w(x)$ to waga piksela $x$. Następnym krokiem w tej metodzie jest ustalenie wartości wag. Jednym z pomysłów jest wykorzystanie zwykłej średniej ($w(x)=1$ dla każdego piksela $x$). Nie jest to jednak najlepszy sposób, ponieważ krawędzie kafelków są dalej widoczne. Lepszym podejściem jest uzależnienie wartości wag od odległości piksela od środka kafelka do którego należy tzn. piksel znajdujący się przy krawędzi swojego kafelka będzie miał mniejszą wagę niż piksel znajdujący się blisko środka swojego kafelka (metoda wykorzystana jest w niniejszej pracy i dokładniej jest opisana w sekcji \ref{sec:proponowane_algorytmy:laczenie_kafelkow}). Istnieją również bardziej zaawansowane metody takie jak algorytm \textit{multi-band blending} zaproponowany przez Burt i Adelson \cite{Burt:1983:MSA:245.247}, który daje jeszcze lepsze rezultaty \cite{Brown:2007:API:1265138.1265141} niż średnia ważona.
 
 
 
