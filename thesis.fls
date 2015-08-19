@@ -289,8 +289,8 @@ INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/bitstrea/charter/bchb8r.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/vf/bitstrea/charter/bchr8t.vf
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/bitstrea/charter/bchr8r.tfm
 OUTPUT thesis.toc
-INPUT content/cel_i_zakres_pracy.tex
-INPUT content/cel_i_zakres_pracy.tex
+INPUT content/wstep.tex
+INPUT content/wstep.tex
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/adobe/helvetic/phvr8t.tfm
 INPUT content/obrazowanie_oct.tex
 INPUT content/obrazowanie_oct.tex
