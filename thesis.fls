@@ -283,12 +283,12 @@ INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/lm/lmsy6.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/lm/omxlmex.fd
 INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/lm/omxlmex.fd
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/lm/lmex10.tfm
-OUTPUT thesis.toc
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/tex-gyre/ec-qhvb.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/vf/bitstrea/charter/bchb8t.vf
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/bitstrea/charter/bchb8r.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/vf/bitstrea/charter/bchr8t.vf
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/bitstrea/charter/bchr8r.tfm
+OUTPUT thesis.toc
 INPUT content/cel_i_zakres_pracy.tex
 INPUT content/cel_i_zakres_pracy.tex
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/adobe/helvetic/phvr8t.tfm
