@@ -361,6 +361,9 @@ INPUT /usr/local/texlive/2015/texmf-dist/fonts/vf/bitstrea/charter/bchr8t.vf
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/bitstrea/charter/bchr8r.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/vf/bitstrea/charter/bchr8t.vf
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/bitstrea/charter/bchr8r.tfm
+INPUT gfx/example.pdf
+INPUT ./gfx/example.pdf
+INPUT ./gfx/example.pdf
 INPUT content/wyniki_eksperymentow.tex
 INPUT content/wyniki_eksperymentow.tex
 INPUT content/podsumowanie_i_wnioski.tex

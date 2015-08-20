@@ -8,7 +8,7 @@ Niniejszy rozdział opisuje szczegółowo kolejne kroki rozwiązania problemu, k
 \section{Oprogramowanie}
 \label{sec:proponowane_algorytmy:oprogramowanie}
 
-Program, który jest celem niniejszej pracy jest całkowicie napisany w języku C++. Ten język został wybrany ze względu na to, że wykorzystywana biblioteka przetwarzania obrazów OpenCV (opisana w skrócie w sekcji \ref{sec:proponowane_algorytmy:opencv}) posiada interfejs w języku C++. Program można uruchomić z konsoli systemu za pomocą komendy:
+Program o nazwie \texttt{mostitch}, który jest celem niniejszej pracy jest całkowicie napisany w języku C++. Ten język został wybrany ze względu na to, że wykorzystywana biblioteka przetwarzania obrazów OpenCV (opisana w skrócie w sekcji \ref{sec:proponowane_algorytmy:opencv}) posiada interfejs w języku C++. Program można uruchomić z konsoli systemu za pomocą komendy:
 
 \begin{verbatim}
 ./mostitch path_to_config_file
@@ -42,7 +42,23 @@ Wszystkie rozwiązania zaimplementowane w niniejszej pracy bazują na bibliotece
 \section{Wiedza dziedzinowa}
 \label{sec:proponowane_algorytmy:wiedza_dziedzinowa}
 
-% Co dostaje w wiedzy dziedzinowej
+Wiedza dziedzinowa określa zbiór informacji związanych z problemem i danymi wejściowymi. Dokładne zdefiniowanie oraz analiza wiedzy dziedzinowej prowadzi do ułatwienia problemu oraz lepszych rezultatów. W przypadku problemu niniejszej pracy danymi wejściowymi do stworzenia mozaiki są angiograficzne obrazy OCT (kafelki). Są to monochromatyczne obrazy o rozmiarze 240 na 240 pikseli. Wraz z obrazami do programu dostarczane są jeszcze dwie informacje:
+
+\begin{itemize}
+\item Względna pozycja kafelków względem siebie, która jest zapisana w nazwie obrazu. Lokalizacja jest podana za pomocą współrzędnych x i y układu kartezjańskiego.
+\item Szacowany obszar nałożenia kafelków na siebie wyrażony w procentach szerokości obrazu.
+\end{itemize}
+
+Na rysunku \ref{fig:proponowane_algorytmy:example} jest przedstawiony przykładowy zbiór kafelków przeznaczony do stworzenia jednej mozaiki wraz z dostarczoną wiedzą dziedzinową.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{gfx/example}
+  \caption{Cztery kafelki rozmieszone zgodnie z ich pozycją w docelowej mozaice. Na każdym obrazie białym przeźroczystym prostokątem zaznaczony jest oszacowany obszar nałożenia sąsiadujących kafelków.}
+  \label{fig:proponowane_algorytmy:example}
+\end{figure}
+
+Informacje dostarczone wraz z kafelkami mają istotny wpływ na działanie algorytmu. Jasno podane położenie kafelek informuje algorytm, który kafelek należy dopasowywać z którym (sekcja \ref{sec:proponowane_algorytmy:filtrowanie}), a szacowany obszar nałożenia określa obszar, w którym należy ekstrahować cechy (sekcja \ref{sec:proponowane_algorytmy:sift}). Bez tych informacji stworzenie mozaiki byłoby o wiele bardziej skomplikowane.
 
 \section{Rejestracja kafelków poprzez ekstrakcję cech SIFT}
 \label{sec:proponowane_algorytmy:sift}
@@ -70,4 +86,3 @@ Wszystkie rozwiązania zaimplementowane w niniejszej pracy bazują na bibliotece
 
 \section{Łączenie kafelków}
 \label{sec:proponowane_algorytmy:laczenie_kafelkow}
-
