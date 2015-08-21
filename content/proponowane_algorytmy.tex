@@ -179,10 +179,19 @@ SIFT featuresFinder = SIFT::SIFT(...);
 featuresFinder(...);
 \end{verbatim}
 
-Konstruktor \texttt{SIFT::SIFT(...)} tworzy nam obiekt \texttt{SIFT}, który posiada funkcjonalność algorytmu SIFT. Do konstruktora \texttt{SIFT::SIFT(...)} podajemy parametry algorytmu tj. ilość najlepszych cech do zwrócenia, ilość oktaw do wykorzystania, progi do filtrowania wykrytych cech (sekcja \ref{sec:proponowane_algorytmy:filtracja_cech}) oraz siłę filtru Gaussa. Operator \texttt{featuresFinder(...)} przyjmuje obraz w którym mają zostać znalezione cechy i zwraca miejsca wystąpienia tych cech oraz ich deskryptory.
+Konstruktor \texttt{SIFT::SIFT(...)} tworzy nam obiekt \texttt{SIFT}, który posiada funkcjonalność algorytmu SIFT. Do konstruktora \texttt{SIFT::SIFT(...)} podajemy parametry algorytmu tj. ilość najlepszych cech do zwrócenia, ilość oktaw do wykorzystania, progi do filtrowania wykrytych cech (sekcja \ref{sec:proponowane_algorytmy:filtracja_cech}) oraz siłę filtru Gaussa. Operator \texttt{featuresFinder(...)} przyjmuje obraz w którym mają zostać znalezione cechy i zwraca miejsca wystąpienia tych cech oraz ich deskryptory. Więcej informacji na temat obiektu \texttt{SIFT} znajduje się w oficjalnej dokumentacji OpenCV\footnote{\url{http://docs.opencv.org/modules/nonfree/doc/feature_detection.html}}.
 
 \subsection{Dopasowanie wyekstrahowanych cech}
 \label{sec:proponowane_algorytmy:dopasowanie}
+
+Cecha jest uważana za dopasowaną do drugiej cechy, jeżeli deskryptory (w przypadku SIFT 128 elementowy wektor) tych cech są do siebie podobne. W świecie rzeczywistym bardzo rzadko zdarza się, że deskryptory są do siebie identyczne, dlatego algorytmy zwracają zazwyczaj deskryptor, który jest najbardziej podobny. Trudność problemu dopasowania wyekstrahowanych cech jest uzależniony od ilości wykrytych cech w każdym z obrazów. Im więcej cech do dopasowania tym problem staje się bardziej kosztowny obliczeniowo. W przypadku problemu niniejszej pracy mamy do czynienia z obrazami o rozmiarze 240 na 240 pikseli z czego w większości zbiorów danych obrazy nakładają się w 10\% szerokości obrazu, czyli algorytm SIFT szuka cech w obszarze 24 na 240 pikseli. Jest to obszar na tyle mały, że ilość cech wyekstrahowanych przez SIFT jest niewielka. Dzięki temu w niniejszej pracy w procesie rejestracji kafelków każda cecha jednego obrazu jest porównywana z każdą cechą obrazu dopasowywanego. Jeżeli w jednym kafelku wykryto $n$ cech, a w drugim $m$ cech to algorytm wykonuje $nm$ dopasowań. Taki mechanizm dopasowania nazywa się \textit{Brute Force Matching} i tak jak algorytm SIFT również jest zaimplementowany w OpenCV. Użycie \textit{Brute Force Matching} w OpenCV tak jak w przypadku SIFT sprowadza się do kilku linii kodu:
+
+\begin{verbatim}
+BFMatcher bruteForceMatcher;
+bruteForceMatcher.match(...);
+\end{verbatim}
+
+Obiekt \texttt{BFMatcher} posiada funkcjonalność, która pozwala na dopasowanie każdego deskryptora z jednego zbioru do każdego deskryptora z drugiego zbioru. Funkcja \texttt{match(...)} przyjmuje deskryptory z dwóch zbiorów i zwraca dopasowania. Więcej informacji na temat obiektu \texttt{BFMatcher} znajduje się w oficjalnej dokumentacji OpenCV\footnote{\url{http://docs.opencv.org/modules/features2d/doc/common_interfaces_of_descriptor_matchers.html}}.
 
 \subsection{Filtrowanie dopasowań}
 \label{sec:proponowane_algorytmy:filtrowanie}
