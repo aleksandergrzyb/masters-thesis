@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGdefault{n}{SIFT} \PYGdefault{n}{featuresFinder} \PYGdefault{o}{=} \PYGdefault{n}{SIFT}\PYGdefault{o}{::}\PYGdefault{n}{SIFT}\PYGdefault{p}{(}\PYGdefault{l+m+mi}{0}\PYGdefault{p}{,} \PYGdefault{l+m+mi}{3}\PYGdefault{p}{,} \PYGdefault{l+m+mf}{0.02}\PYGdefault{p}{,} \PYGdefault{l+m+mi}{10}\PYGdefault{p}{,} \PYGdefault{l+m+mf}{1.5}\PYGdefault{p}{);}
+\end{Verbatim}

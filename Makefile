@@ -28,7 +28,7 @@ all: thesis.pdf
 # missing file reference and interactively asking you for an alternative.
 
 thesis.pdf: thesis.tex
-	latexmk -pdf -pdflatex="pdflatex -interactive=nonstopmode" -use-make thesis.tex
+	latexmk -pdf -pdflatex="pdflatex -interactive=nonstopmode -shell-escape" -use-make thesis.tex
 
 clean:
 	latexmk -CA
