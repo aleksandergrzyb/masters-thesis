@@ -196,11 +196,133 @@ Obiekt \texttt{BFMatcher} posiada funkcjonalność, która pozwala na dopasowani
 \subsection{Filtrowanie dopasowań}
 \label{sec:proponowane_algorytmy:filtrowanie}
 
-\subsubsection{Filtrowanie na podstawie wiedzy dziedzinowej}
-\label{sec:proponowane_algorytmy:filtrowanie_dziedzinowe}
+Na tym etapie algorytm już wyekstrahował cechy z obrazów i wyznaczył dopasowania pomiędzy nimi. Ze względu na to, że naczynia krwionośne w angiograficznych obrazach OCT są bardzo do siebie podobne wiele z tych dopasowań będzie niepoprawnych. Rysunek \ref{fig:algorytmy_korejestracji:outliners} z sekcji \ref{sec:algorytmy_korejestracji:korejestracja_na_podstawie_cech} przedstawia istotę problemu niepoprawnych dopasowań, natomiast rysunek \ref{fig:proponowane_algorytmy:no_filtering} przedstawia wykryte dopasowania przez mechanizm \textit{Brute Force Matching} na dwóch rzeczywistych angiograficznych obrazach OCT.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{gfx/no_filtering}
+  \caption{Z lewej strony znajdują się dwa angiograficzne obrazy OCT, które mają być złączone na ok. 10\% swojej szerokości. Z prawej strony widzimy wykryte cechy (kółka zielone i niebieskie) w dwóch obrazach oraz znalezione dopasowania (czerwone linie) pomiędzy cechami za pomocą techniki \textit{Brute Force Matching}.}
+  \label{fig:proponowane_algorytmy:no_filtering}
+\end{figure}
+
+Gołym okiem można zauważyć na podstawie rysunku \ref{fig:proponowane_algorytmy:no_filtering}, że algorytm zwrócił zdecydowanie za dużo dopasowań i znaczna ich część jest niepotrzebna. Dlatego wymagane jest dalsze filtrowanie tych dopasowań na podstawie wiedzy dziedzinowej oraz dostępnych algorytmów. Poniżej będą opisane poszczególne procesy filtrowania dopasowań w takiej kolejności w jakiej wykonuje je program.
+
+\subsubsection{Filtrowanie na podstawie położenia}
+\label{sec:proponowane_algorytmy:placement_filtering}
+
+Pierwsza technika filtrowania polega na usunięciu dopasowań, które doprowadziłyby do przesunięcia się kafelka poza określoną normę. Ta norma jest określona poprzez dwa parametry $shiftParameter$ i $percentOverlap$, które ustawia się w pliku konfiguracyjnym. W zależności od sposobu ułożenia kafelków, dopasowanie przejdzie ten filtr jeżeli spełnia dwa warunki:
+
+\begin{enumerate}
+\item Dopasowane cechy nie będą się znajdować zbyt daleko od siebie w osi poziomej (w przypadku ułożenia kafelków w pionie) lub osi pionowej (w przypadku ułożenia kafelków w poziomie). Ten warunek określają wzory -- \ref{eq:vertical} dla przypadku ułożenia kafelków w pionie, \ref{eq:horizontal} dla przypadku ułożenia kafelków w poziomie:
+\begin{equation}
+\left|f_{1x} - f_{2x}\right| < imageSize * shiftParameter
+\label{eq:vertical}
+\end{equation}
+\begin{equation}
+\left|f_{1y} - f_{2y}\right| < imageSize * shiftParameter
+\label{eq:horizontal}
+\end{equation}
+Gdzie $f_{1x}$ i $f_{2x}$ to współrzędne $x$ dopasowanych cech z dwóch obrazów (dla $f_{1y}$ i $f_{2y}$ są to współrzędne $y$), a $imageSize$ to rozmiar angiograficznego obrazu OCT, który w przypadku naszej pracy ma 240 pikseli.
+\item Dopasowane cechy nie będą znajdować się zbyt daleko od siebie. Ten warunek określa wzór:
+\begin{equation}
+length < imageSize * percentOverlap * 2.5
+\label{eq:length}
+\end{equation}
+Gdzie $length$ to długość wektora pomiędzy cechami z uwzględnieniem położenia kafelków. W zależności od położenia kafelków $length$ jest zdefiniowane jako -- \ref{eq:left} dla położenia, w którym kafelki ustawione są w poziomie i kafelek $f_{1}$ znajduje się z lewej strony kafelka $f_{2}$, \ref{eq:up} dla położenia, w którym kafelki ustawione są w pionie i kafelek $f_{1}$ znajduje się nad kafelkiem $f_{2}$:
+\begin{equation}
+length = \sqrt{(f_{1x} - (f_{2x} + imageSize))^2 + (f_{1y} - f_{2y})^2}
+\label{eq:left}
+\end{equation}
+\begin{equation}
+length = \sqrt{(f_{1x} - f_{2x})^2 + (f_{1y} - (f_{2y} + imageSize))^2}
+\label{eq:up}
+\end{equation}
+\end{enumerate}
+
+Rysunek \ref{fig:proponowane_algorytmy:after_placement} przedstawia wynik filtrowania na tych samych dwóch obrazach angiograficznych, które były użyte jako przykład w rysunku \ref{fig:proponowane_algorytmy:no_filtering}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{gfx/after_placement}
+  \caption{\textbf{Lewy obraz:} Dopasowania wyznaczone po zastosowaniu \textit{Brute Force Matching}. \textbf{Prawy obraz:} Dopasowania, które pozostały po filtrowaniu na podstawie położenia.}
+  \label{fig:proponowane_algorytmy:after_placement}
+\end{figure}
+
+\subsubsection{Usuwanie nadmiarowych dopasowań przypisanych do jednej cechy}
+\label{sec:proponowane_algorytmy:no_repetition_filtering}
+
+Czasem występuje sytuacja, w której jedna cecha z jednego kafelka została dopasowana do paru cech z drugiego kafelka. Na podstawie wiedzy dziedzinowej wiemy, że jest to sytuacja niepożądana i cecha może być dopasowana tylko i wyłącznie do jednej cechy. Niniejszy etap filtrowania polega na iteracji po wszystkich cechach, które mają dopasowania do więcej niż jednej cechy i na pozostawieniu tylko tej cechy, która jest najbardziej podobna (na podstawie wartości deskryptoru cechy). Ten etap filtrowania jest wykonywany dwukrotnie -- pierwszy raz dla cech z pierwszego kafelka i drugi raz dla cech z drugiego kafelka. Rysunek \ref{fig:proponowane_algorytmy:no_repetition_filtering} przedstawia wynik filtrowania poprzez eliminację nadmiarowych dopasowań na dopasowaniach, które były wynikiem poprzedniego (rysunek \ref{fig:proponowane_algorytmy:after_placement}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{gfx/no_repetition_filtering}
+  \caption{\textbf{Lewy obraz:} Dopasowania wyznaczone po zastosowaniu filtrowania na podstawie położenia. \textbf{Prawy obraz:} Dopasowania, które pozostały po eliminacji nadmiarowych dopasowań.}
+  \label{fig:proponowane_algorytmy:no_repetition_filtering}
+\end{figure}
 
 \subsubsection{RANSAC}
 \label{sec:proponowane_algorytmy:ransac}
+
+Poprzednie dwa kroki filtrowania dopasowań wyeliminowały znaczącą część dopasowań wykrytych na początku. Niestety nadal można zauważyć (prawy obraz na rysunku \ref{fig:proponowane_algorytmy:no_repetition_filtering}), że niektóre dopasowania są nieprawidłowe. Algorytm RANSAC (ang. \textit{random sample consensus, RANSAC}) pierwszy raz opublikowany w roku 1981 przez Fischler i Bolles \cite{Fischler:1981:RSC:358669.358692} został zaimplementowany by wyeliminować próbki, które tworzą szum w znalezieniu poprawnego modelu. W niniejszej pracy próbkami są dopasowania cech, a modelem jest poprawna macierz transformacji pomiędzy kafelkami.
+
+Działanie algorytmu RANSAC składa się z dwóch kroków, które są powtarzane w sposób iteracyjny:
+
+\begin{enumerate}
+\item W pierwszym kroku algorytm losowo wybiera podzbiór próbek. Następnie używając tylko próbek z tego podzbioru oblicza pasujący model.
+\item W drugim kroku algorytm sprawdza, które próbki z całego zbioru są zgodne z modelem obliczonym w pierwszym kroku. Próbka będzie uznana za szum jeżeli nie będzie pasować do modelu w obrębie progu błędu.
+\end{enumerate}
+
+Algorytm RANSAC będzie powtarzał powyższe dwa kroki dopóki nie znajdzie w kroku drugim wystarczającej ilości próbek pasujących do modelu wyznaczonego w kroku pierwszym lub nie przekroczy liczby iteracji, która jest parametrem algorytmu. Rysunek \ref{fig:proponowane_algorytmy:ransac} \footnote{\url{https://en.wikipedia.org/wiki/RANSAC}} przedstawia działanie algorytmu RANSAC na problemie, w którym próbkami są punkty, a szukanym modelem jest funkcja prostej.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm]{gfx/ransac}
+  \caption{\textbf{Lewy obraz:} Zbiór danych, w których wiele punktów jest szumem. \textbf{Prawy obraz:} Funkcja prostej (niebieska linia) obliczona przez algorytm RANSAC. Punkty, które są szumem (czerwone kropki) nie mają wpływu na model, czyli funkcję prostej.}
+  \label{fig:proponowane_algorytmy:ransac}
+\end{figure}
+
+Biblioteka OpenCV implementuje algorytm RANSAC w sposób niejawny wewnątrz funkcji \texttt{findHomography(...)}, której celem jest znalezienie afinicznej transformacji pomiędzy dwoma zbiorami punktów. Dodatkowo funkcja \texttt{findHomography(...)} implementuje krok w którym pozbywa się szumu ze swoich danych wejściowych. Ten krok może być wykonany za pomocą metody RANSAC lub LMedS (ang. \textit{least-median of squares, LMedS}). Żeby otrzymać wynik algorytmu RANSAC na dopasowaniach pomiędzy punktami \texttt{featuresSource} z pierwszego kafelka i \texttt{featuresTarget} z drugiego kafelka należy do funkcji \texttt{findHomography(...)} przekazać opcjonalny wektor \texttt{mask}, w którym będzie zapisany wynik algorytmu RANSAC. Wywołanie funkcji wygląda następująco:
+
+\begin{verbatim}
+findHomography(featuresSource, featuresTarget, CV_RANSAC, 3, mask)
+\end{verbatim}
+
+Wartość \texttt{CV\_RANSAC} powoduje użycie algorytmu RANSAC zamiast LMedS. Jeżeli element o indeksie $i$ wektora \texttt{mask} posiada wartość, która jest równa $0$ to cechy o indeksie $i$ wektorów \texttt{featuresSource} i \texttt{featuresTarget} są szumem.
+
+Rysunek \ref{fig:proponowane_algorytmy:ransac_filter} przedstawia wynik algorytmu RANSAC na dopasowaniach, które były wynikiem poprzedniego filtrowania (rysunek \ref{fig:proponowane_algorytmy:no_repetition_filtering}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{gfx/ransac_filter}
+  \caption{\textbf{Lewy obraz:} Dopasowania pozostałe po eliminacji nadmiarowych dopasowań. \textbf{Prawy obraz:} Dopasowania pozostałe po użyciu algorytmu RANSAC.}
+  \label{fig:proponowane_algorytmy:ransac_filter}
+\end{figure}
+
+\subsubsection{Filtrowanie na podstawie nachylenia linii dopasowania}
+\label{sec:proponowane_algorytmy:slope_filtering}
+
+Ostatni etap filtrowania składa się z trzech kroków:
+
+\begin{enumerate}
+\item Dla każdego dopasowania obliczany jest kąt nachylenia $angle$ funkcji prostej przechodzącej przez cechy z tego dopasowania. W zależności od ułożenia kafelków cechy mają współrzędne odpowiednio zmodyfikowane poprzez rozmiar kafelka.
+\item Z obliczonych w poprzednim kroku wartości kątów nachylenia wyznaczana jest wartość mediany $medianAngle$.
+\item Dopasowanie przechodzi ten filtr jeżeli kąt nachylenia $angle$ obliczony w pierwszym kroku zawiera się w przedziale ograniczonym przez wartość mediany $medianAngle$ wyznaczonej w kroku drugim i parametr $angleParameter$, który ustawia się w pliku konfiguracyjnym:
+\begin{equation}
+medianAngle + angleParameter > angle > medianAngle - angleParameter
+\label{eq:angle}
+\end{equation}
+\end{enumerate}
+
+Filtr ma na celu pozostawić dopasowania, których nachylenie jest podobne. Rysunek \ref{fig:proponowane_algorytmy:slope} przedstawia wynik filtrowania na podstawie nachylenia dopasowań, które były wynikiem poprzedniego filtrowania (rysunek \ref{fig:proponowane_algorytmy:ransac_filter}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{gfx/slope}
+  \caption{\textbf{Lewy obraz:} Dopasowania pozostałe po użyciu algorytmu RANSAC. \textbf{Prawy obraz:} Dopasowania, które posiadają podobny kąt nachylenia.}
+  \label{fig:proponowane_algorytmy:slope}
+\end{figure}
+
+Wynik ostatniego filtru przedstawiony na prawym obrazie na rysunku \ref{fig:proponowane_algorytmy:slope} pozostawia dopasowania, które są poprawne i mogą być użyte do estymacji macierzy transformacji (sekcja \ref{sec:proponowane_algorytmy:estymacja}).
 
 \section{Rejestracja kafelków poprzez wykrycie położeń naczyń krwionośnych w kafelkach}
 \label{sec:proponowane_algorytmy:depth_first_search}
