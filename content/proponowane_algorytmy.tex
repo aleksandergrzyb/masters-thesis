@@ -3,41 +3,41 @@
 \chapter{Proponowane algorytmy}
 \label{sec:proponowane_algorytmy}
 
-Niniejszy rozdział opisuje szczegółowo kolejne kroki rozwiązania problemu, który został dokładnie przestawiony w sekcji \ref{sec:wstep:opis_problemu}. Sekcja \ref{sec:proponowane_algorytmy:oprogramowanie} opisuje sposób implementacji oprogramowania oraz wykorzystane technologie. Sekcja \ref{sec:proponowane_algorytmy:wiedza_dziedzinowa} opisuje wiedzę dziedzinową na temat danych wejściowych (kafelków). Następnie sekcje od \ref{sec:proponowane_algorytmy:sift} do \ref{sec:proponowane_algorytmy:laczenie_kafelkow} opisują zasadę działania poszczególnych metod w kolejności zgodnej z ich wykonywaniem w programie.
+Niniejszy rozdział szczegółowo opisuje kolejne kroki rozwiązania problemu dokładnie przestawionego w sekcji \ref{sec:wstep:opis_problemu}. Sekcja \ref{sec:proponowane_algorytmy:oprogramowanie} opisuje sposób implementacji oprogramowania oraz wykorzystane technologie. Sekcja \ref{sec:proponowane_algorytmy:wiedza_dziedzinowa} opisuje wiedzę dziedzinową na temat danych wejściowych (kafelków). Następnie sekcje od \ref{sec:proponowane_algorytmy:sift} do \ref{sec:proponowane_algorytmy:laczenie_kafelkow} opisują zasadę działania poszczególnych metod w kolejności zgodnej z ich wykonywaniem w programie.
 
 \section{Oprogramowanie}
 \label{sec:proponowane_algorytmy:oprogramowanie}
 
-Program o nazwie \texttt{mostitch}, który jest celem niniejszej pracy jest całkowicie napisany w języku C++. Ten język został wybrany ze względu na to, że wykorzystywana biblioteka przetwarzania obrazów OpenCV (opisana w skrócie w sekcji \ref{sec:proponowane_algorytmy:opencv}) posiada interfejs w języku C++. Program można uruchomić z konsoli systemu za pomocą komendy:
+Program o nazwie \texttt{mostitch}, który jest celem niniejszej pracy jest całkowicie napisany w języku C++. Język wybrano ze względu na to, że wykorzystywana biblioteka przetwarzania obrazów OpenCV (opisana w skrócie w sekcji \ref{sec:proponowane_algorytmy:opencv}) posiada interfejs w języku C++. Program można uruchomić z konsoli systemu za pomocą komendy:
 
 \begin{verbatim}
 ./mostitch path_to_config_file
 \end{verbatim}
 
-gdzie \texttt{path\_to\_config\_file} to obowiązkowy argument do programu, który wskazuję ścieżkę do pliku konfiguracyjnego (opisanego dokładniej w sekcji \ref{sec:proponowane_algorytmy:plik_configuracyjny}), który określa wszystkie parametry niezbędne do prawidłowego działania programu.
+gdzie \texttt{path\_to\_config\_file} to obowiązkowy argument do programu wskazujący ścieżkę do pliku konfiguracyjnego (opisanego dokładniej w sekcji \ref{sec:proponowane_algorytmy:plik_configuracyjny}), który określa wszystkie parametry niezbędne do prawidłowego działania programu.
 
-Program umożliwia stworzenie mozaik dla dowolnej ilości zbiorów kafelków. Dodatkowo dla każdego zbioru kafelków powstają różne wersje mozaik, ze względu na wykorzystanie różnych metod ich tworzenia. Dzięki tej funkcjonalności użytkownik może wybrać mozaikę, która jest najbardziej odpowiednia. Wyjściem programu więc jest zbiór mozaik (obrazy \texttt{.png}), w których każdy z nich odpowiada wybranemu zbioru kafelków oraz metodzie tworzenia.
+Program umożliwia konstrukcję mozaik dla dowolnej ilości zbiorów kafelków. Dodatkowo dla każdego zbioru kafelków powstają różne wersje mozaik, ze względu na wykorzystanie różnych metod ich tworzenia. Dzięki tej funkcjonalności użytkownik może wybrać najbardziej odpowiednią mozaikę. Wyjściem programu więc jest zbiór mozaik (obrazy \texttt{.png}), w którym każda mozaika ma przypisaną metodę jej tworzenia oraz odpowiadający zbiór kafelków.
 
 \subsection{Plik konfiguracyjny}
 \label{sec:proponowane_algorytmy:plik_configuracyjny}
 
-Do zarządzania plikiem konfiguracyjnym została wykorzystana biblioteka \textbf{libconfig}\footnote{\url{http://www.hyperrealm.com/libconfig/}}, która umożliwia bezproblemowy odczyt pliku konfiguracyjnego z rozszerzeniem \texttt{.cfg}. Format pliku konfiguracyjnego jest bardziej czytelny w porównaniu do powszechnie wykorzystywanych plików XML. Biblioteka również jest świadoma typu zmiennej przez co unika się konwersji typu \texttt{string} na typy takie jak \texttt{int}, czy \texttt{float}.
+Do zarządzania plikiem konfiguracyjnym wykorzystano bibliotekę \textbf{libconfig}\footnote{\url{http://www.hyperrealm.com/libconfig/}} umożliwiającą bezproblemowy odczyt pliku konfiguracyjnego z rozszerzeniem \texttt{.cfg}. Format pliku konfiguracyjnego jest bardziej czytelny w porównaniu do powszechnie wykorzystywanych plików XML. Biblioteka również jest świadoma typu zmiennej przez co unika się konwersji typu \texttt{string} na typy takie jak \texttt{int}, czy \texttt{float}.
 
 W pliku konfiguracyjnym zawarte są informacje:
 
 \begin{itemize}
-\item Ścieżka do folderu z folderami zawierającymi zbiory kafelków do złączenia.
+\item Ścieżka do miejsca z folderami zawierającymi zbiory kafelków do złączenia.
 \item Ścieżka do miejsca, w którym będą zapisane wynikowe mozaiki.
 \item Parametry pozwalające na automatyczne wczytanie obrazów kafelków.
 \item Parametry modyfikujące działanie metod przetwarzania kafelków.
 \end{itemize}
 
-Wszystkie parametry zawarte w pliku konfiguracyjnym są szczegółowo opisane w przykładzie pliku konfiguracyjnego o nazwie \texttt{config.cfg}, który jest dołączony do niniejszej pracy.
+Wszystkie parametry zawarte w pliku konfiguracyjnym są szczegółowo opisane w przykładzie pliku konfiguracyjnego dołączonego do niniejszej pracy o nazwie \texttt{config.cfg}.
 
 \subsection{OpenCV}
 \label{sec:proponowane_algorytmy:opencv}
 
-Wszystkie rozwiązania zaimplementowane w niniejszej pracy bazują na bibliotece przetwarzania obrazów o nazwie \textbf{OpenCV}. Biblioteka jest dozwolona do bezpłatnego wykorzystania w projektach prywatnych i komercyjnych. OpenCV jest używane w ogromnej ilości projektów z różnych dziedzin i została ściągnięta już ponad 9 milionów razy\footnote{\url{http://opencv.org}}. OpenCV cieszy się taką popularnością ze względu na szybkość działania, implementację większości metod przetwarzania obrazu oraz umiejętnością pracy na wielu rdzeniach. Kod źródłowy biblioteki jest dostępny publicznie w serwisie Github\footnote{\url{https://github.com/Itseez/opencv}} przez co każdy może rozwijać OpenCV i ma wgląd do zaimplementowanych metod.
+Wszystkie rozwiązania zaimplementowane w niniejszej pracy bazują na bibliotece przetwarzania obrazów o nazwie \textbf{OpenCV}. Biblioteka jest dozwolona do bezpłatnego wykorzystania w projektach prywatnych i komercyjnych. OpenCV jest używane w ogromnej ilości projektów z różnych dziedzin i bibliotekę ściągnięto już ponad 9 milionów razy\footnote{\url{http://opencv.org}}. OpenCV cieszy się taką popularnością ze względu na szybkość działania, implementację większości metod przetwarzania obrazu oraz umiejętnością pracy na wielu rdzeniach. Kod źródłowy biblioteki jest dostępny publicznie w serwisie Github\footnote{\url{https://github.com/Itseez/opencv}} przez co każdy może rozwijać OpenCV i ma wgląd do zaimplementowanych metod.
 
 \section{Wiedza dziedzinowa}
 \label{sec:proponowane_algorytmy:wiedza_dziedzinowa}
@@ -45,7 +45,7 @@ Wszystkie rozwiązania zaimplementowane w niniejszej pracy bazują na bibliotece
 Wiedza dziedzinowa określa zbiór informacji związanych z problemem i danymi wejściowymi. Dokładne zdefiniowanie oraz analiza wiedzy dziedzinowej prowadzi do ułatwienia problemu oraz lepszych rezultatów. W przypadku problemu niniejszej pracy danymi wejściowymi do stworzenia mozaiki są angiograficzne obrazy OCT (kafelki). Są to monochromatyczne obrazy o rozmiarze 240 na 240 pikseli. Wraz z obrazami do programu dostarczane są jeszcze dwie informacje:
 
 \begin{itemize}
-\item Względna pozycja kafelków względem siebie, która jest zapisana w nazwie obrazu. Lokalizacja jest podana za pomocą współrzędnych x i y układu kartezjańskiego.
+\item Względna pozycja kafelków względem siebie zapisana w nazwie obrazu. Lokalizacja jest podana za pomocą współrzędnych x i y układu kartezjańskiego.
 \item Szacowany obszar nałożenia kafelków na siebie wyrażony w procentach szerokości obrazu.
 \end{itemize}
 
@@ -58,24 +58,24 @@ Na rysunku \ref{fig:proponowane_algorytmy:example} jest przedstawiony przykłado
   \label{fig:proponowane_algorytmy:example}
 \end{figure}
 
-Informacje dostarczone wraz z kafelkami mają istotny wpływ na działanie algorytmu. Jasno podane położenie kafelek informuje algorytm, który kafelek należy dopasowywać z którym (sekcja \ref{sec:proponowane_algorytmy:filtrowanie}), a szacowany obszar nałożenia określa obszar, w którym należy ekstrahować cechy (sekcja \ref{sec:proponowane_algorytmy:sift}). Bez tych informacji stworzenie mozaiki byłoby o wiele bardziej skomplikowane.
+Informacje dostarczone wraz z kafelkami mają istotny wpływ na działanie algorytmu. Położenie kafelków informuje algorytm, który kafelek należy dopasowywać z którym (sekcja \ref{sec:proponowane_algorytmy:filtrowanie}), a szacowany obszar nałożenia określa obszar ekstrahowania cech (sekcja \ref{sec:proponowane_algorytmy:sift}). Bez tych informacji stworzenie mozaiki byłoby o wiele bardziej skomplikowane.
 
 \section{Rejestracja kafelków z wykorzystaniem cech}
 \label{sec:proponowane_algorytmy:cechy}
 
-Idea ekstrakcji cech w celu rejestracji obrazów została opisana w sekcji \ref{sec:algorytmy_korejestracji:korejestracja_na_podstawie_cech} i jest to pierwszy krok w tworzeniu mozaiki. W niniejszej sekcji najpierw zostanie wyjaśniony wybrany algorytm do ekstrakcji cech oraz sposób jego użycia w programie (sekcja \ref{sec:proponowane_algorytmy:sift}). Następnie przedstawiony zostanie proces dopasowania wyekstrahowanych cech do siebie (sekcja \ref{sec:proponowane_algorytmy:dopasowanie}), a na koniec tej sekcji wyjaśnione zostanie filtrowanie znalezionych dopasowań (sekcja \ref{sec:proponowane_algorytmy:filtrowanie}).
+Ekstrakcja cech jest pierwszym krokiem tworzenia mozaiki. W niniejszej sekcji najpierw jest wyjaśniony wybrany algorytm do ekstrakcji cech oraz sposób jego użycia w programie (sekcja \ref{sec:proponowane_algorytmy:sift}). Następnie przedstawiony jest proces dopasowania wyekstrahowanych cech do siebie (sekcja \ref{sec:proponowane_algorytmy:dopasowanie}), a na koniec tej sekcji wyjaśnione jest filtrowanie znalezionych dopasowań (sekcja \ref{sec:proponowane_algorytmy:filtrowanie}).
 
 \subsection{Algorytm SIFT}
 \label{sec:proponowane_algorytmy:sift}
 
-\textbf{SIFT} (ang. \textit{scale-invariant feature transform}) to algorytm służący do wykrycia i opisania cech w obrazie. Został opublikowany przez David Lowe w 1999 roku \cite{Lowe:2004:DIF:993451.996342}. Dzięki umiejętności wyekstrahowania cech, które są niewrażliwe na rotacje, skalowanie, lokalizacje i przekształcenie afiniczne obrazu jest stosowany w wielu aplikacjach (np. lokalizacja robota \cite{conf/icra/2001}, czy rozpoznawanie zachowań człowieka \cite{Laptev:2007:LVM:1314710.1314906}).
+\textbf{SIFT} (ang. \textit{scale-invariant feature transform}) to algorytm służący do wykrycia i opisania cech w obrazie. Metodę opublikowano w 1999 roku przez David Lowe \cite{Lowe:2004:DIF:993451.996342}. Dzięki umiejętności wyekstrahowania cech, które są niewrażliwe na rotacje, skalowanie, lokalizacje i przekształcenie afiniczne obrazu SIFT jest stosowany w wielu aplikacjach (np. lokalizacja robota \cite{conf/icra/2001}, czy rozpoznawanie zachowań człowieka \cite{Laptev:2007:LVM:1314710.1314906}).
 
-Działanie algorytmu można podzielić na 6 kroków, które są opisane w kolejności wykonania poniżej.
+Działanie algorytmu można podzielić na 6 kroków:
 
 \subsubsection{1. Reprezentacja obszaru za pomocą przestrzeni \textit{scale-space}}
 \label{sec:proponowane_algorytmy:scale_space}
 
-Algorytm rozpoczyna swoją pracę tworząc przestrzeń \textit{scale-space} obszaru obrazu, w którym ma wyekstrahować cechy. \textit{Scale-space} generuje się poprzez kilkakrotne użycie filtru Gaussa z różną siłą na docelowym obszarze. Następnie oryginalny obraz próbkujemy zmniejszając jego wielkość dwukrotnie i powtarzamy proces użycia filtru Gaussa. Obrazy o tej samej wielkości tworzą oktawę. Na rysunku \ref{fig:proponowane_algorytmy:scale_space_fig} pokazana jest przestrzeń \textit{scale-space} dla przykładowego obrazu.
+Algorytm rozpoczyna swoją pracę tworząc przestrzeń \textit{scale-space} obszaru obrazu służący do ekstrakcji cech. \textit{Scale-space} generuje się poprzez kilkakrotne użycie filtru Gaussa z różną siłą na docelowym obszarze. Następnie oryginalny obraz próbkujemy zmniejszając jego wielkość dwukrotnie i powtarzamy proces użycia filtru Gaussa. Obrazy o tej samej wielkości tworzą oktawę. Na rysunku \ref{fig:proponowane_algorytmy:scale_space_fig} pokazana jest przestrzeń \textit{scale-space} dla przykładowego obrazu.
 
 \begin{figure}[H]
   \centering
@@ -89,7 +89,7 @@ Autor algorytmu SIFT zalecana użycie czterech oktaw i pięciu poziomów siły f
 \subsubsection{2. Obliczenie \textit{difference of Gaussians}}
 \label{sec:proponowane_algorytmy:difference}
 
-Charakterystycznymi punktami obrazu są krawędzie i rogi. Są to miejsca, które najlepiej nadają się na znalezienie cech. Operacja \textit{laplacian of Gaussian, LoG} świetnie sobie radzi w wykrywaniu krawędzi i rogów w obrazie. Polega ona na wyeliminowaniu szumu poprzez zaaplikowanie filtru Gaussa, a następnie obliczenie drugiej pochodnej. Na rysunku \ref{fig:proponowane_algorytmy:gauss} przedstawione jest działanie LoG na jednowymiarowym fragmencie obrazu.
+Charakterystycznymi punktami obrazu są krawędzie i rogi. Są to miejsca najlepiej nadające się na znalezienie cech. Operacja \textit{laplacian of Gaussian, LoG} świetnie sobie radzi w wykrywaniu krawędzi i rogów w obrazie. Polega ona na wyeliminowaniu szumu poprzez zaaplikowanie filtru Gaussa, a następnie obliczenie drugiej pochodnej. Na rysunku \ref{fig:proponowane_algorytmy:gauss} przedstawione jest działanie LoG na jednowymiarowym fragmencie obrazu.
 
 \begin{figure}[H]
   \centering
@@ -98,12 +98,12 @@ Charakterystycznymi punktami obrazu są krawędzie i rogi. Są to miejsca, któr
   \label{fig:proponowane_algorytmy:gauss}
 \end{figure}
 
-Obliczenie drugiej pochodnej całego obrazu jest natomiast kosztownym procesem. SIFT implementuje operację \textit{difference of Gaussians, DoG}, która w przybliżeniu jest równa LoG, ale jest o wiele szybsza. DoG polega na odjęciu dwóch kolejnych obrazów z tej samej oktawy. Rysunek \ref{fig:proponowane_algorytmy:dog} przedstawia operację DoG. DoG jest obliczane dla każdej pary w każdej oktawie.
+Obliczenie drugiej pochodnej całego obrazu jest natomiast kosztownym procesem. SIFT implementuje operację \textit{difference of Gaussians, DoG} dającą niemal identyczny wynik do LoG, ale jest o wiele szybsza. DoG polega na odjęciu dwóch kolejnych obrazów z tej samej oktawy. Rysunek \ref{fig:proponowane_algorytmy:dog} przedstawia operację DoG. DoG jest obliczane dla każdej pary w każdej oktawie.
 
 \begin{figure}[htb]
   \centering
   \includegraphics[width=10cm]{gfx/dog}
-  \caption{\cite{Lowe:2004:DIF:993451.996342} Poprzez proces odjęcia kolejnych zdjęć z jednej oktawy otrzymujemy obrazy DoG, które doskonale odzwierciedlają LoG.}
+  \caption{\cite{Lowe:2004:DIF:993451.996342} Poprzez proces odjęcia kolejnych zdjęć z jednej oktawy otrzymujemy obrazy DoG doskonale odzwierciedlający LoG.}
   \label{fig:proponowane_algorytmy:dog}
 \end{figure}
 
@@ -148,24 +148,26 @@ m(x, y) = \sqrt{(L(x + 1, y) - L(x - 1, y))^2 + (L(x, y + 1) - L(x, y - 1))^2} \
 \label{eq:orientation}
 \end{equation}
 
-Następnie na podstawie wartości orientacji tworzony jest histogram, który posiada 36 przedziałów przez co pokrywa zakres orientacji od 0 do 360 stopni. Każdy piksel dodany do histogramu jest ważony poprzez użycie jego wartości gradientu i wartości okrągłego okna filtra Gaussa (piksele znajdujące się dalej od cechy mają mniejszą ważność niż te znajdujące się bliżej). Orientacja odpowiadająca najwyższej wartości w histogramie jest wybrana jako orientacja cechy. Dodatkowo każda orientacja, która posiada wartość większą niż 80\% maksymalnej wartości w histogramie jest zapisywana jako nowa cecha obrazu.
+Następnie na podstawie wartości orientacji tworzony jest histogram posiadający 36 przedziałów przez co pokrywa zakres orientacji od 0 do 360 stopni. Każdy piksel dodany do histogramu jest ważony poprzez użycie jego wartości gradientu i wartości okrągłego okna filtra Gaussa (piksele znajdujące się dalej od cechy mają mniejszą ważność niż te znajdujące się bliżej). Orientacja odpowiadająca najwyższej wartości w histogramie jest wybrana jako orientacja cechy. Dodatkowo każda orientacja posiadająca wartość większą niż 80\% maksymalnej wartości w histogramie jest zapisywana jako nowa cecha obrazu.
 
 \subsubsection{6. Generacja deskryptorów cech}
 \label{sec:proponowane_algorytmy:deskryptor}
 
-Deskryptor cechy musi ją charakterystycznie określać i być łatwy do obliczenia. SIFT przedstawia cechę jako 128 elementowy wektor, który został stworzony poprzez wykonanie następujących kroków:
+Deskryptor cechy musi ją charakterystycznie określać i być łatwy do obliczenia. SIFT przedstawia cechę jako 128 elementowy wektor powstały poprzez wykonanie następujących kroków:
 
 \begin{enumerate}
 \item Tworzone jest otoczenie 16 na 16 pikseli wokół cechy.
 \item Dla każdego piksela w otoczeniu cechy jest liczona wartość gradientu oraz orientacja zgodnie ze wzorami \ref{eq:magnitude} i \ref{eq:orientation}. Każdą orientację piksela w otoczeniu odejmujemy od orientacji cechy obliczonej w poprzednim punkcie, przez co algorytm SIFT jest niezależny od rotacji obrazu.
 \item Wartości gradientu oraz orientacji są ważone przez okrągłe okno filtru Gaussa i są następnie gromadzone poprzez utworzenie histogramu orientacji, który określa informacje w regionach 4 na 4 piksele. Rysunek \ref{fig:proponowane_algorytmy:descriptor} przedstawia proces kumulacji wartości gradientu oraz orientacji poprzez wykorzystanie histogramu.
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{gfx/descriptor}
-  \caption{\cite{Lowe:2004:DIF:993451.996342} \textbf{Lewy obraz:} Wartości orientacji oraz gradientu z uwzględnieniem okrągłego okna filtru Gaussa. \textbf{Prawy obraz:} Wartości z obszarów 4 na 4 piksele są gromadzone w histogramie, który posiada 8 przedziałów. Wartości orientacji z lewego obrazu, które wchodzą do jednego przedziału histogramu są sumowane (np. piksel z orientacją 12 stopni wchodzi do przedziału 0 - 44 stopni histogramu i jego wartość jest dodawana z każdą orientacją 0 - 44 stopni).}
+  \caption{\cite{Lowe:2004:DIF:993451.996342} \textbf{Lewy obraz:} Wartości orientacji oraz gradientu z uwzględnieniem okrągłego okna filtru Gaussa. \textbf{Prawy obraz:} Wartości z obszarów 4 na 4 piksele są gromadzone w histogramie, który posiada 8 przedziałów. Wartości orientacji z lewego obrazu mieszczące się w jednym przedziale histogramu są sumowane (np. piksel z orientacją 12 stopni wchodzi do przedziału 0 - 44 stopni histogramu i jego wartość jest dodawana z każdą orientacją 0 - 44 stopni).}
   \label{fig:proponowane_algorytmy:descriptor}
 \end{figure}
-\item Prawy obraz z rysunku \ref{fig:proponowane_algorytmy:descriptor} przedstawia deskryptor z obszaru 8 na 8 pikseli, który posiada 32 elementy (4 obszary, każdy posiada 8 orientacji). Autor algorytmu SIFT podaje, że najlepsze rezultaty można uzyskać poprzez policzenie deskryptora z obszaru 16 na 16 pikseli wokół cechy, wtedy deskryptor posiada 128 elementów (16 obszarów, każdy posiada 8 orientacji).
+
+\item Prawy obraz z rysunku \ref{fig:proponowane_algorytmy:descriptor} przedstawia deskryptor z obszaru 8 na 8 pikseli posiadający 32 elementy (4 obszary, każdy posiada 8 orientacji). Autor algorytmu SIFT podaje, że najlepsze rezultaty można uzyskać poprzez policzenie deskryptora z obszaru 16 na 16 pikseli wokół cechy, wtedy deskryptor posiada 128 elementów (16 obszarów, każdy posiada 8 orientacji).
 \item Na koniec 128 elementowy wektor jest normalizowany.
 \end{enumerate}
 
@@ -179,7 +181,7 @@ SIFT featuresFinder = SIFT::SIFT(...);
 featuresFinder(...);
 \end{verbatim}
 
-Konstruktor \texttt{SIFT::SIFT(...)} tworzy nam obiekt \texttt{SIFT}, który posiada funkcjonalność algorytmu SIFT. Do konstruktora \texttt{SIFT::SIFT(...)} podajemy parametry algorytmu tj. ilość najlepszych cech do zwrócenia, ilość oktaw do wykorzystania, progi do filtrowania wykrytych cech (sekcja \ref{sec:proponowane_algorytmy:filtracja_cech}) oraz siłę filtru Gaussa. Operator \texttt{featuresFinder(...)} przyjmuje obraz w którym mają zostać znalezione cechy i zwraca miejsca wystąpienia tych cech oraz ich deskryptory. Więcej informacji na temat obiektu \texttt{SIFT} znajduje się w oficjalnej dokumentacji OpenCV\footnote{\url{http://docs.opencv.org/modules/nonfree/doc/feature_detection.html}}.
+Konstruktor \texttt{SIFT::SIFT(...)} tworzy nam obiekt \texttt{SIFT} posiadający funkcjonalność algorytmu SIFT. Do konstruktora \texttt{SIFT::SIFT(...)} podajemy parametry algorytmu tj. ilość najlepszych cech do zwrócenia, ilość oktaw do wykorzystania, progi do filtrowania wykrytych cech (sekcja \ref{sec:proponowane_algorytmy:filtracja_cech}) oraz siłę filtru Gaussa. Operator \texttt{featuresFinder(...)} przyjmuje obraz w którym mają być znalezione cechy i zwraca miejsca wystąpienia tych cech oraz ich deskryptory. Więcej informacji na temat obiektu \texttt{SIFT} znajduje się w oficjalnej dokumentacji OpenCV\footnote{\url{http://docs.opencv.org/modules/nonfree/doc/feature_detection.html}}.
 
 \subsection{Dopasowanie wyekstrahowanych cech}
 \label{sec:proponowane_algorytmy:dopasowanie}
@@ -191,7 +193,7 @@ BFMatcher bruteForceMatcher;
 bruteForceMatcher.match(...);
 \end{verbatim}
 
-Obiekt \texttt{BFMatcher} posiada funkcjonalność, która pozwala na dopasowanie każdego deskryptora z jednego zbioru do każdego deskryptora z drugiego zbioru. Funkcja \texttt{match(...)} przyjmuje deskryptory z dwóch zbiorów i zwraca dopasowania. Więcej informacji na temat obiektu \texttt{BFMatcher} znajduje się w oficjalnej dokumentacji OpenCV\footnote{\url{http://docs.opencv.org/modules/features2d/doc/common_interfaces_of_descriptor_matchers.html}}.
+Obiekt \texttt{BFMatcher} posiada funkcjonalność pozwalającą na dopasowanie każdego deskryptora z jednego zbioru do każdego deskryptora z drugiego zbioru. Funkcja \texttt{match(...)} przyjmuje deskryptory z dwóch zbiorów i zwraca dopasowania. Więcej informacji na temat obiektu \texttt{BFMatcher} znajduje się w oficjalnej dokumentacji OpenCV\footnote{\url{http://docs.opencv.org/modules/features2d/doc/common_interfaces_of_descriptor_matchers.html}}.
 
 \subsection{Filtrowanie dopasowań}
 \label{sec:proponowane_algorytmy:filtrowanie}
@@ -210,7 +212,7 @@ Gołym okiem można zauważyć na podstawie rysunku \ref{fig:proponowane_algoryt
 \subsubsection{Filtrowanie na podstawie położenia}
 \label{sec:proponowane_algorytmy:placement_filtering}
 
-Pierwsza technika filtrowania polega na usunięciu dopasowań, które doprowadziłyby do przesunięcia się kafelka poza określoną normę. Ta norma jest określona poprzez dwa parametry $shiftParameter$ i $percentOverlap$, które ustawia się w pliku konfiguracyjnym. W zależności od sposobu ułożenia kafelków, dopasowanie przejdzie ten filtr jeżeli spełnia dwa warunki:
+Pierwsza technika filtrowania polega na usunięciu dopasowań doprowadzających do przesunięcia się kafelka poza określoną normę. Ta norma jest określona poprzez dwa parametry $shiftParameter$ i $percentOverlap$, które ustawia się w pliku konfiguracyjnym. W zależności od sposobu ułożenia kafelków, dopasowanie przejdzie ten filtr jeżeli spełnia dwa warunki:
 
 \begin{enumerate}
 \item Dopasowane cechy nie będą się znajdować zbyt daleko od siebie w osi poziomej (w przypadku ułożenia kafelków w pionie) lub osi pionowej (w przypadku ułożenia kafelków w poziomie). Ten warunek określają wzory -- \ref{eq:vertical} dla przypadku ułożenia kafelków w pionie, \ref{eq:horizontal} dla przypadku ułożenia kafelków w poziomie:
@@ -222,7 +224,7 @@ Pierwsza technika filtrowania polega na usunięciu dopasowań, które doprowadzi
 \left|f_{1y} - f_{2y}\right| < imageSize * shiftParameter
 \label{eq:horizontal}
 \end{equation}
-Gdzie $f_{1x}$ i $f_{2x}$ to współrzędne $x$ dopasowanych cech z dwóch obrazów (dla $f_{1y}$ i $f_{2y}$ są to współrzędne $y$), a $imageSize$ to rozmiar angiograficznego obrazu OCT, który w przypadku naszej pracy ma 240 pikseli.
+Gdzie $f_{1x}$ i $f_{2x}$ to współrzędne $x$ dopasowanych cech z dwóch obrazów (dla $f_{1y}$ i $f_{2y}$ są to współrzędne $y$), a $imageSize$ to rozmiar angiograficznego obrazu OCT (w przypadku niniejszej pracy ma 240 pikseli).
 \item Dopasowane cechy nie będą znajdować się zbyt daleko od siebie. Ten warunek określa wzór:
 \begin{equation}
 length < imageSize * percentOverlap * 2.5
@@ -239,33 +241,33 @@ length = \sqrt{(f_{1x} - f_{2x})^2 + (f_{1y} - (f_{2y} + imageSize))^2}
 \end{equation}
 \end{enumerate}
 
-Rysunek \ref{fig:proponowane_algorytmy:after_placement} przedstawia wynik filtrowania na tych samych dwóch obrazach angiograficznych, które były użyte jako przykład w rysunku \ref{fig:proponowane_algorytmy:no_filtering}.
+Rysunek \ref{fig:proponowane_algorytmy:after_placement} przedstawia wynik filtracji na tych samych dwóch obrazach angiograficznych użytych jako przykład w rysunku \ref{fig:proponowane_algorytmy:no_filtering}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{gfx/after_placement}
-  \caption{\textbf{Lewy obraz:} Dopasowania wyznaczone po zastosowaniu \textit{Brute Force Matching}. \textbf{Prawy obraz:} Dopasowania, które pozostały po filtrowaniu na podstawie położenia.}
+  \caption{\textbf{Lewy obraz:} Dopasowania wyznaczone po zastosowaniu \textit{Brute Force Matching}. \textbf{Prawy obraz:} Dopasowania pozostałe po filtrowaniu na podstawie położenia.}
   \label{fig:proponowane_algorytmy:after_placement}
 \end{figure}
 
 \subsubsection{Usuwanie nadmiarowych dopasowań przypisanych do jednej cechy}
 \label{sec:proponowane_algorytmy:no_repetition_filtering}
 
-Czasem występuje sytuacja, w której jedna cecha z jednego kafelka została dopasowana do paru cech z drugiego kafelka. Na podstawie wiedzy dziedzinowej wiemy, że jest to sytuacja niepożądana i cecha może być dopasowana tylko i wyłącznie do jednej cechy. Niniejszy etap filtrowania polega na iteracji po wszystkich cechach, które mają dopasowania do więcej niż jednej cechy i na pozostawieniu tylko tej cechy, która jest najbardziej podobna (na podstawie wartości deskryptoru cechy). Ten etap filtrowania jest wykonywany dwukrotnie -- pierwszy raz dla cech z pierwszego kafelka i drugi raz dla cech z drugiego kafelka. Rysunek \ref{fig:proponowane_algorytmy:no_repetition_filtering} przedstawia wynik filtrowania poprzez eliminację nadmiarowych dopasowań na dopasowaniach, które były wynikiem poprzedniego (rysunek \ref{fig:proponowane_algorytmy:after_placement}).
+Czasem występuje sytuacja, w której jedną cechę z jednego kafelka dopasowano do kilku cech z drugiego kafelka. Na podstawie wiedzy dziedzinowej wiemy, że jest to sytuacja niepożądana i cecha może być dopasowana tylko i wyłącznie do jednej cechy. Niniejszy etap filtracji polega na iteracji po wszystkich cechach posiadających dopasowania do więcej niż jednej cechy i na pozostawieniu tylko najbardziej podobnej cechy (na podstawie wartości deskryptoru cechy). Ten etap filtrowania jest wykonywany dwukrotnie -- pierwszy raz dla cech z pierwszego kafelka i drugi raz dla cech z drugiego kafelka. Rysunek \ref{fig:proponowane_algorytmy:no_repetition_filtering} przedstawia wynik filtracji poprzez eliminację nadmiarowych dopasowań na dopasowaniach będących wynikiem filtracji poprzedniej (rysunek \ref{fig:proponowane_algorytmy:after_placement}).
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{gfx/no_repetition_filtering}
-  \caption{\textbf{Lewy obraz:} Dopasowania wyznaczone po zastosowaniu filtrowania na podstawie położenia. \textbf{Prawy obraz:} Dopasowania, które pozostały po eliminacji nadmiarowych dopasowań.}
+  \caption{\textbf{Lewy obraz:} Dopasowania wyznaczone po zastosowaniu filtrowania na podstawie położenia. \textbf{Prawy obraz:} Dopasowania pozostałe po eliminacji nadmiarowych dopasowań.}
   \label{fig:proponowane_algorytmy:no_repetition_filtering}
 \end{figure}
 
 \subsubsection{RANSAC}
 \label{sec:proponowane_algorytmy:ransac}
 
-Poprzednie dwa kroki filtrowania dopasowań wyeliminowały znaczącą część dopasowań wykrytych na początku. Niestety nadal można zauważyć (prawy obraz na rysunku \ref{fig:proponowane_algorytmy:no_repetition_filtering}), że niektóre dopasowania są nieprawidłowe. Algorytm RANSAC (ang. \textit{random sample consensus, RANSAC}) pierwszy raz opublikowany w roku 1981 przez Fischler i Bolles \cite{Fischler:1981:RSC:358669.358692} został zaimplementowany by wyeliminować próbki, które tworzą szum w znalezieniu poprawnego modelu. W niniejszej pracy próbkami są dopasowania cech, a modelem jest poprawna macierz transformacji pomiędzy kafelkami.
+Poprzednie dwa kroki filtrowania dopasowań wyeliminowały znaczącą część dopasowań wykrytych na początku. Niestety nadal można zauważyć (prawy obraz na rysunku \ref{fig:proponowane_algorytmy:no_repetition_filtering}), że niektóre dopasowania są nieprawidłowe. Algorytm RANSAC (ang. \textit{random sample consensus, RANSAC}) pierwszy raz opublikowany w roku 1981 przez Fischler i Bolles \cite{Fischler:1981:RSC:358669.358692} zaimplementowano by wyeliminować próbki tworzące szum w znalezieniu poprawnego modelu. W niniejszej pracy próbkami są dopasowania cech, a modelem jest poprawna macierz transformacji pomiędzy kafelkami.
 
-Działanie algorytmu RANSAC składa się z dwóch kroków, które są powtarzane w sposób iteracyjny:
+Działanie algorytmu RANSAC składa się z dwóch kroków powtarzanych w sposób iteracyjny:
 
 \begin{enumerate}
 \item W pierwszym kroku algorytm losowo wybiera podzbiór próbek. Następnie używając tylko próbek z tego podzbioru oblicza pasujący model.
@@ -277,11 +279,11 @@ Algorytm RANSAC będzie powtarzał powyższe dwa kroki dopóki nie znajdzie w kr
 \begin{figure}[H]
   \centering
   \includegraphics[width=8cm]{gfx/ransac}
-  \caption{\textbf{Lewy obraz:} Zbiór danych, w których wiele punktów jest szumem. \textbf{Prawy obraz:} Funkcja prostej (niebieska linia) obliczona przez algorytm RANSAC. Punkty, które są szumem (czerwone kropki) nie mają wpływu na model, czyli funkcję prostej.}
+  \caption{\textbf{Lewy obraz:} Zbiór danych, w którym wiele punktów jest szumem. \textbf{Prawy obraz:} Funkcja prostej (niebieska linia) obliczona przez algorytm RANSAC. Punkty, które są szumem (czerwone kropki) nie mają wpływu na model, czyli funkcję prostej.}
   \label{fig:proponowane_algorytmy:ransac}
 \end{figure}
 
-Biblioteka OpenCV implementuje algorytm RANSAC w sposób niejawny wewnątrz funkcji \texttt{findHomography(...)}, której celem jest znalezienie afinicznej transformacji pomiędzy dwoma zbiorami punktów. Dodatkowo funkcja \texttt{findHomography(...)} implementuje krok w którym pozbywa się szumu ze swoich danych wejściowych. Ten krok może być wykonany za pomocą metody RANSAC lub LMedS (ang. \textit{least-median of squares, LMedS}). Żeby otrzymać wynik algorytmu RANSAC na dopasowaniach pomiędzy punktami \texttt{featuresSource} z pierwszego kafelka i \texttt{featuresTarget} z drugiego kafelka należy do funkcji \texttt{findHomography(...)} przekazać opcjonalny wektor \texttt{mask}, w którym będzie zapisany wynik algorytmu RANSAC. Wywołanie funkcji wygląda następująco:
+Biblioteka OpenCV implementuje algorytm RANSAC w sposób niejawny wewnątrz funkcji \texttt{findHomography(...)}, której celem jest znalezienie afinicznej transformacji pomiędzy dwoma zbiorami punktów. Dodatkowo funkcja \texttt{findHomography(...)} implementuje krok pozbywający się szumu ze swoich danych wejściowych. Ten krok może być wykonany za pomocą metody RANSAC lub LMedS (ang. \textit{least-median of squares, LMedS}). Żeby otrzymać wynik algorytmu RANSAC na dopasowaniach pomiędzy punktami \texttt{featuresSource} z pierwszego kafelka i \texttt{featuresTarget} z drugiego kafelka należy do funkcji \texttt{findHomography(...)} przekazać opcjonalny wektor \texttt{mask}, w którym będzie zapisany wynik algorytmu RANSAC. Wywołanie funkcji wygląda następująco:
 
 \begin{verbatim}
 findHomography(featuresSource, featuresTarget, CV_RANSAC, 3, mask)
@@ -289,7 +291,7 @@ findHomography(featuresSource, featuresTarget, CV_RANSAC, 3, mask)
 
 Wartość \texttt{CV\_RANSAC} powoduje użycie algorytmu RANSAC zamiast LMedS. Jeżeli element o indeksie $i$ wektora \texttt{mask} posiada wartość, która jest równa $0$ to cechy o indeksie $i$ wektorów \texttt{featuresSource} i \texttt{featuresTarget} są szumem.
 
-Rysunek \ref{fig:proponowane_algorytmy:ransac_filter} przedstawia wynik algorytmu RANSAC na dopasowaniach, które były wynikiem poprzedniego filtrowania (rysunek \ref{fig:proponowane_algorytmy:no_repetition_filtering}).
+Rysunek \ref{fig:proponowane_algorytmy:ransac_filter} przedstawia wynik algorytmu RANSAC na dopasowaniach będących wynikiem poprzedniego procesu filtracji (rysunek \ref{fig:proponowane_algorytmy:no_repetition_filtering}).
 
 \begin{figure}[H]
   \centering
@@ -313,19 +315,95 @@ medianAngle + angleParameter > angle > medianAngle - angleParameter
 \end{equation}
 \end{enumerate}
 
-Filtr ma na celu pozostawić dopasowania, których nachylenie jest podobne. Rysunek \ref{fig:proponowane_algorytmy:slope} przedstawia wynik filtrowania na podstawie nachylenia dopasowań, które były wynikiem poprzedniego filtrowania (rysunek \ref{fig:proponowane_algorytmy:ransac_filter}).
+Filtr ma na celu pozostawić dopasowania z podobnym nachyleniem. Rysunek \ref{fig:proponowane_algorytmy:slope} przedstawia wynik filtrowania na podstawie nachylenia dopasowań będących wynikiem poprzedniego procesu filtracji (rysunek \ref{fig:proponowane_algorytmy:ransac_filter}).
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{gfx/slope}
-  \caption{\textbf{Lewy obraz:} Dopasowania pozostałe po użyciu algorytmu RANSAC. \textbf{Prawy obraz:} Dopasowania, które posiadają podobny kąt nachylenia.}
+  \caption{\textbf{Lewy obraz:} Dopasowania pozostałe po użyciu algorytmu RANSAC. \textbf{Prawy obraz:} Dopasowania posiadające podobny kąt nachylenia.}
   \label{fig:proponowane_algorytmy:slope}
 \end{figure}
 
-Wynik ostatniego filtru przedstawiony na prawym obrazie na rysunku \ref{fig:proponowane_algorytmy:slope} pozostawia dopasowania, które są poprawne i mogą być użyte do estymacji macierzy transformacji (sekcja \ref{sec:proponowane_algorytmy:estymacja}).
+Wynik ostatniego filtru przedstawiony na prawym obrazie na rysunku \ref{fig:proponowane_algorytmy:slope} pozostawia poprawne dopasowania, które mogą być użyte do estymacji macierzy transformacji (sekcja \ref{sec:proponowane_algorytmy:estymacja}).
 
 \section{Rejestracja kafelków poprzez wykrycie położeń naczyń krwionośnych w kafelkach}
 \label{sec:proponowane_algorytmy:depth_first_search}
+
+Technika rejestracji kafelków za pomocą cech opisana w sekcji \ref{sec:proponowane_algorytmy:cechy} jest jedną z dwóch metod rejestracji zaimplementowanych w programie. Niniejszy rozdział przedstawia drugą metodę, której celem jest wykrycie miejsc występowania naczyń krwionośnych na krawędziach obrazu kafelka. Wynik tej metody jest przedstawiony na rysunku \ref{fig:proponowane_algorytmy:paths_detected}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=10cm]{gfx/paths_detected}
+  \caption{\textbf{Lewy obraz:} Przykładowy angiograficzny obraz OCT. \textbf{Prawy obraz:} Wykryte naczynia krwionośne na krawędziach obrazu (zaznaczone czerwonymi prostokątami).}
+  \label{fig:proponowane_algorytmy:paths_detected}
+\end{figure}
+
+W sekcji \ref{sec:proponowane_algorytmy:zasada_dzialania} opisano zasadę działania algorytmu.
+
+\subsection{Zasada działania}
+\label{sec:proponowane_algorytmy:zasada_dzialania}
+
+Działanie algorytmu można podzielić na dwa etapy:
+
+\subsubsection{1. Tworzenie szkieletu obrazu angiograficznego}
+
+Szkieletem obiektu nazywamy kształt znajdujący się wewnątrz tego obiektu, którego krawędzie są równo oddalone od krawędzi obiektu. Przykład szkieletu znajduje się na rysunku \ref{fig:proponowane_algorytmy:skel}\footnote{\url{https://en.wikipedia.org/wiki/Topological_skeleton}}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=2cm]{gfx/skel}
+  \caption{Szkielet (zaznaczony białą linią) litery B.}
+  \label{fig:proponowane_algorytmy:skel}
+\end{figure}
+
+Szkielet naczynia krwionośnego idealnie oddaje jego pozycje poprzez wyznaczenie jego środka. Proces tworzenia szkieletu obrazu angiograficznego zaczyna się od wstępnego przetwarzania składającego się z dwóch etapów:
+
+\begin{enumerate}
+\item Binaryzacji obrazu.
+\item Zastosowania operacji morfologicznych na obrazie (zamknięcie, a następnie otwarcie).
+\end{enumerate}
+
+Rezultat wstępnego przetwarzania obrazu jest przedstawiony na rysunku \ref{fig:proponowane_algorytmy:preprocess}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=9cm]{gfx/preprocess}
+  \caption{\textbf{Lewy obraz:} Przykładowy angiograficzny obraz OCT. \textbf{Środkowy obraz:} Wynik binaryzacji obrazu z progiem o wartości 180. \textbf{Prawy obraz:} Wynik operacji morfologicznych z elementem strukturalnym 3 na 3 piksele dla zamknięcia i 5 na 5 pikseli dla otwarcia.}
+  \label{fig:proponowane_algorytmy:preprocess}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{gfx/skeleton}
+  \caption{Rysunek przedstawia przykładowy proces tworzenia szkieletu. Obraz w lewym górnym rogu jest obrazem wejściowym i jest wynikiem wstępnego przetwarzania. Algorytm potrzebował w tym przypadku 7 iteracji by stworzyć szkielet (iteracje są zaznaczone numerami z lewej strony). W każdej iteracji proces zaczyna się od otwarcia, a następnie negacji obrazu wejściowego (obraz w 1 kolumnie). Wynik poprzedniej operacji wraz z obrazem wejściowym jest poddany operatorowi logicznemu \textit{and}, którego wynik jest zapisany w obrazie tymczasowym (obraz w 4 kolumnie). Szkielet powstaje poprzez zastosowanie operatora logicznego \textit{or} na szkielecie z poprzedniej iteracji i obrazie tymczasowym z aktualnej iteracji. Po każdej iteracji obraz wejściowy jest poddawany erozji. Algorytm kończy działanie, jeżeli obraz wejściowy po operacji erozji będzie posiadał wszystkie piksele o wartości 0. Obraz w prawym dolnym rogu jest wynikiem algorytmu oraz finalnym szkieletem.}
+  \label{fig:proponowane_algorytmy:skeleton}
+\end{figure}
+
+Kolejnym krokiem jest proces stworzenia szkieletu na obrazie wynikowym powstałym po wstępnym przetwarzaniu. Proces składa się z 6 etapów, które wykonywane są pętli do momentu stworzenia szkieletu. Technika jest zobrazowana oraz wyjaśniona na rysunku \ref{fig:proponowane_algorytmy:skeleton}.
+
+\subsubsection{2. Eksploracja szkieletu za pomocą \textit{depth first search}}
+
+Szkielet obrazu angiograficznego OCT jest następnie wykorzystany do wykrycia położeń naczyń krwionośnych. Proces rozpoczyna się od ustalenia położeń białych pikseli na krawędziach szkieletu (są to potencjalne miejsca, w których może zacząć się naczynie krwionośne). Następnie algorytm rozpoczyna eksploracje podążając białymi pikselami szkieletu z wykorzystaniem techniki \textit{depth first serach}\footnote{\url{https://en.wikipedia.org/wiki/Depth-first_search}}, dzięki czemu eksploracja wzdłuż naczynia krwionośnego przebiega szybciej. Algorytm wykrywa naczynie krwionośne jeżeli dojdzie do piksela $pixel$ spełniającego warunki w zależności od początku drogi eksploracji -- \ref{eq:up_or_down} dla początku w górnej lub dolnej krawędzi obrazu, \ref{eq:left_or_right} dla początku w lewej lub prawej krawędzi obrazu.
+
+\begin{equation}
+distance > imageSize * 0.5 \wedge \left|pixel.y - startPixel.y\right| > 0.1 * imageSize
+\label{eq:up_or_down}
+\end{equation}
+\begin{equation}
+distance > imageSize * 0.5 \wedge \left|pixel.x - startPixel.x\right| > 0.1 * imageSize
+\label{eq:left_or_right}
+\end{equation}
+
+Gdzie $imageSize$ to rozmiar obrazu (w przypadku niniejszej pracy jest to 240 pikseli), $startPixel$ to piksel od którego rozpoczęła się eksploracja, a $distance$ to odległość euklidesowa pomiędzy $pixel$, a $startPixel$. Współrzędne $pixel.x$, $pixel.y$, $startPixel.x$ i $startPixel.y$ są wyrażone w układzie współrzędnych z początkiem w lewym górnym rogu obrazu.
+
+Rysunek \ref{fig:proponowane_algorytmy:path_explor} przedstawia przykładową eksplorację szkieletu.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=9cm]{gfx/path_explor}
+  \caption{Odkrywanie naczyń krwionośnych w różnych momentach działania algorytmu w zależności od początku eksploracji. Każdy rząd reprezentuje inne naczynie krwionośne. Wynik eksploracji jest przedstawiony w prawym obrazie na rysunku \ref{fig:proponowane_algorytmy:paths_detected}.}
+  \label{fig:proponowane_algorytmy:path_explor}
+\end{figure}
 
 \section{Estymacja macierzy transformacji pomiędzy kafelkami}
 \label{sec:proponowane_algorytmy:estymacja}
