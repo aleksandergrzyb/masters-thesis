@@ -329,11 +329,11 @@ Wynik ostatniego filtru przedstawiony na prawym obrazie na rysunku \ref{fig:prop
 \section{Rejestracja kafelków poprzez wykrycie położeń naczyń krwionośnych w kafelkach}
 \label{sec:proponowane_algorytmy:depth_first_search}
 
-Technika rejestracji kafelków za pomocą cech opisana w sekcji \ref{sec:proponowane_algorytmy:cechy} jest jedną z dwóch metod rejestracji zaimplementowanych w programie. Niniejszy rozdział przedstawia drugą metodę, której celem jest wykrycie miejsc występowania naczyń krwionośnych na krawędziach obrazu kafelka. Wynik tej metody jest przedstawiony na rysunku \ref{fig:proponowane_algorytmy:paths_detected}.
+Technika rejestracji kafelków za pomocą cech opisana w sekcji \ref{sec:proponowane_algorytmy:cechy} jest jedną z dwóch metod rejestracji zaimplementowanych w programie. Niniejszy rozdział przedstawia drugą metodę, która została zaimplementowana ze względu na pojawienie się zbioru kafelków o niestandardowym rozmiarze tj. 40 na 240 pikseli. Dla takiego zbioru szerokość obszaru nałożenia wynosi 4 piksele co jest zdecydowanie zbyt małą wartością by wykryć cechy. By zarejestrować kafelki w takim rozmiarze należało wziąć pod uwagę obszar całego kafelka, a nie tylko obszar nałożenia. Metoda zaproponowana w niniejszej sekcji ma na celu wykrycie miejsc występowania naczyń krwionośnych na krawędziach obrazu kafelka. Wynik tej metody jest przedstawiony na rysunku \ref{fig:proponowane_algorytmy:paths_detected}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=10cm]{gfx/paths_detected}
+  \includegraphics[width=8cm]{gfx/paths_detected}
   \caption{\textbf{Lewy obraz:} Przykładowy angiograficzny obraz OCT. \textbf{Prawy obraz:} Wykryte naczynia krwionośne na krawędziach obrazu (zaznaczone czerwonymi prostokątami).}
   \label{fig:proponowane_algorytmy:paths_detected}
 \end{figure}
@@ -356,21 +356,12 @@ Szkieletem obiektu nazywamy kształt znajdujący się wewnątrz tego obiektu, kt
   \label{fig:proponowane_algorytmy:skel}
 \end{figure}
 
-Szkielet naczynia krwionośnego idealnie oddaje jego pozycje poprzez wyznaczenie jego środka. Proces tworzenia szkieletu obrazu angiograficznego zaczyna się od wstępnego przetwarzania składającego się z dwóch etapów:
+Szkielet naczynia krwionośnego idealnie oddaje jego pozycje poprzez wyznaczenie jego środka. Proces tworzenia szkieletu obrazu angiograficznego zaczyna się od wstępnego przetwarzania (rysunek \ref{fig:proponowane_algorytmy:preprocess}) składającego się z dwóch etapów:
 
 \begin{enumerate}
 \item Binaryzacji obrazu.
 \item Zastosowania operacji morfologicznych na obrazie (zamknięcie, a następnie otwarcie).
 \end{enumerate}
-
-Rezultat wstępnego przetwarzania obrazu jest przedstawiony na rysunku \ref{fig:proponowane_algorytmy:preprocess}.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=9cm]{gfx/preprocess}
-  \caption{\textbf{Lewy obraz:} Przykładowy angiograficzny obraz OCT. \textbf{Środkowy obraz:} Wynik binaryzacji obrazu z progiem o wartości 180. \textbf{Prawy obraz:} Wynik operacji morfologicznych z elementem strukturalnym 3 na 3 piksele dla zamknięcia i 5 na 5 pikseli dla otwarcia.}
-  \label{fig:proponowane_algorytmy:preprocess}
-\end{figure}
 
 \begin{figure}[H]
   \centering
@@ -379,22 +370,29 @@ Rezultat wstępnego przetwarzania obrazu jest przedstawiony na rysunku \ref{fig:
   \label{fig:proponowane_algorytmy:skeleton}
 \end{figure}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=9cm]{gfx/preprocess}
+  \caption{\textbf{Lewy obraz:} Przykładowy angiograficzny obraz OCT. \textbf{Środkowy obraz:} Wynik binaryzacji obrazu z progiem o wartości 180. \textbf{Prawy obraz:} Wynik operacji morfologicznych z elementem strukturalnym 3 na 3 piksele dla zamknięcia i 5 na 5 pikseli dla otwarcia.}
+  \label{fig:proponowane_algorytmy:preprocess}
+\end{figure}
+
 Kolejnym krokiem jest proces stworzenia szkieletu na obrazie wynikowym powstałym po wstępnym przetwarzaniu. Proces składa się z 6 etapów, które wykonywane są pętli do momentu stworzenia szkieletu. Technika jest zobrazowana oraz wyjaśniona na rysunku \ref{fig:proponowane_algorytmy:skeleton}.
 
 \subsubsection{2. Eksploracja szkieletu za pomocą \textit{depth first search}}
 
-Szkielet obrazu angiograficznego OCT jest następnie wykorzystany do wykrycia położeń naczyń krwionośnych. Proces rozpoczyna się od ustalenia położeń białych pikseli na krawędziach szkieletu (są to potencjalne miejsca, w których może zacząć się naczynie krwionośne). Następnie algorytm rozpoczyna eksploracje podążając białymi pikselami szkieletu z wykorzystaniem techniki \textit{depth first serach}\footnote{\url{https://en.wikipedia.org/wiki/Depth-first_search}}, dzięki czemu eksploracja wzdłuż naczynia krwionośnego przebiega szybciej. Algorytm wykrywa naczynie krwionośne jeżeli dojdzie do piksela $pixel$ spełniającego warunki w zależności od początku drogi eksploracji -- \ref{eq:up_or_down} dla początku w górnej lub dolnej krawędzi obrazu, \ref{eq:left_or_right} dla początku w lewej lub prawej krawędzi obrazu.
+Szkielet obrazu angiograficznego OCT jest następnie wykorzystany do wykrycia położeń naczyń krwionośnych. Proces rozpoczyna się od ustalenia położeń białych pikseli na krawędziach szkieletu (są to potencjalne miejsca, w których może zacząć się naczynie krwionośne). Następnie algorytm rozpoczyna eksploracje podążając białymi pikselami szkieletu z wykorzystaniem techniki \textit{depth first serach}\footnote{\url{https://en.wikipedia.org/wiki/Depth-first_search}}, dzięki czemu eksploracja wzdłuż naczynia krwionośnego przebiega szybciej. Algorytm wykrywa naczynie krwionośne jeżeli dojdzie do piksela $p$ spełniającego warunki w zależności od początku drogi eksploracji -- \ref{eq:up_or_down} dla początku w górnej lub dolnej krawędzi obrazu, \ref{eq:left_or_right} dla początku w lewej lub prawej krawędzi obrazu.
 
 \begin{equation}
-distance > imageSize * 0.5 \wedge \left|pixel.y - startPixel.y\right| > 0.1 * imageSize
+distance > imageSize * 0.5 \wedge \left|p_{y} - startp_{y}\right| > 0.1 * imageSize
 \label{eq:up_or_down}
 \end{equation}
 \begin{equation}
-distance > imageSize * 0.5 \wedge \left|pixel.x - startPixel.x\right| > 0.1 * imageSize
+distance > imageSize * 0.5 \wedge \left|p_{x} - startp_{x}\right| > 0.1 * imageSize
 \label{eq:left_or_right}
 \end{equation}
 
-Gdzie $imageSize$ to rozmiar obrazu (w przypadku niniejszej pracy jest to 240 pikseli), $startPixel$ to piksel od którego rozpoczęła się eksploracja, a $distance$ to odległość euklidesowa pomiędzy $pixel$, a $startPixel$. Współrzędne $pixel.x$, $pixel.y$, $startPixel.x$ i $startPixel.y$ są wyrażone w układzie współrzędnych z początkiem w lewym górnym rogu obrazu.
+Gdzie $imageSize$ to rozmiar obrazu (w przypadku niniejszej pracy jest to 240 pikseli), $startp$ to piksel od którego rozpoczęła się eksploracja, a $distance$ to odległość euklidesowa pomiędzy $p$, a $startp$. Współrzędne $p.x$, $p.y$, $startp_{x}$ i $startp_{y}$ są wyrażone w układzie współrzędnych z początkiem w lewym górnym rogu obrazu.
 
 Rysunek \ref{fig:proponowane_algorytmy:path_explor} przedstawia przykładową eksplorację szkieletu.
 
@@ -407,6 +405,120 @@ Rysunek \ref{fig:proponowane_algorytmy:path_explor} przedstawia przykładową ek
 
 \section{Estymacja macierzy transformacji pomiędzy kafelkami}
 \label{sec:proponowane_algorytmy:estymacja}
+
+W programie zaimplementowano cztery metody wyznaczające macierz transformacji pomiędzy dwoma kafelkami. W niniejszej sekcji opisano każdą z nich. Proces decyzyjny opisany w sekcji \ref{sec:proponowane_algorytmy:proces_decyzyjny} określa która z czterech metod zostanie wykorzystana przez program.
+
+\subsection{Estymacja macierzy transformacji na podstawie wykrytych naczyń krwionośnych}
+\label{sec:proponowane_algorytmy:use_paths}
+
+Metoda wykrywająca naczynia krwionośne opisana w sekcji \ref{sec:proponowane_algorytmy:depth_first_search} została zaimplementowana ze względu na pojawienie się niestandardowego zbioru danych z kafelkami o rozmiarze 40 na 240 pikseli. Wyjściem metody jest zbiór punktów wskazujący miejsce występowania naczynia krwionośnego na krawędzi obrazu, które przez resztę tej sekcji są nazywane punktami charakterystycznymi. Przykładowo punkt o współrzędnych $(24, 0)$ informuje algorytm, że naczynie krwionośne zaczyna się lub kończy w tym punkcie.
+
+Proces estymacji macierzy transformacji jest zależny od relacji pomiędzy dwoma kafelkami. Rysunek \ref{fig:proponowane_algorytmy:path_trans} przedstawia przykładową relację kafelek z zaznaczonymi wykrytymi naczyniami krwionośnymi oraz wynik transformacji wyznaczoną macierzą.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=9cm]{gfx/path_trans}
+  \caption{\textbf{Lewy obraz:} Przykładowe dwa obrazy z zaznaczonymi wykrytymi naczyniami krwionośnymi. Czarna strzałka wskazuje punkty charakterystyczne użyte do wyznaczenia macierzy transformacji. \textbf{Prawy obraz:} Wynik zaaplikowania wyznaczonej macierzy transformacji (z dodatkowym łączeniem opisanym w sekcji \ref{sec:proponowane_algorytmy:laczenie_kafelkow}.}
+  \label{fig:proponowane_algorytmy:path_trans}
+\end{figure}
+
+By wyznaczyć macierz transformacji algorytm wybiera punkty charakterystyczne leżące najbliżej lewej krawędzi (dla relacji kafelków z rysunku \ref{fig:proponowane_algorytmy:path_trans}) lub leżące najbliżej górnej krawędzi (dla kafelków ustawionych poziomo). Wybrane punkty charakterystyczne $p_{1}$ i $p_{2}$ należą do tego samego naczynia krwionośnego jeżeli różnica ich odpowiednich współrzędnych mieści się w ustalonym przedziale $range$ -- \ref{eq:path_up_or_down} dla ułożenia pionowego, \ref{eq:path_left_or_right} dla ułożenia poziomego.
+
+\begin{equation}
+\left|p_{1x}- p_{2x}\right| < range
+\label{eq:path_up_or_down}
+\end{equation}
+\begin{equation}
+\left|p_{1y} - p_{2y}\right| < range
+\label{eq:path_left_or_right}
+\end{equation}
+
+Na podstawie zweryfikowanych punktów charakterystycznych macierz transformacji $T$ wyznacza się następująco -- \ref{eq:trans_matrix_up_or_down} dla ułożenia pionowego, \ref{eq:trans_matrix_left_or_right} dla ułożenia poziomego:
+
+\begin{equation}
+T = \begin{bmatrix}
+  1 & 0 & -(p_{1x} - p_{2x})\\
+  0 & 1 & height * (1 - overlap)
+\end{bmatrix}
+\label{eq:trans_matrix_up_or_down}
+\end{equation}
+
+\begin{equation}
+T = \begin{bmatrix}
+  1 & 0 & width * (1 - overlap) \\
+  0 & 1 & -(p_{1y} - p_{2y})
+\end{bmatrix}
+\label{eq:trans_matrix_left_or_right}
+\end{equation}
+
+Gdzie $width$ to szerokość kafelka, $height$ to jego wysokość, a $overlap$ to miara szerokości obszaru nakładania się kafelków wyrażona w procentach.
+
+\subsection{Estymacja macierzy transformacji z wykorzystaniem metody OpenCV}
+\label{sec:proponowane_algorytmy:rigid}
+
+OpenCV implementuje funkcję \texttt{estimateRigidTransform(...)}, która przyjmuje jako argumenty dwa zbiory punktów i na ich podstawie zwraca optymalną macierz transformacji (wewnątrz OpenCV używa metody \textit{least squares}\footnote{\url{https://en.wikipedia.org/wiki/Least_squares}}). W programie funkcja jest wykorzystana w następujący sposób:
+
+\begin{verbatim}
+trans = estimateRigidTransform(imageOneKey, imageTwoKey, false)
+\end{verbatim}
+
+Gdzie \texttt{imageOneKey} to cechy z obrazu pierwszego, \texttt{imageTwoKey} to cechy z obrazu drugiego, a ostatni argument o wartości \texttt{false} powoduje, że użyty jest model ciała sztywnego (rotacja i translacja).
+
+\subsection{Estymacja macierzy transformacji na podstawie średnich różnic pomiędzy cechami}
+\label{sec:proponowane_algorytmy:srednie_roznice}
+
+W niniejszej metodzie do wyznaczenia macierzy jest liczona średnia różnica dopasowanych punktów w osi x \ref{eq:mean_x} i osi y \ref{eq:mean_y}:
+
+\begin{equation}
+t_x = \frac{\sum_{i=1}^{n} key_{ix}^{2} - key_{ix}^{1}}{n}
+\label{eq:mean_x}
+\end{equation}
+\begin{equation}
+t_y = \frac{\sum_{i=1}^{n} key_{iy}^{2} - key_{iy}^{1}}{n}
+\label{eq:mean_y}
+\end{equation}
+
+Gdzie $k_i^{1}$ to cecha $i$ z obrazu pierwszego, $k_i^{2}$ to cecha $i$ z obrazu drugiego, a $n$ to ilość dopasowań pomiędzy cechami. Macierz transformacji wyznacza się następująco:
+
+\begin{equation}
+T = \begin{bmatrix}
+  1 & 0 & t_x \\
+  0 & 1 & t_y
+\end{bmatrix}
+\end{equation}
+
+\subsection{Estymacja macierzy transformacji na podstawie wiedzy dziedzinowej}
+
+Wyznaczenie macierzy transformacji na podstawie wiedzy dziedzinowej jest metodą najprostszą i jedynie bierze pod uwagę obszar nałożenia kafelków, który ustalany jest za pomocą parametru \texttt{percentOverlap} w pliku konfiguracyjnym. Macierz transformacji wyznacza się następująco -- \ref{eq:shift_matrix_left_or_right} dla ułożenia kafelków w poziomie, \ref{eq:shift_matrix_up_or_down} dla ułożenia kafelków w pionie:
+
+\begin{equation}
+T = \begin{bmatrix}
+  1 & 0 & 0 \\
+  0 & 1 & imageSize * (1 - overlap)
+\end{bmatrix}
+\label{eq:shift_matrix_up_or_down}
+\end{equation}
+\begin{equation}
+T = \begin{bmatrix}
+  1 & 0 & imageSize * (1 - overlap) \\
+  0 & 1 & 0
+\end{bmatrix}
+\label{eq:shift_matrix_left_or_right}
+\end{equation}
+
+Gdzie $imageSize$ to rozmiar kafelka, a $overlap$ to wartość parametru \texttt{percentOverlap}.
+
+\subsection{Proces decyzyjny}
+\label{sec:proponowane_algorytmy:proces_decyzyjny}
+
+Wybór użytej metody do estymacji macierzy transformacji jest głównie zdeterminowany przez trzy zmienne w programie \texttt{simplerTransform} (odpowiada metodzie z sekcji \ref{sec:proponowane_algorytmy:srednie_roznice}), \texttt{rigidTransform} (odpowiada metodzie z sekcji \ref{sec:proponowane_algorytmy:rigid}) i \texttt{usePaths} (opowiada metodzie z sekcji \ref{sec:proponowane_algorytmy:use_paths}). Algorytm samodzielnie tworzy różne kombinacje wartości zmiennych by na wyjściu uzyskać kilka mozaik. Dzięki temu mechanizmowi użytkownik ma możliwość wybrania najlepszego rezultatu. Rysunek \ref{fig:proponowane_algorytmy:decision_model} obrazuje proces wyboru metody w zależności od ustawionych parametrów.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{gfx/decision_model}
+  \caption{Schemat blokowy wyjaśniający wybór metody estymacji macierzy transformacji w zależności od wewnętrznej zmiennej w programie (czerwone strzałki odpowiadają odpowiedzi `nie', a zielone strzałki odpowiadają odpowiedzi `tak').}
+  \label{fig:proponowane_algorytmy:decision_model}
+\end{figure}
 
 \section{Globalna rejestracja kafelków}
 \label{sec:proponowane_algorytmy:globalna_rejestracja}
