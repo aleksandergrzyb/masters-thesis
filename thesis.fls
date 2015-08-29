@@ -419,6 +419,9 @@ INPUT ./gfx/path_trans.pdf
 INPUT gfx/decision_model.pdf
 INPUT ./gfx/decision_model.pdf
 INPUT ./gfx/decision_model.pdf
+INPUT gfx/global_registration.pdf
+INPUT ./gfx/global_registration.pdf
+INPUT ./gfx/global_registration.pdf
 INPUT content/wyniki_eksperymentow.tex
 INPUT content/wyniki_eksperymentow.tex
 INPUT content/podsumowanie_i_wnioski.tex

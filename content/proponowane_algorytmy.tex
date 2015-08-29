@@ -508,20 +508,46 @@ T = \begin{bmatrix}
 
 Gdzie $imageSize$ to rozmiar kafelka, a $overlap$ to wartość parametru \texttt{percentOverlap}.
 
-\subsection{Proces decyzyjny}
-\label{sec:proponowane_algorytmy:proces_decyzyjny}
-
-Wybór użytej metody do estymacji macierzy transformacji jest głównie zdeterminowany przez trzy zmienne w programie \texttt{simplerTransform} (odpowiada metodzie z sekcji \ref{sec:proponowane_algorytmy:srednie_roznice}), \texttt{rigidTransform} (odpowiada metodzie z sekcji \ref{sec:proponowane_algorytmy:rigid}) i \texttt{usePaths} (opowiada metodzie z sekcji \ref{sec:proponowane_algorytmy:use_paths}). Algorytm samodzielnie tworzy różne kombinacje wartości zmiennych by na wyjściu uzyskać kilka mozaik. Dzięki temu mechanizmowi użytkownik ma możliwość wybrania najlepszego rezultatu. Rysunek \ref{fig:proponowane_algorytmy:decision_model} obrazuje proces wyboru metody w zależności od ustawionych parametrów.
-
-\begin{figure}[htb]
+\begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{gfx/decision_model}
   \caption{Schemat blokowy wyjaśniający wybór metody estymacji macierzy transformacji w zależności od wewnętrznej zmiennej w programie (czerwone strzałki odpowiadają odpowiedzi `nie', a zielone strzałki odpowiadają odpowiedzi `tak').}
   \label{fig:proponowane_algorytmy:decision_model}
 \end{figure}
 
+\subsection{Proces decyzyjny}
+\label{sec:proponowane_algorytmy:proces_decyzyjny}
+
+Wybór użytej metody do estymacji macierzy transformacji jest głównie zdeterminowany przez trzy zmienne w programie \texttt{simplerTransform} (odpowiada metodzie z sekcji \ref{sec:proponowane_algorytmy:srednie_roznice}), \texttt{rigidTransform} (odpowiada metodzie z sekcji \ref{sec:proponowane_algorytmy:rigid}) i \texttt{usePaths} (opowiada metodzie z sekcji \ref{sec:proponowane_algorytmy:use_paths}). Algorytm samodzielnie tworzy różne kombinacje wartości zmiennych by na wyjściu uzyskać kilka mozaik. Dzięki temu mechanizmowi użytkownik ma możliwość wybrania najlepszego rezultatu. Rysunek \ref{fig:proponowane_algorytmy:decision_model} obrazuje proces wyboru metody w zależności od ustawionych parametrów.
+
 \section{Globalna rejestracja kafelków}
 \label{sec:proponowane_algorytmy:globalna_rejestracja}
+
+Następnym krokiem tworzenia mozaiki jest decyzja, który kafelek rejestrować z którym i w jakiej kolejności. Proces rozpoczyna się od wybrania kafelka referencyjnego wobec którego wszystkie inne mozaiki będą transformowane. Zakładając, że mozaika składa się z $r$ wierszy i $c$ kolumn współrzędne kafelka referencyjnego $ref_x$ i $ref_y$ są wybierane na podstawie:
+
+\begin{equation}
+ref_x = \left \lfloor\frac{c - 1}{2}\right \rfloor
+\label{eq:ref_x}
+\end{equation}
+\begin{equation}
+ref_y = \left \lfloor\frac{r - 1}{2}\right \rfloor
+\label{eq:ref_y}
+\end{equation}
+
+Mając wyznaczony kafelek referencyjny następnym krokiem jest ustalenie kolejności rejestracji pomiędzy kafelkami. Proces wyjaśniony jest na przykładzie na rysunku \ref{fig:proponowane_algorytmy:global_registration}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{gfx/global_registration}
+  \caption{Przykład mozaiki składającej się z 4 wierszy i 4 kolumn kafelków. Kafelek referencyjny wybrany zgodnie z wzorami \ref{eq:ref_x} i \ref{eq:ref_y} oznaczono kolorem czerwonym. Rejestracja kafelków rozpoczyna się od porównywania kafelków parami na lewo i prawo od kafelka referencyjnego. Następnie od każdego kafelka z wiersza kafelka referencyjnego kafelki są porównywane parami idąc w górę i dół. W lewym górnym rogu każdego kafelka jest zapisana jego współrzędna w mozaice.}
+  \label{fig:proponowane_algorytmy:global_registration}
+\end{figure}
+
+Posługując się przykładem z rysunku \ref{fig:proponowane_algorytmy:global_registration} oraz oznaczając $T_{xy\rightarrow zw}$ jako macierz transformacji pomiędzy kafelkiem $I_{xy}$ o współrzędnych $x$ i $y$ i kafelkiem $I_{zw}$ o współrzędnych $z$ i $w$ macierz transformacji kafelka $I_{33}$ wygląda następująco:
+
+\begin{equation}
+T_{33\rightarrow 11} = T_{21\rightarrow 11} * T_{31\rightarrow 21} * T_{32\rightarrow 31} * T_{33\rightarrow 32}
+\end{equation}
 
 \section{Łączenie kafelków}
 \label{sec:proponowane_algorytmy:laczenie_kafelkow}
