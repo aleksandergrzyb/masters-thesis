@@ -546,8 +546,51 @@ Mając wyznaczony kafelek referencyjny następnym krokiem jest ustalenie kolejno
 Posługując się przykładem z rysunku \ref{fig:proponowane_algorytmy:global_registration} oraz oznaczając $T_{xy\rightarrow zw}$ jako macierz transformacji pomiędzy kafelkiem $I_{xy}$ o współrzędnych $x$ i $y$ i kafelkiem $I_{zw}$ o współrzędnych $z$ i $w$ macierz transformacji kafelka $I_{33}$ wygląda następująco:
 
 \begin{equation}
-T_{33\rightarrow 11} = T_{21\rightarrow 11} * T_{31\rightarrow 21} * T_{32\rightarrow 31} * T_{33\rightarrow 32}
+T_{33\rightarrow 11} = T_{21\rightarrow 11}T_{31\rightarrow 21}T_{32\rightarrow 31}T_{33\rightarrow 32}
 \end{equation}
 
 \section{Łączenie kafelków}
 \label{sec:proponowane_algorytmy:laczenie_kafelkow}
+
+Ostatnim etapem w tworzeniu mozaiki jest wyświetlenie wszystkich kafelków po transformacji na wspólnej płaszczyźnie. Żeby mozaika spełniała wrażenie spójnej i jednolitej musi być zaimplementowany mechanizm, który będzie odpowiednio wybierał i ważył piksele w miejscach gdzie kafelki się nakładają. Wartość piksela finalnej mozaiki $f$ jest obliczana za pomocą wzoru:
+
+\begin{equation}
+f(p) = \frac{\sum_{n = 0}^{N - 1} w_n(p)f_n(p)}{\sum_{n = 0}^{N - 1} w_n(p)}
+\end{equation}
+
+Gdzie $N$ to liczba kafelków znajdujących się w miejscu piksela $f(p)$, $f_n(p)$ to wartość piksela $p$ w kafelku $n$, a $w_n(p)$ to waga piksela $p$ w kafelku $n$. Wagi pikseli są obliczane za pomocą \textbf{\textit{distance transform}}\footnote{\url{https://en.wikipedia.org/wiki/Distance_transform}}, której wartość to odległość do najbliższego piksela o wartości 0. \textit{Distance transform} jest zaimplementowane w OpenCV za pomocą funkcji \texttt{distanceTransform(...)} zwracającą obraz z obliczonymi wartościami dla całego obrazu. Rysunek \ref{fig:proponowane_algorytmy:dis} przedstawia wyjście funkcji na przykładowym obrazie.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=10cm]{gfx/dis}
+  \caption{\textbf{Lewy obraz:} Przykładowy kafelek po transformacji. \textbf{Prawy obraz:} Wyjście funkcji \texttt{distanceTransform(...)}.}
+  \label{fig:proponowane_algorytmy:dis}
+\end{figure}
+
+Dzięki wykorzystaniu \textit{distance transform} piksele znajdujące się bliżej środka obrazu będą bardziej istotne w przeciwieństwie do pikseli znajdujących przy krawędziach obrazu. Rysunek \ref{fig:proponowane_algorytmy:blend} przedstawia przykładowe dwa kafelki z zaznaczonymi trzema punktami $p_1$, $p_2$ i $p_3$ w finalnej mozaice. Punkt $p_1$ nie należy do żadnego kafelka przez co jego wartość jest równa $0$, punkt $p_2$ należy do kafelka $f_2$ i jego wartość jest równa:
+
+\begin{equation}
+f(p_2) = \frac{d_{22}f_2(p_2)}{d_{22}}
+\end{equation}
+
+Gdzie $d_{nk}$ to wartość \textit{distance transform} piksela $p_n$ w obrazie $f_k$. Punkt $p_3$ należy do kafelka $f_2$ i $f_3$ i jego wartość jest równa:
+
+\begin{equation}
+f(p_3) = \frac{d_{32}f_2(p_3) + d_{31}f_1(p_3)}{d_{32} + d_{31}}
+\end{equation}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=6cm]{gfx/blend}
+  \caption{Przykładowy schemat łączenia dwóch kafelków $f_1$ i $f_2$ z zaznaczonymi punktami $f_n$ oraz wartościami \textit{distance transform} $d_nk$.}
+  \label{fig:proponowane_algorytmy:blend}
+\end{figure}
+
+Rysunek \ref{fig:proponowane_algorytmy:blend_eff} przedstawia wynik łączenia kafelków niniejszą metodą na przykładowej mozaice.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm]{gfx/blend_eff}
+  \caption{\textbf{Lewy obraz:} Mozaika stworzona bez wykorzystania łączenia. \textbf{Prawy obraz:} ozaika stworzona z wykorzystaniem łączenia.}
+  \label{fig:proponowane_algorytmy:blend_eff}
+\end{figure}
