@@ -315,10 +315,10 @@ INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/bitstrea/charter/bchr8c.tfm
 INPUT gfx/tissue_layers.pdf
 INPUT ./gfx/tissue_layers.pdf
 INPUT ./gfx/tissue_layers.pdf
-INPUT /usr/local/texlive/2015/texmf-dist/fonts/vf/bitstrea/charter/bchr8c.vf
 INPUT gfx/scans.png
 INPUT ./gfx/scans.png
 INPUT ./gfx/scans.png
+INPUT /usr/local/texlive/2015/texmf-dist/fonts/vf/bitstrea/charter/bchr8c.vf
 INPUT gfx/speckle_variance.pdf
 INPUT ./gfx/speckle_variance.pdf
 INPUT ./gfx/speckle_variance.pdf

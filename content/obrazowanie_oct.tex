@@ -7,12 +7,12 @@
 
 \textbf{Optyczna tomografia koherencyjna} (ang. \textit{optical coherence tomography, OCT}) jest metodą umożliwiającą nieinwazyjne oraz \textit{in vivo} przechwycenie obrazu wnętrza tkanki biologicznej. Zasada działania OCT opiera się na wykorzystaniu fal świetlnych. Dzięki temu rozdzielczość obrazów jest o wiele wyższa niż w ultrasonografii (wykorzystanie fal dźwiękowych), czy rezonansie magnetycznym (wykorzystanie pola magnetycznego). Następnym powodem dużej popularności OCT w medycynie jest bezkontaktowe badanie pacjenta oraz brak wymogu przygotowania pacjenta przed badaniem.
 
-W projekcie RIMO OCT zostało wykorzystane do uzyskania szczegółowych obrazów naczyń krwionośnych siatkówki oka. Rysunek \ref{fig:obrazowanie_oct:bscan_vessels} przedstawia przykładowe obrazy siatkówki oka uzyskane dzięki wykorzystaniu OCT. Jednym z tych przykładowych obrazów jest angiografia siatkówki oka, która jest obrazem wejściowym do algorytmów omawianych w niniejszej pracy. Sposób powstania angiografii z danych OCT jest wyjaśniony w podrozdziale \ref{sec:obrazowanie_oct:angiografia_oct}, natomiast ogólna zasada działania OCT jest wyjaśniona w podrozdziale \ref{sec:obrazowanie_oct:metoda_oct}. Na koniec rozdziału w podrozdziale \ref{sec:obrazowanie_oct:zastosowania_oct} zostaną opisane zastosowania OCT.
+W projekcie RIMO OCT wykorzystano do uzyskania szczegółowych obrazów naczyń krwionośnych siatkówki oka. Rysunek \ref{fig:obrazowanie_oct:bscan_vessels} przedstawia przykładowe obrazy siatkówki oka uzyskane poprzez wykorzystanie OCT. Jednym z tych przykładowych obrazów jest angiografia siatkówki oka, która jest obrazem wejściowym do algorytmów omawianych w niniejszej pracy. Sposób powstania angiografii z danych OCT jest wyjaśniony w sekcji \ref{sec:obrazowanie_oct:angiografia_oct}, natomiast ogólna zasada działania OCT jest wyjaśniona w sekcji \ref{sec:obrazowanie_oct:metoda_oct}. Na koniec rozdziału w sekcji \ref{sec:obrazowanie_oct:zastosowania_oct} opisano zastosowania OCT.
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{gfx/bscan_vessels}
-	\caption{\textbf{Lewy obraz:} Dwuwymiarowy przekrój siatkówki oka (B-skan). Obraz został uzyskany poprzez połączenie jednowymiarowych A-skanów, które zawierają informację o strukturze tkanki w głąb siatkówki oka. \textbf{Prawy obraz:} Angiografia siatkówki oka uzyskana dzięki przetworzeniu danych z OCT.}
+	\caption{\textbf{Lewy obraz:} Dwuwymiarowy przekrój siatkówki oka (B-skan). Obraz został uzyskany poprzez połączenie jednowymiarowych A-skanów, które zawierają informację o strukturze tkanki w głąb siatkówki oka. \textbf{Prawy obraz:} Angiografia siatkówki oka uzyskana poprzez przetworzenie danych z OCT.}
 	\label{fig:obrazowanie_oct:bscan_vessels}
 \end{figure}
 
@@ -21,7 +21,7 @@ W projekcie RIMO OCT zostało wykorzystane do uzyskania szczegółowych obrazów
 \section{Zasada działania OCT}
 \label{sec:obrazowanie_oct:metoda_oct}
 
-Jednym z najważniejszych parametrów metod tomografii w medycynie jest ich rozdzielczość. Optyczna tomografia koherencyjna przechwytuje obrazy wnętrza tkanki poprzez wykorzystanie fal świetlnych. OCT za pomocą generatora wytwarza falę świetlną, która jest skierowana na tkankę pacjenta. Następnie po odbiciu fali poprzez tkankę wiązka jest przechwycona przez detektor. Jedną z dostępnych metod, która umożliwiłaby zlokalizowanie miejsca odbicia fali byłoby zmierzenie czasu pomiędzy wygenerowaniem fali, a zarejestrowaniem jej przez detektor (mechanizm stosowany np. w ultrasonografii z wykorzystaniem fal dźwiękowych), natomiast prędkość światła (\(3\times10^8 \frac{m}{s}\)) wyklucza zastosowanie tego mechanizmu. Zjawisko, które umożliwia dokładne zlokalizowanie miejsca odbicia to \textbf{interferencja światła o niskiej spójności}.
+Optyczna tomografia koherencyjna przechwytuje obrazy wnętrza tkanki poprzez wykorzystanie fal świetlnych. OCT za pomocą generatora wytwarza falę świetlną, która jest skierowana na tkankę pacjenta. Następnie po odbiciu fali poprzez tkankę wiązka jest przechwycona przez detektor. Jedną z dostępnych metod, która umożliwiłaby zlokalizowanie miejsca odbicia fali byłoby zmierzenie czasu pomiędzy wygenerowaniem fali, a zarejestrowaniem jej przez detektor (mechanizm stosowany np. w ultrasonografii z wykorzystaniem fal dźwiękowych), natomiast prędkość światła (\(3\times10^8 \frac{m}{s}\)) wyklucza zastosowanie tego mechanizmu. Zjawisko, które umożliwia dokładne zlokalizowanie miejsca odbicia to \textbf{interferencja światła o niskiej spójności}.
 
 \begin{figure}[htb]
 	\centering
@@ -30,19 +30,19 @@ Jednym z najważniejszych parametrów metod tomografii w medycynie jest ich rozd
 	\label{fig:obrazowanie_oct:oct_phases}
 \end{figure}
 
-Rysunek \ref{fig:obrazowanie_oct:oct_phases} składa się z bardzo uproszczonych schematów OCT, które obrazują kolejne etapy działania metody. Schematy na rysunku \ref{fig:obrazowanie_oct:oct_phases} składają się z pięciu elementów:
+Rysunek \ref{fig:obrazowanie_oct:oct_phases} składa się z bardzo uproszczonych schematów OCT obrazujących kolejne etapy działania metody. Schematy na rysunku \ref{fig:obrazowanie_oct:oct_phases} składają się z pięciu elementów:
 
 \begin{itemize}
 
-\item \textbf{Źródła} - Źródło (np. dioda superluminescencyjna) światła podczerwonego, które jest falą o niskiej spójności.
+\item \textbf{Źródła} - Źródło (np. dioda superluminescencyjna) światła podczerwonego będąca falą o niskiej spójności.
 \item \textbf{Rozdzielacza wiązek} (na rysunku \ref{fig:obrazowanie_oct:oct_phases} przedstawiony za pomocą przerywanych linii na środku każdego schematu) - Interferometr (np. Michelsona) umożliwiający rozdzielenie fali na dwie wiązki oraz następne ich połączenie.
 \item \textbf{Lustro referencyjne} - Lustro, które odbija wiązkę referencyjną. Posiada możliwość oddalania oraz przybliżania się względem interferometru.
-\item \textbf{Tkanka} - Badana tkanka, która odbija wiązkę próbki.
+\item \textbf{Tkanka} - Badana tkanka odbijająca wiązkę próbki.
 \item \textbf{Detektor} - Rejestruje zjawisko interferencji związek.
 
 \end{itemize}
 
-Najbardziej istotnym etapem wymaganym do zrozumienia mechanizmu OCT jest etap (4) pokazany na rysunku \ref{fig:obrazowanie_oct:oct_phases}. W tym kroku wiązka referencyjna i wiązka próbki łączą się i zachodzi zjawisko interferencji. Dzięki temu, że wiązki są falami o niskiej spójności interferencja zachodzi tylko na małej długości (ang. \textit{coherence length}). Odczytując za pomocą detektora charakterystyczny wzorzec interferencji występującej na \textit{coherence length} jesteśmy w stanie wydobyć informacje na temat próbki wnętrza tkanki oraz wiemy dzięki położeniu lustra referencyjnego położenie próbki. Poszczególne badanie głębszych warstw tkanki przedstawia rysunek \ref{fig:obrazowanie_oct:tissue_layers}.
+Najbardziej istotnym etapem wymaganym do zrozumienia mechanizmu OCT jest etap (4) pokazany na rysunku \ref{fig:obrazowanie_oct:oct_phases}. W tym kroku wiązka referencyjna i wiązka próbki łączą się i zachodzi zjawisko interferencji. Dzięki temu, że wiązki są falami o niskiej spójności interferencja zachodzi tylko na małej długości zwanej \textit{coherence length}. Odkrywając za pomocą detektora charakterystyczny wzorzec interferencji występujący na \textit{coherence length} OCT w stanie precyzyjnie odczytać informację odnośnie struktury wnętrza tkanki. Badanie warstw tkanki o różnej głębokości przedstawia rysunek \ref{fig:obrazowanie_oct:tissue_layers}.
 
 \begin{figure}[htb]
 	\centering
@@ -53,7 +53,7 @@ Najbardziej istotnym etapem wymaganym do zrozumienia mechanizmu OCT jest etap (4
 
 \subsection{Metoda uzyskania trójwymiarowego obrazu tkanki}
 
-Poprzez poruszenie lustra referencyjnego pomiary przeprowadzane są w głąb tkanki (wzdłuż osi Z). Zbiór pomiarów w głąb tkanki nazywa się A-skanem (obraz jednowymiarowy). Powtarzając ten proces w osi X lub Y i następnie poprzez połączenie sąsiadujących A-skanów otrzymuje się przekrój tkanki zwany B-skanem (obraz dwuwymiarowy). Cały proces uzyskania B-skanów można powtórzyć dla sąsiadujących przekrojów. Poprzez połączenie otrzymanych B-skanów otrzymuje się obraz trójwymiarowy tkanki. Na rysunku \ref{fig:obrazowanie_oct:scan} \cite{Kraus:12} przedstawione są poszczególne skany.
+Poprzez poruszenie lustra referencyjnego pomiary przeprowadzane są w głąb tkanki (wzdłuż osi Z). Zbiór pomiarów w głąb tkanki nazywa się A-skanem (obraz jednowymiarowy). Powtarzając ten proces w osi X lub Y i następnie poprzez połączenie sąsiadujących A-skanów otrzymuje się przekrój tkanki zwany B-skanem (obraz dwuwymiarowy). Proces uzyskania B-skanów można powtórzyć dla sąsiadujących przekrojów. Poprzez połączenie otrzymanych B-skanów otrzymuje się trójwymiarowy obraz tkanki. Na rysunku \ref{fig:obrazowanie_oct:scan} \cite{Kraus:12} przedstawione są poszczególne skany.
 
 \begin{figure}[htb]
 	\centering
@@ -64,31 +64,31 @@ Poprzez poruszenie lustra referencyjnego pomiary przeprowadzane są w głąb tka
 
 \subsection{OCT w domenie częstotliwości}
 
-Metoda OCT, która wykonuje ruch lustrem referencyjnym jest zwana metodą OCT w domenie czasu (ang. \textit{time-domain OCT, TdOCT}). Alternatywną oraz nowszą metodą od TdOCT jest OCT w domenie częstotliwości (ang. \textit{Fourier-domain OCT, FdOCT}). FdOCT umożliwia 100 razy szybsze \cite{Strong:11} skanowanie w porównaniu do TdOCT. TdOCT jest w stanie wykonać ok. 400 A-skanów w przeciągu sekundy, natomiast FdOCT jest ich w stanie wykonać dziesiątki tysięcy. Szybsze skanowanie poprawia również jakość skanów ze względu na to, że pacjent ma mniejszą szansę poruszenia okiem podczas skanowania (ruch oka w trakcie skanowania przyczynia się do powstania artefaktów ruchu na obrazach OCT). Oprócz poprawy szybkości skanowania FdOCT ma wyższą rozdzielczość w przedziale od 3-7 mikrometrów \cite{Strong:11}. Jest to poprawa względem TdOCT o 8-10 mikrometrów.
+Metoda OCT wykonująca ruchy lustrem referencyjnym jest zwana metodą OCT w domenie czasu (ang. \textit{time-domain OCT, TdOCT}). Alternatywną oraz nowszą metodą od TdOCT jest OCT w domenie częstotliwości (ang. \textit{Fourier-domain OCT, FdOCT}). FdOCT umożliwia 100 razy szybsze \cite{Strong:11} skanowanie w porównaniu do TdOCT. TdOCT jest w stanie wykonać ok. 400 A-skanów w przeciągu sekundy, natomiast FdOCT jest ich w stanie wykonać dziesiątki tysięcy. Szybsze skanowanie poprawia również jakość skanów ze względu na to, że pacjent ma mniejszą szansę poruszenia okiem podczas skanowania (ruch oka w trakcie skanowania przyczynia się do powstania artefaktów ruchu na obrazach OCT). Oprócz poprawy szybkości skanowania FdOCT ma wyższą rozdzielczość w przedziale od 3 do 7 mikrometrów \cite{Strong:11}. Jest to poprawa względem TdOCT o 8-10 mikrometrów.
 
 Większa szybkość oraz rozdzielczość FdOCT w porównaniu do TdOCT jest możliwa dzięki dwóm modyfikacjom technicznym:
 
 \begin{enumerate}
 
 \item FdOCT jako źródło światła wykorzystuje laser o wysokiej szerokości pasma, co znacząco zwiększa rozdzielczość.
-\item FdOCT jako detektor wykorzystuje spektrometr, który przeprowadza analizę widma fali (połączona wiązka referencyjna i próbki), która dotarła do spektrometru z interferometru. Wykonanie transformaty Fouriera na widmie fali tworzy A-skan tkanki. Dzięki tej technice FdOCT wyeliminowało potrzebę ruszania lustrem referencyjnym co znacząco zwiększa szybkość skanowania.
+\item FdOCT jako detektor wykorzystuje spektrometr, który przeprowadza analizę widma fali (połączona wiązka referencyjna i próbki), która dotarła do spektrometru z interferometru. Transformata Fouriera na widmie fali tworzy A-skan tkanki. Dzięki tej technice FdOCT wyeliminowało potrzebę ruszania lustrem referencyjnym co znacząco zwiększa szybkość skanowania.
 
 \end{enumerate}
 
-FdOCT posiada również wady. Jest droższy od TdOCT ze względu na wykorzystanie drogiego lasera jako źródła światła co powoduje, że jest wykorzystywany tylko w celach badawczych. Następna wada wynika z szybkości powstawania A-skanów. Szybsze skanowanie może prowadzić do utraty jakości obrazów OCT, natomiast utrata tej jakość może być zmniejszona poprzez użycie techniki przetwarzania sygnałów zwanej \textit{oversampling}.
+FdOCT posiada również wady. Pierwszą z nich jest cena. TdOCT jest droższy ze względu na wykorzystanie drogiego lasera jako źródła światła przez co jest wykorzystywany tylko w celach badawczych. Druga wada wynika z szybkości powstawania A-skanów. Szybsze skanowanie prowadzi do utraty jakości obrazów (zastosowanie techniki przetwarzania sygnałów zwanej \textit{oversampling} może zrekompensować tę stratę).
 
 % Wyjaśnia zasadę powstawania obrazów angiograficznych z danych OCT
 
 \section{Angiografia OCT}
 \label{sec:obrazowanie_oct:angiografia_oct}
 
-Angiografia to technika służąca do wizualizacji naczyń krwionośnych i organów ciała. W większości przypadków w medycynie angiografia jest wykonywana poprzez wstrzyknięcie pacjentowi środka kontrastowego, który nie przepuszcza promieni rentgenowskich. Następie wykorzystuje się jedną z technik obrazowania (np. fluoroskopię) opartą o promienie rentgenowskie. Ta metoda ma jedną znaczącą wadę, jako technika inwazyjna może prowadzić do reakcji alergicznych na środek kontrastowy oraz jest przeciwwskazana kobietom w ciąży i dzieciom. Z tego powodu nieustannie poszukiwane są metody, które jednocześnie są nieinwazyjne i tworzą obrazy o jakości porównywalnej do metod inwazyjnych.
+Angiografia to technika służąca do wizualizacji naczyń krwionośnych i organów ciała. W większości przypadków w medycynie angiografia jest wykonywana poprzez wstrzyknięcie pacjentowi środka kontrastowego, który nie przepuszcza promieni rentgenowskich. Następie by stworzyć obrazy angiograficzne wykorzystuje się jedną z technik obrazowania (np. fluoroskopię) opartą o promienie rentgenowskie. Metoda oparta na stosowaniu środka kontrastowego ma jedną znaczącą wadę, jako technika inwazyjna może prowadzić do reakcji alergicznych na środek kontrastowy oraz jest przeciwwskazana kobietom w ciąży i dzieciom. Z tego powodu nieustannie poszukiwane są metody, które jednocześnie są nieinwazyjne i tworzą obrazy o jakości porównywalnej do metod inwazyjnych.
 
-Angiografia OCT jest metodą, która opiera się na A-skanach i B-skanach OCT i jest w stanie stworzyć obraz \textit{en face} naczyń krwionośnych siatkówki oka. Przykład takiego obrazu znajduje się na rysunku \ref{sec:obrazowanie_oct:angiografia_oct}.
+Angiografia OCT poprzez wykorzystanie A-skanów i B-skanów OCT jest w stanie stworzyć obraz \textit{en face} naczyń krwionośnych siatkówki oka. Przykład takiego obrazu znajduje się na rysunku \ref{sec:obrazowanie_oct:angiografia_oct}.
 
 \subsection{Sposób powstania obrazu angiograficznego}
 
-Obrazy angiograficznie, które zostały użyte w niniejszej pracy powstały za pomocą metody zwanej \textit{Speckle Variance Detection}, która polega na liczeniu wariancji dla każdego piksela pomiędzy sąsiadującymi B-skanami. Ta technika została wykorzystana, ponieważ lokalna wariancja dla obszarów gdzie występuje przypływ krwi (naczynia krwionośne) ma wyższą wartość w porównaniu do obszarów gdzie występuje struktura statyczna. Rezultatem tej metody jest obraz przepływowy, którego piksele mają wartość wariancji sąsiadujących B-skanów. Na rysunku \ref{fig:obrazowanie_oct:speckle_variance} został przedstawiony przykładowy zbiór sąsiadujących B-skanów.
+Obrazy angiograficznie użyte w niniejszej pracy powstały za pomocą metody zwanej \textit{Speckle Variance Detection} polegającej na liczeniu wariancji dla każdego piksela pomiędzy sąsiadującymi B-skanami. Wartość wariancji w obszarach gdzie występuje przepływ krwi (naczynia krwionośne) jest wyższa od obszarów, w których znajduje się struktura statyczna. Rezultatem tej metody jest obraz przepływowy, którego piksele mają wartość wariancji sąsiadujących B-skanów. Na rysunku \ref{fig:obrazowanie_oct:speckle_variance} został przedstawiony przykładowy zbiór sąsiadujących B-skanów.
 
 \begin{figure}[H]
 	\centering
@@ -97,7 +97,7 @@ Obrazy angiograficznie, które zostały użyte w niniejszej pracy powstały za p
 	\label{fig:obrazowanie_oct:speckle_variance}
 \end{figure}
 
-Wartości intensywności pikseli $V_{jk}$ obrazu przepływowego liczone są na podstawie wartości intensywności pikseli $I_{ijk}$ sąsiadujących $N$ B-skanów za pomocą wzoru (na rysunku \ref{fig:obrazowanie_oct:speckle_variance} $N=3$):
+Wartości pikseli $V_{jk}$ obrazu przepływowego liczone są na podstawie wartości pikseli $I_{ijk}$ sąsiadujących $N$ B-skanów za pomocą wzoru (na rysunku \ref{fig:obrazowanie_oct:speckle_variance} $N=3$):
 
 \begin{equation}
 V_{jk} = \frac{1}{N} \displaystyle\sum_{i=1}^{N}(I_{ijk} - I_{mean})^2
@@ -105,7 +105,7 @@ V_{jk} = \frac{1}{N} \displaystyle\sum_{i=1}^{N}(I_{ijk} - I_{mean})^2
 
 Gdzie $j$ i $k$ to indeksy boczne i głębokościowe B-skanu (współrzędne pikseli), a $I_{mean}$ to średnia intensywność zbioru tych samych pikseli, dla których liczona jest wariancja.
 
-Rezultatem połączenia sąsiadujących obrazów przepływowych obliczonych ze wszystkich B-skanów jest trójwymiarowy obraz przepływowy. Następnie poprzez użycie projekcji maksymalnego natężenia (ang. \textit{maximum intensity projection, MIP}), która polega na projekcji woksela o najwyższej intensywności z obrazu 3D na obraz 2D. W przypadku trójwymiarowego obrazu przepływowego będzie to woksel, którego wartość była największą wartością wariancji pikseli sąsiadujących B-skanów. Po zastosowaniu projekcji maksymalnego natężenia na trójwymiarowym obrazie przepływowym otrzymujemy angiograficzny obraz \textit{en face} naczyń krwionośnych.
+Rezultatem połączenia dwuwymiarowych sąsiadujących obrazów przepływowych jest trójwymiarowy obraz przepływowy, który poddaje się projekcji maksymalnego natężenia (ang. \textit{maximum intensity projection, MIP}) polegającej na projekcji woksela o najwyższej intensywności z obrazu 3D na obraz 2D. W przypadku trójwymiarowego obrazu przepływowego będzie to woksel, którego wartość odpowiada największej wariancji pikseli z sąsiadujących B-skanów. Po zastosowaniu projekcji maksymalnego natężenia na trójwymiarowym obrazie przepływowym otrzymujemy angiograficzny obraz \textit{en face} naczyń krwionośnych.
 
 % Opisuje zastosowania OCT
 
@@ -120,11 +120,17 @@ Najbardziej popularnym zastosowaniem OCT w medycynie jest badanie oka \cite{Ferc
 
 \subsection{OCT w gastroenterologii i dermatologii}
 
-OCT w porównaniu do innych metod diagnostycznych w medycynie jest techniką nową. Lekarze i naukowcy nieustannie starają się znaleźć nowe zastosowania dla OCT, która jest metodą obiecującą i szybko rozwijającą się. OCT jest potencjalnym kandydatem by w niektórych diagnozach zastąpić konwencjonalną biopsję, która wymaga usunięcia kawałka tkanki z organizmu. Przykładem takiego zastosowania jest badanie struktury błon śluzowych i podśluzowych w układzie pokarmowym. W tym przypadku OCT dostarczyło czyste obrazy, które dostarczają lekarzom dużo diagnostycznej informacji \cite{Rollins:99}. Innym przykładem są próby wykorzystania OCT do wczesnej diagnozy raka skóry, który obecnie również diagnozowany jest poprzez biopsję. W tym przypadku OCT w obecnym stopniu zaawansowania nie jest w stanie dostarczyć na tyle dokładnych danych by stać się jedyną metodą diagnozy. Następnym przykładem zastosowania OCT w dermatologii jest diagnoza zapalnych chorób skóry \cite{Welzel01}.
+OCT w porównaniu do innych metod diagnostycznych w medycynie jest techniką nową. Lekarze i naukowcy nieustannie starają się znaleźć nowe zastosowania dla OCT, która jest metodą obiecującą i szybko rozwijającą się. OCT jest potencjalnym kandydatem by w niektórych diagnozach zastąpić konwencjonalną biopsję wymagającą usunięcia kawałka tkanki z organizmu. Przykładowe zastosowania OCT:
+
+\begin{itemize}
+\item \textbf{Badanie struktury błon śluzowych i podśluzowych w układzie pokarmowym.} OCT dostarczyło czyste obrazy dostarczające lekarzom dużo diagnostycznej informacji \cite{Rollins:99}.
+\item \textbf{Diagnoza raka skóry} (obecnie diagnozowany jest poprzez biopsję). Niestety OCT w obecnym stopniu zaawansowania nie jest w stanie dostarczyć na tyle dokładnych danych by stać się jedyną metodą diagnozy.
+\item \textbf{Diagnoza zapalnych chorób skóry} \cite{Welzel01}.
+\end{itemize}
 
 \subsection{OCT w przemyśle}
 
-OCT wykorzystywane jest również do zastosowań przemysłowych. Umożliwia badanie np. grubości materiałów \cite{walecki2006determining}, czy badanie grubości warstwy pancerza tabletek podczas ich produkcji w przemyśle farmaceutycznym \cite{markl2014device}.
+OCT wykorzystywane jest również w przemyśle. Umożliwia badanie np. grubości materiałów \cite{walecki2006determining}, czy badanie grubości warstwy pancerza tabletek podczas ich produkcji w przemyśle farmaceutycznym \cite{markl2014device}.
 
 
 
