@@ -1,0 +1,35 @@
+% !TEX root = ../thesis-example.tex
+%
+\chapter{Oprogramowanie}
+\label{sec:oprogramowanie:oprogramowanie}
+
+Program o nazwie \texttt{mostitch}, który jest celem niniejszej pracy jest całkowicie napisany w języku C++. Język wybrano ze względu na to, że wykorzystywana biblioteka przetwarzania obrazów OpenCV (opisana w skrócie w sekcji \ref{sec:oprogramowanie:opencv}) posiada interfejs w języku C++. Program można uruchomić z konsoli systemu za pomocą komendy:
+
+\begin{verbatim}
+./mostitch path_to_config_file
+\end{verbatim}
+
+gdzie \texttt{path\_to\_config\_file} to obowiązkowy argument do programu wskazujący ścieżkę do pliku konfiguracyjnego (opisanego dokładniej w sekcji \ref{sec:oprogramowanie:plik_configuracyjny}), który określa wszystkie parametry niezbędne do prawidłowego działania programu.
+
+Program umożliwia konstrukcję mozaik dla dowolnej ilości zbiorów kafelków. Dodatkowo dla każdego zbioru kafelków powstają różne wersje mozaik, ze względu na wykorzystanie różnych metod ich tworzenia. Dzięki tej funkcjonalności użytkownik może wybrać najbardziej odpowiednią mozaikę. Wyjściem programu więc jest zbiór mozaik (obrazy \texttt{.png}), w którym każda mozaika ma przypisaną metodę jej tworzenia oraz odpowiadający zbiór kafelków.
+
+\section{Plik konfiguracyjny}
+\label{sec:oprogramowanie:plik_configuracyjny}
+
+Do zarządzania plikiem konfiguracyjnym wykorzystano bibliotekę \textbf{libconfig}\footnote{\url{http://www.hyperrealm.com/libconfig/}} umożliwiającą bezproblemowy odczyt pliku konfiguracyjnego z rozszerzeniem \texttt{.cfg}. Format pliku konfiguracyjnego jest bardziej czytelny w porównaniu do powszechnie wykorzystywanych plików XML. Biblioteka również jest świadoma typu zmiennej przez co unika się konwersji typu \texttt{string} na typy takie jak \texttt{int}, czy \texttt{float}.
+
+W pliku konfiguracyjnym zawarte są informacje:
+
+\begin{itemize}
+\item Ścieżka do miejsca z folderami zawierającymi zbiory kafelków do złączenia.
+\item Ścieżka do miejsca, w którym będą zapisane wynikowe mozaiki.
+\item Parametry pozwalające na automatyczne wczytanie obrazów kafelków.
+\item Parametry modyfikujące działanie metod przetwarzania kafelków.
+\end{itemize}
+
+Wszystkie parametry zawarte w pliku konfiguracyjnym są szczegółowo opisane w przykładzie pliku konfiguracyjnego dołączonego do niniejszej pracy o nazwie \texttt{config.cfg}.
+
+\section{OpenCV}
+\label{sec:oprogramowanie:opencv}
+
+Wszystkie rozwiązania zaimplementowane w niniejszej pracy bazują na bibliotece przetwarzania obrazów o nazwie \textbf{OpenCV}. Biblioteka jest dozwolona do bezpłatnego wykorzystania w projektach prywatnych i komercyjnych. OpenCV jest używane w ogromnej ilości projektów z różnych dziedzin i bibliotekę ściągnięto już ponad 9 milionów razy\footnote{\url{http://opencv.org}}. OpenCV cieszy się taką popularnością ze względu na szybkość działania, implementację większości metod przetwarzania obrazu oraz umiejętnością pracy na wielu rdzeniach. Kod źródłowy biblioteki jest dostępny publicznie w serwisie Github\footnote{\url{https://github.com/Itseez/opencv}} przez co każdy może rozwijać OpenCV i ma wgląd do zaimplementowanych metod.

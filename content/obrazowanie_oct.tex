@@ -98,11 +98,9 @@ Obrazy angiograficznie użyte w niniejszej pracy powstały za pomocą metody zwa
 \end{figure}
 
 Wartości pikseli $V_{jk}$ obrazu przepływowego liczone są na podstawie wartości pikseli $I_{ijk}$ sąsiadujących $N$ B-skanów za pomocą wzoru (na rysunku \ref{fig:obrazowanie_oct:speckle_variance} $N=3$):
-
 \begin{equation}
 V_{jk} = \frac{1}{N} \displaystyle\sum_{i=1}^{N}(I_{ijk} - I_{mean})^2
 \end{equation}
-
 Gdzie $j$ i $k$ to indeksy boczne i głębokościowe B-skanu (współrzędne pikseli), a $I_{mean}$ to średnia intensywność zbioru tych samych pikseli, dla których liczona jest wariancja.
 
 Rezultatem połączenia dwuwymiarowych sąsiadujących obrazów przepływowych jest trójwymiarowy obraz przepływowy, który poddaje się projekcji maksymalnego natężenia (ang. \textit{maximum intensity projection, MIP}) polegającej na projekcji woksela o najwyższej intensywności z obrazu 3D na obraz 2D. W przypadku trójwymiarowego obrazu przepływowego będzie to woksel, którego wartość odpowiada największej wariancji pikseli z sąsiadujących B-skanów. Po zastosowaniu projekcji maksymalnego natężenia na trójwymiarowym obrazie przepływowym otrzymujemy angiograficzny obraz \textit{en face} naczyń krwionośnych.

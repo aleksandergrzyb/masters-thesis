@@ -3,41 +3,7 @@
 \chapter{Proponowane algorytmy}
 \label{sec:proponowane_algorytmy}
 
-Niniejszy rozdział szczegółowo opisuje kolejne kroki rozwiązania problemu dokładnie przestawionego w sekcji \ref{sec:wstep:opis_problemu}. Sekcja \ref{sec:proponowane_algorytmy:oprogramowanie} opisuje sposób implementacji oprogramowania oraz wykorzystane technologie. Sekcja \ref{sec:proponowane_algorytmy:wiedza_dziedzinowa} opisuje wiedzę dziedzinową na temat danych wejściowych (kafelków). Następnie sekcje od \ref{sec:proponowane_algorytmy:sift} do \ref{sec:proponowane_algorytmy:laczenie_kafelkow} opisują zasadę działania poszczególnych metod w kolejności zgodnej z ich wykonywaniem w programie.
-
-\section{Oprogramowanie}
-\label{sec:proponowane_algorytmy:oprogramowanie}
-
-Program o nazwie \texttt{mostitch}, który jest celem niniejszej pracy jest całkowicie napisany w języku C++. Język wybrano ze względu na to, że wykorzystywana biblioteka przetwarzania obrazów OpenCV (opisana w skrócie w sekcji \ref{sec:proponowane_algorytmy:opencv}) posiada interfejs w języku C++. Program można uruchomić z konsoli systemu za pomocą komendy:
-
-\begin{verbatim}
-./mostitch path_to_config_file
-\end{verbatim}
-
-gdzie \texttt{path\_to\_config\_file} to obowiązkowy argument do programu wskazujący ścieżkę do pliku konfiguracyjnego (opisanego dokładniej w sekcji \ref{sec:proponowane_algorytmy:plik_configuracyjny}), który określa wszystkie parametry niezbędne do prawidłowego działania programu.
-
-Program umożliwia konstrukcję mozaik dla dowolnej ilości zbiorów kafelków. Dodatkowo dla każdego zbioru kafelków powstają różne wersje mozaik, ze względu na wykorzystanie różnych metod ich tworzenia. Dzięki tej funkcjonalności użytkownik może wybrać najbardziej odpowiednią mozaikę. Wyjściem programu więc jest zbiór mozaik (obrazy \texttt{.png}), w którym każda mozaika ma przypisaną metodę jej tworzenia oraz odpowiadający zbiór kafelków.
-
-\subsection{Plik konfiguracyjny}
-\label{sec:proponowane_algorytmy:plik_configuracyjny}
-
-Do zarządzania plikiem konfiguracyjnym wykorzystano bibliotekę \textbf{libconfig}\footnote{\url{http://www.hyperrealm.com/libconfig/}} umożliwiającą bezproblemowy odczyt pliku konfiguracyjnego z rozszerzeniem \texttt{.cfg}. Format pliku konfiguracyjnego jest bardziej czytelny w porównaniu do powszechnie wykorzystywanych plików XML. Biblioteka również jest świadoma typu zmiennej przez co unika się konwersji typu \texttt{string} na typy takie jak \texttt{int}, czy \texttt{float}.
-
-W pliku konfiguracyjnym zawarte są informacje:
-
-\begin{itemize}
-\item Ścieżka do miejsca z folderami zawierającymi zbiory kafelków do złączenia.
-\item Ścieżka do miejsca, w którym będą zapisane wynikowe mozaiki.
-\item Parametry pozwalające na automatyczne wczytanie obrazów kafelków.
-\item Parametry modyfikujące działanie metod przetwarzania kafelków.
-\end{itemize}
-
-Wszystkie parametry zawarte w pliku konfiguracyjnym są szczegółowo opisane w przykładzie pliku konfiguracyjnego dołączonego do niniejszej pracy o nazwie \texttt{config.cfg}.
-
-\subsection{OpenCV}
-\label{sec:proponowane_algorytmy:opencv}
-
-Wszystkie rozwiązania zaimplementowane w niniejszej pracy bazują na bibliotece przetwarzania obrazów o nazwie \textbf{OpenCV}. Biblioteka jest dozwolona do bezpłatnego wykorzystania w projektach prywatnych i komercyjnych. OpenCV jest używane w ogromnej ilości projektów z różnych dziedzin i bibliotekę ściągnięto już ponad 9 milionów razy\footnote{\url{http://opencv.org}}. OpenCV cieszy się taką popularnością ze względu na szybkość działania, implementację większości metod przetwarzania obrazu oraz umiejętnością pracy na wielu rdzeniach. Kod źródłowy biblioteki jest dostępny publicznie w serwisie Github\footnote{\url{https://github.com/Itseez/opencv}} przez co każdy może rozwijać OpenCV i ma wgląd do zaimplementowanych metod.
+Niniejszy rozdział szczegółowo opisuje kolejne kroki rozwiązania problemu dokładnie przestawionego w sekcji \ref{sec:wstep:opis_problemu}. Sekcja \ref{sec:proponowane_algorytmy:wiedza_dziedzinowa} opisuje wiedzę dziedzinową na temat danych wejściowych (kafelków). Następnie sekcje od \ref{sec:proponowane_algorytmy:sift} do \ref{sec:proponowane_algorytmy:laczenie_kafelkow} opisują zasadę działania poszczególnych metod w kolejności zgodnej z ich wykonywaniem w programie.
 
 \section{Wiedza dziedzinowa}
 \label{sec:proponowane_algorytmy:wiedza_dziedzinowa}
@@ -138,7 +104,6 @@ W większości przypadków ekstrakcja cech może wygenerować ich ogromną iloś
 \label{sec:proponowane_algorytmy:orientacja}
 
 Kolejny krok algorytmu SIFT polega na obliczeniu orientacji każdej cechy na podstawie jej otoczenia, przez co deskryptory cech mogą być przedstawione względnie do swojej orientacji. Dzięki temu algorytm SIFT jest niezależny od rotacji obrazów. Proces obliczenia orientacji zaczyna się od wyznaczenia wartości gradientu $m(x, y)$ i orientacji $\theta(x, y)$ dla każdego piksela z otoczenia wokół cechy za pomocą wzorów:
-
 \begin{equation}
 m(x, y) = \sqrt{(L(x + 1, y) - L(x - 1, y))^2 + (L(x, y + 1) - L(x, y - 1))^2} \\
 \label{eq:magnitude}
@@ -147,7 +112,6 @@ m(x, y) = \sqrt{(L(x + 1, y) - L(x - 1, y))^2 + (L(x, y + 1) - L(x, y - 1))^2} \
 \theta(x, y) = \tan^{-1}((L(x, y + 1) - L(x, y - 1))/(L(x + 1, y) - L(x - 1, y)))
 \label{eq:orientation}
 \end{equation}
-
 Następnie na podstawie wartości orientacji tworzony jest histogram posiadający 36 przedziałów przez co pokrywa zakres orientacji od 0 do 360 stopni. Każdy piksel dodany do histogramu jest ważony poprzez użycie jego wartości gradientu i wartości okrągłego okna filtra Gaussa (piksele znajdujące się dalej od cechy mają mniejszą ważność niż te znajdujące się bliżej). Orientacja odpowiadająca najwyższej wartości w histogramie jest wybrana jako orientacja cechy. Dodatkowo każda orientacja posiadająca wartość większą niż 80\% maksymalnej wartości w histogramie jest zapisywana jako nowa cecha obrazu.
 
 \subsubsection{6. Generacja deskryptorów cech}
@@ -200,10 +164,10 @@ Obiekt \texttt{BFMatcher} posiada funkcjonalność pozwalającą na dopasowanie 
 
 Na tym etapie algorytm już wyekstrahował cechy z obrazów i wyznaczył dopasowania pomiędzy nimi. Ze względu na to, że naczynia krwionośne w angiograficznych obrazach OCT są bardzo do siebie podobne wiele z tych dopasowań będzie niepoprawnych. Rysunek \ref{fig:algorytmy_korejestracji:outliners} z sekcji \ref{sec:algorytmy_korejestracji:korejestracja_na_podstawie_cech} przedstawia istotę problemu niepoprawnych dopasowań, natomiast rysunek \ref{fig:proponowane_algorytmy:no_filtering} przedstawia wykryte dopasowania przez mechanizm \textit{Brute Force Matching} na dwóch rzeczywistych angiograficznych obrazach OCT.
 
-\begin{figure}[H]
+\begin{figure}[htb]
   \centering
   \includegraphics[width=\textwidth]{gfx/no_filtering}
-  \caption{Z lewej strony znajdują się dwa angiograficzne obrazy OCT, które mają być złączone na ok. 10\% swojej szerokości. Z prawej strony widzimy wykryte cechy (kółka zielone i niebieskie) w dwóch obrazach oraz znalezione dopasowania (czerwone linie) pomiędzy cechami za pomocą techniki \textit{Brute Force Matching}.}
+  \caption{Na górze znajdują się dwa angiograficzne obrazy OCT, które mają być złączone na ok. 10\% swojej szerokości. Na dole znajdują się wykryte cechy (kółka zielone i niebieskie) w dwóch obrazach oraz znalezione dopasowania (czerwone linie) pomiędzy cechami za pomocą techniki \textit{Brute Force Matching}.}
   \label{fig:proponowane_algorytmy:no_filtering}
 \end{figure}
 
@@ -243,10 +207,10 @@ length = \sqrt{(f_{1x} - f_{2x})^2 + (f_{1y} - (f_{2y} + imageSize))^2}
 
 Rysunek \ref{fig:proponowane_algorytmy:after_placement} przedstawia wynik filtracji na tych samych dwóch obrazach angiograficznych użytych jako przykład w rysunku \ref{fig:proponowane_algorytmy:no_filtering}.
 
-\begin{figure}[H]
+\begin{figure}[htb]
   \centering
   \includegraphics[width=\textwidth]{gfx/after_placement}
-  \caption{\textbf{Lewy obraz:} Dopasowania wyznaczone po zastosowaniu \textit{Brute Force Matching}. \textbf{Prawy obraz:} Dopasowania pozostałe po filtrowaniu na podstawie położenia.}
+  \caption{\textbf{Górny obraz:} Dopasowania wyznaczone po zastosowaniu \textit{Brute Force Matching}. \textbf{Dolny obraz:} Dopasowania pozostałe po filtrowaniu na podstawie położenia.}
   \label{fig:proponowane_algorytmy:after_placement}
 \end{figure}
 
@@ -255,10 +219,10 @@ Rysunek \ref{fig:proponowane_algorytmy:after_placement} przedstawia wynik filtra
 
 Czasem występuje sytuacja, w której jedną cechę z jednego kafelka dopasowano do kilku cech z drugiego kafelka. Na podstawie wiedzy dziedzinowej wiemy, że jest to sytuacja niepożądana i cecha może być dopasowana tylko i wyłącznie do jednej cechy. Niniejszy etap filtracji polega na iteracji po wszystkich cechach posiadających dopasowania do więcej niż jednej cechy i na pozostawieniu tylko najbardziej podobnej cechy (na podstawie wartości deskryptoru cechy). Ten etap filtrowania jest wykonywany dwukrotnie -- pierwszy raz dla cech z pierwszego kafelka i drugi raz dla cech z drugiego kafelka. Rysunek \ref{fig:proponowane_algorytmy:no_repetition_filtering} przedstawia wynik filtracji poprzez eliminację nadmiarowych dopasowań na dopasowaniach będących wynikiem filtracji poprzedniej (rysunek \ref{fig:proponowane_algorytmy:after_placement}).
 
-\begin{figure}[H]
+\begin{figure}[htb]
   \centering
   \includegraphics[width=\textwidth]{gfx/no_repetition_filtering}
-  \caption{\textbf{Lewy obraz:} Dopasowania wyznaczone po zastosowaniu filtrowania na podstawie położenia. \textbf{Prawy obraz:} Dopasowania pozostałe po eliminacji nadmiarowych dopasowań.}
+  \caption{\textbf{Górny obraz:} Dopasowania wyznaczone po zastosowaniu filtrowania na podstawie położenia. \textbf{Dolny obraz:} Dopasowania pozostałe po eliminacji nadmiarowych dopasowań.}
   \label{fig:proponowane_algorytmy:no_repetition_filtering}
 \end{figure}
 
@@ -276,7 +240,7 @@ Działanie algorytmu RANSAC składa się z dwóch kroków powtarzanych w sposób
 
 Algorytm RANSAC będzie powtarzał powyższe dwa kroki dopóki nie znajdzie w kroku drugim wystarczającej ilości próbek pasujących do modelu wyznaczonego w kroku pierwszym lub nie przekroczy liczby iteracji, która jest parametrem algorytmu. Rysunek \ref{fig:proponowane_algorytmy:ransac} \footnote{\url{https://en.wikipedia.org/wiki/RANSAC}} przedstawia działanie algorytmu RANSAC na problemie, w którym próbkami są punkty, a szukanym modelem jest funkcja prostej.
 
-\begin{figure}[H]
+\begin{figure}[htb]
   \centering
   \includegraphics[width=8cm]{gfx/ransac}
   \caption{\textbf{Lewy obraz:} Zbiór danych, w którym wiele punktów jest szumem. \textbf{Prawy obraz:} Funkcja prostej (niebieska linia) obliczona przez algorytm RANSAC. Punkty, które są szumem (czerwone kropki) nie mają wpływu na model, czyli funkcję prostej.}
@@ -293,10 +257,10 @@ Wartość \texttt{CV\_RANSAC} powoduje użycie algorytmu RANSAC zamiast LMedS. J
 
 Rysunek \ref{fig:proponowane_algorytmy:ransac_filter} przedstawia wynik algorytmu RANSAC na dopasowaniach będących wynikiem poprzedniego procesu filtracji (rysunek \ref{fig:proponowane_algorytmy:no_repetition_filtering}).
 
-\begin{figure}[H]
+\begin{figure}[htb]
   \centering
   \includegraphics[width=\textwidth]{gfx/ransac_filter}
-  \caption{\textbf{Lewy obraz:} Dopasowania pozostałe po eliminacji nadmiarowych dopasowań. \textbf{Prawy obraz:} Dopasowania pozostałe po użyciu algorytmu RANSAC.}
+  \caption{\textbf{Górny obraz:} Dopasowania pozostałe po eliminacji nadmiarowych dopasowań. \textbf{Dolny obraz:} Dopasowania pozostałe po użyciu algorytmu RANSAC.}
   \label{fig:proponowane_algorytmy:ransac_filter}
 \end{figure}
 
@@ -320,7 +284,7 @@ Filtr ma na celu pozostawić dopasowania z podobnym nachyleniem. Rysunek \ref{fi
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{gfx/slope}
-  \caption{\textbf{Lewy obraz:} Dopasowania pozostałe po użyciu algorytmu RANSAC. \textbf{Prawy obraz:} Dopasowania posiadające podobny kąt nachylenia.}
+  \caption{\textbf{Górny obraz:} Dopasowania pozostałe po użyciu algorytmu RANSAC. \textbf{Dolny obraz:} Dopasowania posiadające podobny kąt nachylenia.}
   \label{fig:proponowane_algorytmy:slope}
 \end{figure}
 
@@ -382,7 +346,6 @@ Kolejnym krokiem jest proces stworzenia szkieletu na obrazie wynikowym powstały
 \subsubsection{2. Eksploracja szkieletu za pomocą \textit{depth first search}}
 
 Szkielet obrazu angiograficznego OCT jest następnie wykorzystany do wykrycia położeń naczyń krwionośnych. Proces rozpoczyna się od ustalenia położeń białych pikseli na krawędziach szkieletu (są to potencjalne miejsca, w których może zacząć się naczynie krwionośne). Następnie algorytm rozpoczyna eksploracje podążając białymi pikselami szkieletu z wykorzystaniem techniki \textit{depth first serach}\footnote{\url{https://en.wikipedia.org/wiki/Depth-first_search}}, dzięki czemu eksploracja wzdłuż naczynia krwionośnego przebiega szybciej. Algorytm wykrywa naczynie krwionośne jeżeli dojdzie do piksela $p$ spełniającego warunki w zależności od początku drogi eksploracji -- \ref{eq:up_or_down} dla początku w górnej lub dolnej krawędzi obrazu, \ref{eq:left_or_right} dla początku w lewej lub prawej krawędzi obrazu.
-
 \begin{equation}
 distance > imageSize * 0.5 \wedge \left|p_{y} - startp_{y}\right| > 0.1 * imageSize
 \label{eq:up_or_down}
@@ -391,7 +354,6 @@ distance > imageSize * 0.5 \wedge \left|p_{y} - startp_{y}\right| > 0.1 * imageS
 distance > imageSize * 0.5 \wedge \left|p_{x} - startp_{x}\right| > 0.1 * imageSize
 \label{eq:left_or_right}
 \end{equation}
-
 Gdzie $imageSize$ to rozmiar obrazu (w przypadku niniejszej pracy jest to 240 pikseli), $startp$ to piksel od którego rozpoczęła się eksploracja, a $distance$ to odległość euklidesowa pomiędzy $p$, a $startp$. Współrzędne $p.x$, $p.y$, $startp_{x}$ i $startp_{y}$ są wyrażone w układzie współrzędnych z początkiem w lewym górnym rogu obrazu.
 
 Rysunek \ref{fig:proponowane_algorytmy:path_explor} przedstawia przykładową eksplorację szkieletu.
@@ -423,7 +385,6 @@ Proces estymacji macierzy transformacji jest zależny od relacji pomiędzy dwoma
 \end{figure}
 
 By wyznaczyć macierz transformacji algorytm wybiera punkty charakterystyczne leżące najbliżej lewej krawędzi (dla relacji kafelków z rysunku \ref{fig:proponowane_algorytmy:path_trans}) lub leżące najbliżej górnej krawędzi (dla kafelków ustawionych poziomo). Wybrane punkty charakterystyczne $p_{1}$ i $p_{2}$ należą do tego samego naczynia krwionośnego jeżeli różnica ich odpowiednich współrzędnych mieści się w ustalonym przedziale $range$ -- \ref{eq:path_up_or_down} dla ułożenia pionowego, \ref{eq:path_left_or_right} dla ułożenia poziomego.
-
 \begin{equation}
 \left|p_{1x}- p_{2x}\right| < range
 \label{eq:path_up_or_down}
@@ -432,9 +393,7 @@ By wyznaczyć macierz transformacji algorytm wybiera punkty charakterystyczne le
 \left|p_{1y} - p_{2y}\right| < range
 \label{eq:path_left_or_right}
 \end{equation}
-
 Na podstawie zweryfikowanych punktów charakterystycznych macierz transformacji $T$ wyznacza się następująco -- \ref{eq:trans_matrix_up_or_down} dla ułożenia pionowego, \ref{eq:trans_matrix_left_or_right} dla ułożenia poziomego:
-
 \begin{equation}
 T = \begin{bmatrix}
   1 & 0 & -(p_{1x} - p_{2x})\\
@@ -442,7 +401,6 @@ T = \begin{bmatrix}
 \end{bmatrix}
 \label{eq:trans_matrix_up_or_down}
 \end{equation}
-
 \begin{equation}
 T = \begin{bmatrix}
   1 & 0 & width * (1 - overlap) \\
@@ -450,7 +408,6 @@ T = \begin{bmatrix}
 \end{bmatrix}
 \label{eq:trans_matrix_left_or_right}
 \end{equation}
-
 Gdzie $width$ to szerokość kafelka, $height$ to jego wysokość, a $overlap$ to miara szerokości obszaru nakładania się kafelków wyrażona w procentach.
 
 \subsection{Estymacja macierzy transformacji z wykorzystaniem metody OpenCV}
@@ -468,7 +425,6 @@ Gdzie \texttt{imageOneKey} to cechy z obrazu pierwszego, \texttt{imageTwoKey} to
 \label{sec:proponowane_algorytmy:srednie_roznice}
 
 W niniejszej metodzie do wyznaczenia macierzy jest liczona średnia różnica dopasowanych punktów w osi x \ref{eq:mean_x} i osi y \ref{eq:mean_y}:
-
 \begin{equation}
 t_x = \frac{\sum_{i=1}^{n} key_{ix}^{2} - key_{ix}^{1}}{n}
 \label{eq:mean_x}
@@ -477,20 +433,16 @@ t_x = \frac{\sum_{i=1}^{n} key_{ix}^{2} - key_{ix}^{1}}{n}
 t_y = \frac{\sum_{i=1}^{n} key_{iy}^{2} - key_{iy}^{1}}{n}
 \label{eq:mean_y}
 \end{equation}
-
 Gdzie $k_i^{1}$ to cecha $i$ z obrazu pierwszego, $k_i^{2}$ to cecha $i$ z obrazu drugiego, a $n$ to ilość dopasowań pomiędzy cechami. Macierz transformacji wyznacza się następująco:
-
 \begin{equation}
 T = \begin{bmatrix}
   1 & 0 & t_x \\
   0 & 1 & t_y
 \end{bmatrix}
 \end{equation}
-
 \subsection{Estymacja macierzy transformacji na podstawie wiedzy dziedzinowej}
 
 Wyznaczenie macierzy transformacji na podstawie wiedzy dziedzinowej jest metodą najprostszą i jedynie bierze pod uwagę obszar nałożenia kafelków, który ustalany jest za pomocą parametru \texttt{percentOverlap} w pliku konfiguracyjnym. Macierz transformacji wyznacza się następująco -- \ref{eq:shift_matrix_left_or_right} dla ułożenia kafelków w poziomie, \ref{eq:shift_matrix_up_or_down} dla ułożenia kafelków w pionie:
-
 \begin{equation}
 T = \begin{bmatrix}
   1 & 0 & 0 \\
@@ -505,7 +457,6 @@ T = \begin{bmatrix}
 \end{bmatrix}
 \label{eq:shift_matrix_left_or_right}
 \end{equation}
-
 Gdzie $imageSize$ to rozmiar kafelka, a $overlap$ to wartość parametru \texttt{percentOverlap}.
 
 \begin{figure}[H]
@@ -524,7 +475,6 @@ Wybór użytej metody do estymacji macierzy transformacji jest głównie zdeterm
 \label{sec:proponowane_algorytmy:globalna_rejestracja}
 
 Następnym krokiem tworzenia mozaiki jest decyzja, który kafelek rejestrować z którym i w jakiej kolejności. Proces rozpoczyna się od wybrania kafelka referencyjnego wobec którego wszystkie inne mozaiki będą transformowane. Zakładając, że mozaika składa się z $r$ wierszy i $c$ kolumn współrzędne kafelka referencyjnego $ref_x$ i $ref_y$ są wybierane na podstawie:
-
 \begin{equation}
 ref_x = \left \lfloor\frac{c - 1}{2}\right \rfloor
 \label{eq:ref_x}
@@ -533,7 +483,6 @@ ref_x = \left \lfloor\frac{c - 1}{2}\right \rfloor
 ref_y = \left \lfloor\frac{r - 1}{2}\right \rfloor
 \label{eq:ref_y}
 \end{equation}
-
 Mając wyznaczony kafelek referencyjny następnym krokiem jest ustalenie kolejności rejestracji pomiędzy kafelkami. Proces wyjaśniony jest na przykładzie na rysunku \ref{fig:proponowane_algorytmy:global_registration}.
 
 \begin{figure}[H]
@@ -544,20 +493,16 @@ Mając wyznaczony kafelek referencyjny następnym krokiem jest ustalenie kolejno
 \end{figure}
 
 Posługując się przykładem z rysunku \ref{fig:proponowane_algorytmy:global_registration} oraz oznaczając $T_{xy\rightarrow zw}$ jako macierz transformacji pomiędzy kafelkiem $I_{xy}$ o współrzędnych $x$ i $y$ i kafelkiem $I_{zw}$ o współrzędnych $z$ i $w$ macierz transformacji kafelka $I_{33}$ wygląda następująco:
-
 \begin{equation}
 T_{33\rightarrow 11} = T_{21\rightarrow 11}T_{31\rightarrow 21}T_{32\rightarrow 31}T_{33\rightarrow 32}
 \end{equation}
-
 \section{Łączenie kafelków}
 \label{sec:proponowane_algorytmy:laczenie_kafelkow}
 
 Ostatnim etapem w tworzeniu mozaiki jest wyświetlenie wszystkich kafelków po transformacji na wspólnej płaszczyźnie. Żeby mozaika spełniała wrażenie spójnej i jednolitej musi być zaimplementowany mechanizm, który będzie odpowiednio wybierał i ważył piksele w miejscach gdzie kafelki się nakładają. Wartość piksela finalnej mozaiki $f$ jest obliczana za pomocą wzoru:
-
 \begin{equation}
 f(p) = \frac{\sum_{n = 0}^{N - 1} w_n(p)f_n(p)}{\sum_{n = 0}^{N - 1} w_n(p)}
 \end{equation}
-
 Gdzie $N$ to liczba kafelków znajdujących się w miejscu piksela $f(p)$, $f_n(p)$ to wartość piksela $p$ w kafelku $n$, a $w_n(p)$ to waga piksela $p$ w kafelku $n$. Wagi pikseli są obliczane za pomocą \textbf{\textit{distance transform}}\footnote{\url{https://en.wikipedia.org/wiki/Distance_transform}}, której wartość to odległość do najbliższego piksela o wartości 0. \textit{Distance transform} jest zaimplementowane w OpenCV za pomocą funkcji \texttt{distanceTransform(...)} zwracającą obraz z obliczonymi wartościami dla całego obrazu. Rysunek \ref{fig:proponowane_algorytmy:dis} przedstawia wyjście funkcji na przykładowym obrazie.
 
 \begin{figure}[H]
@@ -568,17 +513,13 @@ Gdzie $N$ to liczba kafelków znajdujących się w miejscu piksela $f(p)$, $f_n(
 \end{figure}
 
 Dzięki wykorzystaniu \textit{distance transform} piksele znajdujące się bliżej środka obrazu będą bardziej istotne w przeciwieństwie do pikseli znajdujących przy krawędziach obrazu. Rysunek \ref{fig:proponowane_algorytmy:blend} przedstawia przykładowe dwa kafelki z zaznaczonymi trzema punktami $p_1$, $p_2$ i $p_3$ w finalnej mozaice. Punkt $p_1$ nie należy do żadnego kafelka przez co jego wartość jest równa $0$, punkt $p_2$ należy do kafelka $f_2$ i jego wartość jest równa:
-
 \begin{equation}
 f(p_2) = \frac{d_{22}f_2(p_2)}{d_{22}}
 \end{equation}
-
 Gdzie $d_{nk}$ to wartość \textit{distance transform} piksela $p_n$ w obrazie $f_k$. Punkt $p_3$ należy do kafelka $f_2$ i $f_3$ i jego wartość jest równa:
-
 \begin{equation}
 f(p_3) = \frac{d_{32}f_2(p_3) + d_{31}f_1(p_3)}{d_{32} + d_{31}}
 \end{equation}
-
 \begin{figure}[H]
   \centering
   \includegraphics[width=6cm]{gfx/blend}

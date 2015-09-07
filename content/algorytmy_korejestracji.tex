@@ -3,7 +3,7 @@
 \chapter{Algorytmy korejestracji przestrzennej obrazów OCT}
 \label{sec:algorytmy_korejestracji}
 
-\textbf{Mozaiką} nazywa się obraz powstały poprzez połączenie grupy obrazów zwanych kafelkami na podstawie ich wzajemnych relacji. Znanym oraz popularnym przykładem łączenia obrazów w jeden większy jest funkcja panoramy w telefonach komórkowych, czy aparatach fotograficznych. Od strony użytkownika proces tworzenia panoramy polega na powolnym przesuwaniu telefonem po linii poziomej do momentu aż żądany krajobraz zostanie uchwycony. Od strony urządzenia proces polega na wykonywaniu serii zdjęć oraz następnie łączenie nachodzących klatek w jeden obraz. Rezultatem jest jednolita panorama, która składa się z grupy mniejszych węższych zdjęć.
+\textbf{Mozaiką} nazywa się obraz powstały poprzez połączenie grupy obrazów zwanych w żargonie ,,kafelkami'' na podstawie ich wzajemnych relacji. Znanym oraz popularnym przykładem łączenia obrazów w jeden większy jest funkcja panoramy w telefonach komórkowych czy aparatach fotograficznych. Od strony użytkownika proces tworzenia panoramy polega na powolnym przesuwaniu telefonem po linii poziomej do momentu aż żądany krajobraz zostanie uchwycony. Od strony urządzenia proces polega na wykonywaniu serii zdjęć oraz następnie łączenie nachodzących klatek w jeden obraz. Rezultatem jest jednolita panorama, która składa się z grupy mniejszych węższych zdjęć.
 
 Celem niniejszej pracy jest stworzenie mozaiki OCT (przykład na rysunku \ref{fig:algorytmy_korejestracji:mosaic}) z połączenia mniejszych nachodzących na siebie nawzajem angiograficznych obrazów OCT (przykład obrazu angiograficznego OCT znajduje się z prawej strony na rysunku \ref{fig:obrazowanie_oct:bscan_vessels}).
 
@@ -14,12 +14,12 @@ Celem niniejszej pracy jest stworzenie mozaiki OCT (przykład na rysunku \ref{fi
   \label{fig:algorytmy_korejestracji:mosaic}
 \end{figure}
 
-Proces automatycznego stworzenia mozaiki takiej jak na rysunku \ref{fig:algorytmy_korejestracji:mosaic} jest zadaniem nietrywialnym i wymaga dokładnej analizy wiedzy dziedzinowej oraz precyzyjnego wyboru metod przetwarzania obrazów. Pierwszym krokiem jest wybór modelu deformacji kafelków (sekcja \ref{sec:algorytmy_korejestracji:model_deformacji}), następnym etapem jest wybór metody wzajemnej korejestracji kafelków (sekcja \ref{sec:algorytmy_korejestracji:korejestracja_kafelow}). Posiadając zdefiniowane wzajemne relacje kafelków oraz ich docelowe położenie w finalnej mozaice należy wykonać proces łączenia kafelków (sekcja \ref{sec:algorytmy_korejestracji:laczenie_kafelkow}). W każdej z tych sekcji jest wyjaśniona idea metody w kontekście stworzenia mozaiki OCT, natomiast szczegółowy opis zaimplementowanych metod znajduje się w rozdziale \ref{sec:proponowane_algorytmy}.
+Proces automatycznego stworzenia mozaiki (ang. \textit{stitching}) takiej jak na rysunku \ref{fig:algorytmy_korejestracji:mosaic} jest zadaniem nietrywialnym i wymaga dokładnej analizy wiedzy dziedzinowej oraz precyzyjnego wyboru metod przetwarzania obrazów. Pierwszym krokiem jest wybór modelu deformacji kafelków (sekcja \ref{sec:algorytmy_korejestracji:model_deformacji}), następnym etapem jest wybór metody wzajemnej korejestracji kafelków (sekcja \ref{sec:algorytmy_korejestracji:korejestracja_kafelow}). Posiadając zdefiniowane wzajemne relacje kafelków oraz ich docelowe położenie w finalnej mozaice należy wykonać proces łączenia kafelków (sekcja \ref{sec:algorytmy_korejestracji:laczenie_kafelkow}). W każdej z tych sekcji jest wyjaśniona idea metody w kontekście stworzenia mozaiki OCT, natomiast szczegółowy opis zaimplementowanych metod znajduje się w rozdziale \ref{sec:proponowane_algorytmy}.
 
 \section{Model deformacji kafelków}
 \label{sec:algorytmy_korejestracji:model_deformacji}
 
-Model deformacji kafelków określa dozwolone przekształcenia geometryczne odwzorowujące piksele kafelka do pikseli kafelka w finalnej mozaice. Ze względu na to, że angiograficzne obrazy OCT znajdują się na jednej płaszczyźnie możliwy zbiór modeli deformacji ogranicza  się do transformacji dwuwymiarowych przedstawionych na rysunku \ref{fig:algorytmy_korejestracji:trans}.
+Model deformacji kafelków określa dozwolone przekształcenia geometryczne odwzorowujące piksele kafelka do pikseli kafelka w finalnej mozaice. Ze względu na to, że angiograficzne obrazy OCT znajdują się na jednej płaszczyźnie\footnote{W rzeczywistości powierzchnia siatkówki jest wklęsła. Uproszenie polegające na przedstawieniu mozaiki na płaszczyźnie znacznie ułatwia implementację, a nie powoduje widocznych zniekształceń.} możliwy zbiór modeli deformacji ogranicza  się do transformacji dwuwymiarowych przedstawionych na rysunku \ref{fig:algorytmy_korejestracji:trans}.
 
 \begin{figure}[H]
   \centering
@@ -33,12 +33,10 @@ Idealnie OCT powinno tworzyć obrazy angiograficzne, które są względem siebie
 \subsection{Matematyczny zapis modelu transformacji ciała sztywnego}
 
 Współrzędne piksela w kafelku to trójelementowy wektor $\widetilde{x}=(x, y, 1)$, gdzie $x$ i $y$ to współrzędne piksela w układzie współrzędnych kafelka. Tak zdefiniowany piksel poddaje się transformacji ciała sztywnego. Po transformacji piksel posiada współrzędne $\hat{x}=(x', y')$ w układzie współrzędnych finalnej mozaiki. Transformacja ciała sztywnego jest zdefiniowana następująco:
-
 \begin{equation}
 \hat{x}=\begin{bmatrix}R&t\end{bmatrix}\widetilde{x}
 \label{eq:transformation}
 \end{equation}
-
 gdzie:
 
 \begin{align}
@@ -72,20 +70,18 @@ Dopasowanie dwóch kafelków do siebie nazywa się również ich korejestracją,
 Dopasowanie kafelków z rysunku \ref{fig:algorytmy_korejestracji:align} jest przykładem bardzo prostym, ponieważ wymaga tylko translacji jednego kafelka względem drugiego. W rzeczywistości pomiary OCT nie są tak dokładne. Prosta translacja wzdłuż jednej z osi nie wystarcza, przez co wymagane jest użycie metody automatycznie wyznaczającej parametry translacji i rotacji. Dwie najpopularniejsze metody to:
 
 \begin{enumerate}
-\item \textbf{Korejestracja na podstawie wartości pikseli} (sekcja \ref{sec:algorytmy_korejestracji:korejestracja_na_podstawie_wartosci}) - Metoda przesuwająca jeden obraz względem drugiego i następnie oceniająca jak nałożone piksele obrazów pasują do siebie na podstawie ich wartości.
+\item \textbf{Korejestracja na podstawie wartości pikseli} (sekcja \ref{sec:algorytmy_korejestracji:korejestracja_na_podstawie_wartosci}) - Metoda wielokrotnie przesuwająca jeden obraz względem drugiego i następnie oceniająca każdą z tych unikalnych pozycji pod względem dopasowania obrazów do siebie.
 \item \textbf{Korejestracja na podstawie cech} (sekcja \ref{sec:algorytmy_korejestracji:korejestracja_na_podstawie_cech}) - Metoda ekstrahująca charakterystyczne cechy z każdego obrazu i następnie dopasowująca te cechy by osiągnąć globalną spójność. Dopasowania są później użyte przez algorytm do wyznaczenia macierzy transformacji pomiędzy obrazami.
 \end{enumerate}
 
 \subsection{Korejestracja na podstawie wartości pikseli}
 \label{sec:algorytmy_korejestracji:korejestracja_na_podstawie_wartosci}
 
-Korejestracja na podstawie wartości pikseli jest często nazywana metodą bezpośrednią, ponieważ wymaga bezpośredniego porównania wartości pikseli nakładających się obrazów. Pierwszym krokiem w tej metodzie jest wybranie odpowiedniej miary błędu. Taką miarą błędu może być funkcja suma błędów kwadratowych $E_{RSS}$ (ang. \textit{residual sum of squares, RSS}). Mając daną funkcję $I_{S}(w_{i})$ zwracającą wartość piksela w obrazie źródłowym (przesuwanym) w lokacji $w_{i}=(x_{i}, y_{i})$ oraz funkcję $I_{T}(w_{i})$ zwracającą wartość piksela w obrazie docelowym (referencyjnym, pozostającym na miejscu) $E_{RSS}$ można zdefiniować jako:
-
+Korejestracja na podstawie wartości pikseli jest często nazywana metodą bezpośrednią, ponieważ wymaga bezpośredniego porównania wartości pikseli nakładających się obrazów. Pierwszym krokiem w tej metodzie jest wybranie odpowiedniej miary błędu. Taką miarą błędu może być funkcja suma błędów kwadratowych $E_{RSS}$ (ang. \textit{residual sum of squares, RSS}). Mając daną funkcję $I_{S}(p_{i})$ zwracającą wartość piksela w obrazie źródłowym (przesuwanym) w lokalizacji $p_{i}=(x_{i}, y_{i})$ oraz funkcję $I_{T}(p_{i})$ zwracającą wartość piksela w obrazie docelowym (referencyjnym, pozostającym na miejscu) $E_{RSS}$ można zdefiniować jako:
 \begin{equation}
-E_{RSS}=\sum_{i}[I_{S}(w_{i}+u)-I_{T}(w_{i})]^2=\sum_{i}e_{i}^2
+E_{RSS}=\sum_{i}[I_{S}(p_{i}+u)-I_{T}(p_{i})]^2=\sum_{i}e_{i}^2
 \end{equation}
-
-gdzie $u=(t_{x}, t_{y})$ to wartość przesunięcia obrazu źródłowego, a $e_{i}=I_{S}(w_{i}+u)-I_{T}(w_{i})$ to błąd resztowy pomiędzy wartościami pikseli przesuniętego obrazu źródłowego i stacjonarnego obrazu docelowego.
+gdzie $u=(t_{x}, t_{y})$ to wartość przesunięcia obrazu źródłowego, a $e_{i}=I_{S}(p_{i}+u)-I_{T}(p_{i})$ to błąd resztowy pomiędzy wartościami pikseli przesuniętego obrazu źródłowego i stacjonarnego obrazu docelowego.
 
 Mając tak zdefiniowaną miarę błędu najprostszą metodą wyznaczającą najlepsze dopasowanie obrazów jest obliczenie błędu dla każdego możliwego przesunięcia obrazu źródłowego. Posiadając wartości wszystkich błędów z odpowiednimi dla nich wartościami przesunięcia można by wybrać wartość najmniejszego błędu. Takie podejście natomiast wiąże się z ogromnym kosztem obliczeniowym w przypadku, gdy obrazy są dużej rozdzielczości i jest ich wiele. Proces można przyspieszyć używając algorytm optymalizacji Levenberga-Marquardta \cite{unser:07} albo poprzez wykorzystanie piramid obrazu w metodzie \textit{Hierarchical Motion Estimation} \cite{export:70092}.
 
@@ -132,18 +128,14 @@ Problem z rysunku \ref{fig:algorytmy_korejestracji:outliners} można rozwiązać
 \subsubsection{Estymacja macierzy transformacji na podstawie dopasowań}
 
 Następnym krokiem po wyznaczeniu dopasowań pomiędzy dwoma obrazami jest estymacja macierzy transformacji jednego obrazu względem drugiego. Estymacja macierzy transformacji wykonuje się na podstawie ustalonego modelu deformacji (sekcja \ref{sec:algorytmy_korejestracji:model_deformacji}). Biorąc pod uwagę jako model transformacji ciało sztywne (dozwolona rotacja i translacja) równanie pozwalające obliczyć parametry rotacji i translacji można zapisać jako:
-
 \begin{equation}
 T=SR+t
 \end{equation}
-
 gdzie $T$ to zbiór cech w obrazie docelowym, $S$ to zbiór cech w obrazie źródłowym, $R$ to macierz rotacji, a $t$ to wektor translacji. Wyznaczenie $R$ i $t$ z tego równania byłoby proste, jeżeli wszystkie cechy z obrazu źródłowego dałoby się idealnie przekształcić na cechy obrazu docelowego. Istnieje bardzo mała szansa, że macierz transformacji obliczona na podstawie jednego dopasowania zaaplikowana do cechy z innego dopasowania zwróciłaby miejsce odpowiadającej cechy z drugiego obrazu (będzie blisko niej, ale nie idealnie w tym samym miejscu). Różnica wynika z tego, że obrazy posiadają szum oraz algorytmy zwracające cechy nie są tak dokładne. Jednym z prostszych rozwiązań tego problemu jest wykorzystanie metody minimalizacji błędu średniokwadratowego polegającej na znalezieniu takiej macierzy transformacji dla której błąd średniokwadratowy pomiędzy cechą w obrazie docelowym, a cechą z obrazu źródłowego po transformacji jest najmniejszy. Mając dane współrzędne cechy w obrazie docelowym $T_{i}$ oraz współrzędne odpowiadającej cechy w obrazie źródłowym $S_{i}$ oraz macierz transformacji $M$ błąd średniokwadratowy można zapisać jako:
-
 \begin{equation}
 E_{LS}=\sum_{i}d(T_{i}, MS_{i})^2
 \label{eq:estimate}
 \end{equation}
-
 gdzie $E_{LS}$ to minimalny błąd średniokwadratowy, a funkcja $d(...)$ to odległość euklidesowa pomiędzy dwoma punktami.
 
 Równanie \ref{eq:estimate} można rozwiązać algorytmami optymalizacji. W niniejszej pracy do wyznaczenia parametrów rotacji i translacji na podstawie dopasowań została wykorzystana funkcja OpenCV, której użycie jest opisane w sekcji \ref{sec:proponowane_algorytmy:estymacja}.
@@ -152,12 +144,10 @@ Równanie \ref{eq:estimate} można rozwiązać algorytmami optymalizacji. W nini
 \label{sec:algorytmy_korejestracji:laczenie_kafelkow}
 
 Po wyznaczeniu macierzy translacji pomiędzy dwoma kafelkami następnym krokiem jest ich złączenie w obszarze, w którym na siebie nachodzą. Problem by nie istniał jeżeli dopasowanie byłoby idealne oraz ekspozycja dwóch kafelków byłaby identyczna. Niestety w rzeczywistym świecie po złączeniu widoczne są krawędzie kafelków oraz inne artefakty wynikające z błędu rejestracji, czy niedokładności aparatu. Stworzenie ładnej oraz jednorodnej mozaiki wymaga określenia, które piksele z dwóch kafelków należy wykorzystać w procesie łączenia oraz jakie przypisać im wagi. Najprostszą metodą jest wzięcie średniej ważonej każdego piksela z dwóch łączonych kafelków:
-
 \begin{equation}
 f(x)=\frac{\sum_{i}\omega_{i}(x)f_{i}(x)}{\sum_{i}\omega_{i}(x)}
 \label{eq:blending}
 \end{equation}
-
 gdzie $i$ to liczba nakładających się kafelków, $f(x)$ to wartość piksela $x$ w finalnej mozaice, $f_{i}(x)$ to wartość piksela $x$ w kolejnych nakładających się kafelkach, a $w(x)$ to waga piksela $x$. Następnym krokiem w tej metodzie jest ustalenie wartości wag. Jednym z pomysłów jest wykorzystanie zwykłej średniej ($w(x)=1$ dla każdego piksela $x$). Nie jest to jednak najlepszy sposób, ponieważ krawędzie kafelków po zastosowaniu średniej są dalej widoczne. Lepszym podejściem jest uzależnienie wartości wag od odległości piksela od środka kafelka do którego należy (piksel znajdujący się przy krawędzi swojego kafelka będzie miał mniejszą wagę niż piksel znajdujący się blisko środka swojego kafelka). Metoda wykorzystana jest w niniejszej pracy i dokładniej jest opisana w sekcji \ref{sec:proponowane_algorytmy:laczenie_kafelkow}. Istnieją również bardziej zaawansowane metody takie jak algorytm \textit{multi-band blending} zaproponowany przez Burt i Adelson \cite{Burt:1983:MSA:245.247} dający jeszcze lepsze rezultaty \cite{Brown:2007:API:1265138.1265141}.
 
 
