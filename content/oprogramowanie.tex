@@ -1,4 +1,4 @@
-% !TEX root = ../thesis-example.tex
+% !TEX root = ../thesis.tex
 %
 \chapter{Oprogramowanie}
 \label{sec:oprogramowanie:oprogramowanie}
@@ -9,12 +9,12 @@ Program o nazwie \texttt{mostitch}, który jest celem niniejszej pracy jest cał
 ./mostitch path_to_config_file
 \end{verbatim}
 
-gdzie \texttt{path\_to\_config\_file} to obowiązkowy argument do programu wskazujący ścieżkę do pliku konfiguracyjnego (opisanego dokładniej w sekcji \ref{sec:oprogramowanie:plik_configuracyjny}), który określa wszystkie parametry niezbędne do prawidłowego działania programu.
+gdzie \texttt{path\_to\_config\_file} to obowiązkowy argument do programu wskazujący ścieżkę do pliku konfiguracyjnego (opisanego dokładniej w sekcji \ref{sec:oprogramowanie:plik_konfiguracyjny}), który określa wszystkie parametry niezbędne do prawidłowego działania programu.
 
 Program umożliwia konstrukcję mozaik dla dowolnej ilości zbiorów kafelków. Dodatkowo dla każdego zbioru kafelków powstają różne wersje mozaik, ze względu na wykorzystanie różnych metod ich tworzenia. Dzięki tej funkcjonalności użytkownik może wybrać najbardziej odpowiednią mozaikę. Wyjściem programu więc jest zbiór mozaik (obrazy \texttt{.png}), w którym każda mozaika ma przypisaną metodę jej tworzenia oraz odpowiadający zbiór kafelków.
 
 \section{Plik konfiguracyjny}
-\label{sec:oprogramowanie:plik_configuracyjny}
+\label{sec:oprogramowanie:plik_konfiguracyjny}
 
 Do zarządzania plikiem konfiguracyjnym wykorzystano bibliotekę \textbf{libconfig}\footnote{\url{http://www.hyperrealm.com/libconfig/}} umożliwiającą bezproblemowy odczyt pliku konfiguracyjnego z rozszerzeniem \texttt{.cfg}. Format pliku konfiguracyjnego jest bardziej czytelny w porównaniu do powszechnie wykorzystywanych plików XML. Biblioteka również jest świadoma typu zmiennej przez co unika się konwersji typu \texttt{string} na typy takie jak \texttt{int}, czy \texttt{float}.
 

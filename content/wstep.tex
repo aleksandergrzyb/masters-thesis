@@ -1,13 +1,46 @@
-% !TEX root = ../thesis-example.tex
+% !TEX root = ../thesis.tex
 %
 \chapter{Wstęp}
 \label{sec:wstep}
 
+Gwałtowny rozwój technologi w ostatnim wieku ma ogromny wpływ na metody diagnostyczne w medycynie. Dzięki nowym technologiom takim jak optyczna tomografia koherencyjna (ang. \textit{optical coherence tomography, OCT}, sekcja \ref{sec:obrazowanie_oct}) lekarze są w stanie zastąpić inwazyjne metody diagnostyczne, których przeprowadzenie stanowi ryzyko dla zdrowia pacjenta. Postęp w dziedzinie informatyki, a w szczególności algorytmów przetwarzania obrazów przyczynia się do wzrostu jakości obrazów diagnostycznych przez co lekarze są w stanie rozpoznać choroby skuteczniej oraz szybciej.
+
 \section{Opis problemu}
 \label{sec:wstep:opis_problemu}
 
-\section{Cel i zakres pracy}
-\label{sec:wstep:cel_i_zakres}
+Jednym z najbardziej popularnych zastosowań optycznej tomografii koherencyjnej jest badanie siatkówki oka. Wykorzystanie OCT pozwala zastąpić inwazyjną metodę diagnozy siatkówki polegającej na wstrzyknięciu środka kontrastowego do krwiobiegu pacjenta, a następnie wykorzystaniu jednej z metod obrazowania opierającej się na promieniach rentgenowskich. Użycie środka kontrastowego wiąże się z ryzykiem szkodliwych powikłań na zdrowiu pacjenta tj. reakcje alergiczne, czy bóle głowy. Optyczna tomografia koherencyjna dzięki swojej nieinwazyjnej charakterystyce w badaniu siatkówki jest mocno rozwijana przez wiele ośrodków laboratoryjnych na całym świecie (jednym z przedsięwzięć zajmujących się doskonaleniem OCT jest projekt RIMO-BIOL opisany dokładnie w sekcji \ref{sec:wstep:rimo-biol}, w którego skład wchodzi niniejsza praca). Wynikiem przeprowadzenia optycznej tomografii koherencyjnej są trójwymiarowe obrazy oddające strukturę siatkówki oka (prawy obraz na rysunku \ref{fig:obrazowanie_oct:scan}). Na podstawie trójwymiarowych obrazów są tworzone angiograficzne obrazy \textit{en face} przedstawiające przebieg naczyń krwionośnych (rysunek \ref{sec:obrazowanie_oct:angiografia_oct}). Każdy obraz angiograficzny przedstawia fragment siatkówki oka.
 
-\section{Projekt RIMO}
-\label{sec:wstep:rimo}
+\textbf{Celem niniejszej pracy} jest zaimplementowanie algorytmu, który poprzez pobranie angiograficznych obrazów siatkówki oka wraz z informacją o ich wzajemnych relacjach przestrzennych ma za zadanie automatycznie stworzyć jednolitą mozaikę przedstawiającą całość siatkówki oka. Potrzeba na stworzenie autorskiego algorytmu powstała ze względu na to, że dostępne metody tworzenia mozaiki (ang. \textit{mosaic stitching}) nie dają zadowalających rezultatów ze względu na charakterystykę angiograficznych obrazów OCT.
+
+\subsection{Projekt RIMO-BIOL}
+\label{sec:wstep:rimo-biol}
+
+\textbf{Projekt RIMO-BIOL} po tytułem ,,Rozwój interferometrycznych metod optycznych do badania dynamiki układów biologicznych'', w którego skład wchodzi niniejsza praca skupia się na rozwoju mikroskopowych metod optycznych w celu badania dynamiki układów biologicznych. Projekt jest przeprowadzany przez konsorcjum składające się z m. in. Politechniki Poznańskiej w Poznaniu i Uniwersytetu Mikołaja Kopernika w Toruniu. Praca jest finansowana przez Narodowe Centrum Badań i Rozwoju w ramach pierwszej edycji konkursu ,,Program Badań Stosowanych''.
+
+RIMO-BIOL pracuje obecnie nad rozwojem optycznej tomografii koherencyjnej oraz sprzętu jej wykonującej. Wszystkie obrazy wykorzystywane w niniejszej pracy pochodzą z aparatury OCT zbudowanej w ramach projektu. Stworzona technologia w ramach RIMO-BIOL testowana jest w  badaniach:
+
+\begin{enumerate}
+\item Siatkówki oka ludzkiego, w celu diagnozy cukrzycy na podstawie struktur mikronaczyń w siatkówce oka.
+\item Mózgu myszy, w celu analizy przebiegu udaru mózgu na podstawie oceny morfologii i przepływu krwi w sieci mikronaczyniowej mózgu.
+\item Komórek jajowych na podstawie pomiaru ruchu cytoplazmy.
+\end{enumerate}
+
+\subsection{Cele szczegółowe}
+\label{sec:wstep:cele_szczegolowe}
+
+Wynikiem niniejszej pracy ma być oprogramowanie realizujące cel niniejszej pracy opisany w \ref{sec:wstep:opis_problemu}, natomiast do celów szczegółowych można zaliczyć:
+
+\begin{enumerate}
+\item Rozpoznanie możliwości bibliotek przetwarzania i analizy obrazów w zakresie korejestracji przestrzennej.
+\item Wybór bibliotek i środowiska deweloperskiego.
+\item Projekt, implementacja i przetestowanie algorytmów przetwarzania obrazów realizujących cel niniejszej pracy.
+\item Stworzenie w pełni funkcjonalnego oraz prostego w użyciu programu komputerowego o nazwie \texttt{mostitch}.
+\item Przygotowanie dokumentacji technicznej oprogramowania.
+\end{enumerate}
+
+\section{Organizacja pracy}
+\label{sec:wstep:organizacja_pracy}
+
+Praca zaczyna się od przedstawienia w rozdziale \ref{sec:obrazowanie_oct} technologii optycznej tomografii komputerowej oraz wyjaśnienia zasady jej działania. Następnie w rozdziale \ref{sec:algorytmy_korejestracji} opisano dostępne metody oraz poszczególne kroki niezbędne do stworzenia mozaiki (ang. \textit{mosaic stitching}) w kontekście angiograficznych obrazów OCT. Kolejno w rozdziale \ref{sec:proponowane_algorytmy} szczegółowo opisano i wyjaśniono zasadę działania wybranych oraz autorskich algorytmów realizujących cel niniejszej pracy. W rozdziale \ref{sec:oprogramowanie:oprogramowanie} opisano stworzone oprogramowanie, zasadę jego użycia oraz wykorzystane biblioteki. W rozdziale \ref{sec:wyniki_eksperymentow} przedstawiono wynikowe mozaiki powstałe z przykładowych angiograficznych obrazów OCT. Na koniec w rozdziale \ref{sec:podsumowanie_i_wnioski} opisano trudności napotkane podczas pracy oraz możliwy rozwój oprogramowania w przyszłości.
+
+
