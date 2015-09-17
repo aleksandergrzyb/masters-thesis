@@ -327,6 +327,9 @@ INPUT /usr/local/texlive/2015/texmf-dist/fonts/vf/bitstrea/charter/bchr8c.vf
 INPUT gfx/speckle_variance.pdf
 INPUT ./gfx/speckle_variance.pdf
 INPUT ./gfx/speckle_variance.pdf
+INPUT gfx/en_face_sv.pdf
+INPUT ./gfx/en_face_sv.pdf
+INPUT ./gfx/en_face_sv.pdf
 INPUT content/algorytmy_korejestracji.tex
 INPUT content/algorytmy_korejestracji.tex
 INPUT gfx/mosaic.png
@@ -387,9 +390,9 @@ INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/lm/ec-lmtt9.tfm
 INPUT gfx/no_filtering.pdf
 INPUT ./gfx/no_filtering.pdf
 INPUT ./gfx/no_filtering.pdf
-INPUT gfx/after_placement.pdf
-INPUT ./gfx/after_placement.pdf
-INPUT ./gfx/after_placement.pdf
+INPUT gfx/after_placement.png
+INPUT ./gfx/after_placement.png
+INPUT ./gfx/after_placement.png
 INPUT gfx/no_repetition_filtering.pdf
 INPUT ./gfx/no_repetition_filtering.pdf
 INPUT ./gfx/no_repetition_filtering.pdf
