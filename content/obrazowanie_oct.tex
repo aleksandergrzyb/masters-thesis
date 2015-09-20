@@ -75,8 +75,6 @@ Większa szybkość oraz rozdzielczość FdOCT w porównaniu do TdOCT jest możl
 
 \end{enumerate}
 
-FdOCT posiada również wady. Pierwszą z nich jest cena. TdOCT jest droższy ze względu na wykorzystanie drogiego lasera jako źródła światła przez co jest wykorzystywany tylko w celach badawczych. Druga wada wynika z szybkości powstawania A-skanów. Szybsze skanowanie prowadzi do utraty jakości obrazów (zastosowanie techniki przetwarzania sygnałów zwanej \textit{oversampling} może zrekompensować tę stratę).
-
 % Wyjaśnia zasadę powstawania obrazów angiograficznych z danych OCT
 
 \section{Angiografia OCT}
@@ -84,33 +82,33 @@ FdOCT posiada również wady. Pierwszą z nich jest cena. TdOCT jest droższy ze
 
 Angiografia to technika służąca do wizualizacji naczyń krwionośnych i organów ciała. W większości przypadków w medycynie angiografia jest wykonywana poprzez wstrzyknięcie pacjentowi środka kontrastowego, który nie przepuszcza promieni rentgenowskich. Następie by stworzyć obrazy angiograficzne wykorzystuje się jedną z technik obrazowania (np. fluoroskopię) opartą o promienie rentgenowskie. Metoda oparta na stosowaniu środka kontrastowego ma jedną znaczącą wadę, jako technika inwazyjna może prowadzić do reakcji alergicznych na środek kontrastowy oraz jest przeciwwskazana kobietom w ciąży i dzieciom. Z tego powodu nieustannie poszukiwane są metody, które jednocześnie są nieinwazyjne i tworzą obrazy o jakości porównywalnej do metod inwazyjnych.
 
-Angiografia OCT poprzez wykorzystanie A-skanów i B-skanów OCT jest w stanie stworzyć obraz \textit{en face} naczyń krwionośnych siatkówki oka. Przykład takiego obrazu znajduje się na rysunku \ref{sec:obrazowanie_oct:angiografia_oct}.
+Angiografia OCT poprzez czasową analizę informacji tomograficznej OCT jest w stanie odtworzyć trójwymiarową informację o strukturze naczyń krwionośnych siatkówki oka. Przykład takiego obrazu znajduje się na rysunku \ref{sec:obrazowanie_oct:angiografia_oct}.
 
 \subsection{Sposób powstania obrazu angiograficznego}
 
-Obrazy angiograficznie użyte w niniejszej pracy powstały za pomocą metody zwanej \textit{Speckle Variance Detection} polegającej na liczeniu wariancji dla każdego piksela pomiędzy sąsiadującymi B-skanami. Wartość wariancji w obszarach gdzie występuje przepływ krwi (naczynia krwionośne) jest wyższa od obszarów, w których znajduje się struktura statyczna. Rezultatem tej metody jest obraz przepływowy, którego piksele mają wartość wariancji sąsiadujących B-skanów. Na rysunku \ref{fig:obrazowanie_oct:speckle_variance} został przedstawiony przykładowy zbiór sąsiadujących B-skanów.
+Obrazy angiograficznie użyte w niniejszej pracy powstały za pomocą metody zwanej \textit{Speckle Variance} polegającej na liczeniu wariancji dla każdego piksela z grupy B-skanów zmierzonych w tym samym miejscu w $N$ kolejnych chwilach czasu. Wartość wariancji w obszarach gdzie występuje przepływ krwi (naczynia krwionośne) jest lokalnie wyższa od obszarów, w których znajduje się struktura statyczna. Rezultatem tej metody jest obraz angiograficzny. Na rysunku \ref{fig:obrazowanie_oct:speckle_variance} został przedstawiony przykładowy zbiór B-skanów zmierzonych w tym samym miejscu w kolejnych chwilach czasu.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{gfx/speckle_variance}
-	\caption{Na lewej stronie przedstawiono osiem sąsiadujących B-skanów na postawie których powstaje jeden obraz przepływowy pokazany na prawej stronie.}
+	\caption{Z lewej strony przedstawiono osiem B-skanów zmierzonych w kolejnych chwilach czasu na postawie których powstaje jeden obraz przepływowy pokazany z prawej strony.}
 	\label{fig:obrazowanie_oct:speckle_variance}
 \end{figure}
 
-Wartości pikseli $V_{jk}$ obrazu przepływowego liczone są na podstawie wartości pikseli $I_{ijk}$ sąsiadujących $N$ B-skanów za pomocą wzoru (na rysunku \ref{fig:obrazowanie_oct:speckle_variance} $N=8$):
+Wartości pikseli $V_{jk}$ obrazu przepływowego liczone są na podstawie wartości pikseli $I_{ijk}$ z grupy $N$ B-skanów za pomocą wzoru (na rysunku \ref{fig:obrazowanie_oct:speckle_variance} $N=8$):
 \begin{equation}
 V_{jk} = \frac{1}{N} \displaystyle\sum_{i=1}^{N}(I_{ijk} - I_{mean})^2
 \end{equation}
-Gdzie $j$ i $k$ to indeksy boczne i głębokościowe B-skanu (współrzędne pikseli), a $I_{mean}$ to średnia intensywność zbioru tych samych pikseli, dla których liczona jest wariancja.
+Gdzie $j$ i $k$ to współrzędne przestrzenne B-skanu (numery pikseli), a $I_{mean}$ to średnia natężenie grupy pikseli, z których liczona jest wariancja.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{gfx/en_face_sv}
-	\caption{Na lewej stronie znajduje się fragment zbioru sąsiadujących obrazów przepływowych będących częścią na podstawie których powstaje jeden obraz \textit{en face} pokazany na prawej stronie.}
+	\caption{Z lewej strony znajduje się fragment zbioru sąsiadujących obrazów przepływowych na podstawie których powstaje jeden obraz \textit{en face} pokazany z prawej strony (obraz pochodzi z pracy \cite{Ruminski:15}).}
 	\label{fig:obrazowanie_oct:en_face_sv}
 \end{figure}
 
-Rezultatem połączenia dwuwymiarowych sąsiadujących obrazów przepływowych jest trójwymiarowy obraz przepływowy, który poddaje się projekcji maksymalnego natężenia (ang. \textit{maximum intensity projection, MIP}) polegającej na projekcji woksela o najwyższej intensywności z obrazu 3D na obraz 2D. Po zastosowaniu projekcji maksymalnego natężenia na trójwymiarowym obrazie przepływowym otrzymujemy angiograficzny obraz \textit{en face} naczyń krwionośnych. Rysunek \ref{fig:obrazowanie_oct:en_face_sv} przedstawia część z obrazów przepływowych na podstawie których stworzono jeden obraz \textit{en face}.
+Rezultatem połączenia dwuwymiarowych sąsiadujących obrazów przepływowych jest trójwymiarowy obraz przepływowy, który poddaje się projekcji maksymalnego natężenia (ang. \textit{maximum intensity projection, MIP}) polegającej na projekcji woksela o najwyższej intensywności z obrazu 3D na obraz 2D. Po zastosowaniu projekcji maksymalnego natężenia z trójwymiarowego zestawu danych przepływowych otrzymujemy angiograficzny obraz \textit{en face} naczyń krwionośnych. Rysunek \ref{fig:obrazowanie_oct:en_face_sv} przedstawia część z obrazów przepływowych, na podstawie których stworzono jeden obraz \textit{en face}.
 
 % Opisuje zastosowania OCT
 
