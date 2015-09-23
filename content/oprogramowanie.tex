@@ -3,10 +3,10 @@
 \chapter{Oprogramowanie}
 \label{sec:oprogramowanie:oprogramowanie}
 
-Program o nazwie \texttt{mostitch}, który jest celem niniejszej pracy jest całkowicie napisany w języku C++. Język wybrano ze względu na to, że wykorzystywana biblioteka przetwarzania obrazów OpenCV (opisana w skrócie w sekcji \ref{sec:oprogramowanie:opencv}) posiada interfejs w języku C++. Program można uruchomić z konsoli systemu za pomocą komendy:
+Program o nazwie \texttt{mostitch}, który jest celem niniejszej pracy jest całkowicie napisany w języku C++. Język wybrano ze względu na to, że wykorzystywana biblioteka przetwarzania obrazów OpenCV (opisana w skrócie w sekcji \ref{sec:oprogramowanie:opencv}) posiada interfejs w języku C++. Program można ściągnąć z repozytorium\footnote{\url{http://git.tesla.cs.put.poznan.pl/agrzyb/mostitch/tree/master}}, a następnie zainstalować postępując zgodnie z instrukcją napisaną w pliku \texttt{README.md}. Po udanej instalacji program można uruchomić za pomocą komendy:
 
 \begin{verbatim}
-./mostitch path_to_config_file
+mostitch path_to_config_file
 \end{verbatim}
 
 gdzie \texttt{path\_to\_config\_file} to obowiązkowy argument do programu wskazujący ścieżkę do pliku konfiguracyjnego (opisanego dokładniej w sekcji \ref{sec:oprogramowanie:plik_konfiguracyjny}), który określa wszystkie parametry niezbędne do prawidłowego działania programu.
@@ -28,6 +28,11 @@ W pliku konfiguracyjnym zawarte są informacje:
 \end{itemize}
 
 Wszystkie parametry zawarte w pliku konfiguracyjnym są szczegółowo opisane w przykładzie pliku konfiguracyjnego dołączonego do niniejszej pracy o nazwie \texttt{config.cfg}.
+
+\section{Dokumentacja}
+\label{sec:oprogramowanie:dokumentacja}
+
+Dokumentacje programu przygotowano za pomocą narzędzia do generacji dokumentacji \textbf{Doxygen}\footnote{\url{http://www.stack.nl/~dimitri/doxygen/}}. Żeby wyświetlić dokumentację należy otworzyć plik \texttt{index.html} w przeglądarce znajdujący się w folderze \texttt{docs} w repozytorium\footnote{\url{http://git.tesla.cs.put.poznan.pl/agrzyb/mostitch/tree/master}} programu.
 
 \section{OpenCV}
 \label{sec:oprogramowanie:opencv}
