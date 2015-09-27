@@ -470,6 +470,12 @@ INPUT ./gfx/zbior_3.pdf
 INPUT gfx/wynik_zbior_3.pdf
 INPUT ./gfx/wynik_zbior_3.pdf
 INPUT ./gfx/wynik_zbior_3.pdf
+INPUT gfx/odchylenie_standardowe.pdf
+INPUT ./gfx/odchylenie_standardowe.pdf
+INPUT ./gfx/odchylenie_standardowe.pdf
+INPUT gfx/czas_wykonywania.pdf
+INPUT ./gfx/czas_wykonywania.pdf
+INPUT ./gfx/czas_wykonywania.pdf
 INPUT content/podsumowanie_i_wnioski.tex
 INPUT content/podsumowanie_i_wnioski.tex
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/bitstrea/charter/bchrc8t.tfm
