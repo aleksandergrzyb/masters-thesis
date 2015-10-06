@@ -1,13 +1,12 @@
-% !TEX root = ../thesis.tex
-%
+% !TEX root = ../thesis.tex %
 \chapter{Podsumowanie i wnioski końcowe}
 \label{sec:podsumowanie_i_wnioski}
 
-Cel niniejszej pracy w pełni zrealizowano. Mozaiki obrazów angiograficznych stworzone za pomocą programu \texttt{mostitch} są jednolite oraz spełniają kryteria jakościowe. Cele szczegółowe z sekcji \ref{sec:wstep:cele_szczegolowe} również spełniono:
+Cel niniejszej pracy w pełni zrealizowano. Mozaiki obrazów angiograficznych stworzone za pomocą programu \texttt{mostitch} wyglądają prawidłowo oraz spełniają kryteria jakościowe. Cele szczegółowe z sekcji \ref{sec:wstep:cele_szczegolowe} również osiągnięto:
 
 \begin{enumerate}
 \item Zapoznano się z istniejącymi metodami i algorytmami realizującymi \textit{stitching}. Finalnie wybrano korejestrację na podstawie cech SIFT z autorskimi modyfikacjami.
-\item Wybrano jedną z najbardziej popularnych bibliotek przetwarzania obrazów OpenCV. Środowiskiem deweloperskim został Xcode.
+\item Wybrano jedną z najbardziej popularnych bibliotek przetwarzania obrazów OpenCV. Środowiskiem deweloperskim był Xcode (zintegrowane środowisko programistyczne firmy Apple Inc.).
 \item Oprogramowanie napisano w języku C++. Program przetestowano na testowych zbiorach obrazów angiograficznych OCT dostarczonych w ramach projektu RIMO-BIOL.
 \item Program \texttt{mostitch} zaimplementowano i jest dostępny do ściągnięcia z repozytorium\footnote{\url{http://git.tesla.cs.put.poznan.pl/agrzyb/mostitch/tree/master}}. Instrukcja instalacji znajduje się w tym samym repozytorium w pliku \texttt{README.md}.
 \item Dokumentację oprogramowania przygotowano za pomocą narzędzia Doxygen (sekcja \ref{sec:oprogramowanie:dokumentacja}).
@@ -16,10 +15,10 @@ Cel niniejszej pracy w pełni zrealizowano. Mozaiki obrazów angiograficznych st
 \section{Napotkane trudności}
 \label{sec:podsumowanie_i_wnioski:napotkane_trudnosci}
 
-Podczas realizacji celu niniejszej pracy zdecydowanie największy okres czasu spędzono na implementacji oraz testowaniu programu \texttt{mostitch}. W większości praca była usystematyzowana i poszczególne zadania dostarczano na wyznaczony termin. W trakcie tworzenia programu \texttt{mostitch} można wyznaczyć dwa przypadki w których praca trwała dłużej niż to pierwotnie zakładano:
+Podczas realizacji celu niniejszej pracy zdecydowanie najwięcej czasu spędzono na implementacji oraz testowaniu programu \texttt{mostitch}. W większości praca była usystematyzowana i poszczególne zadania realizowanie zgodnie z założonym harmonogramem prac. W trakcie tworzenia programu \texttt{mostitch} można wyznaczyć dwa przypadki w których praca trwała dłużej niż to pierwotnie zakładano:
 
 \begin{enumerate}
-\item Bardzo ważnym czynnikiem wpływającym na rezultat oraz przyszłość pracy był wybór algorytmu ekstrakcji cech w obrazach angiograficznych. Po zapoznaniu się z większością dostępnych algorytmów ostatecznie zdecydowana się na algorytm SIFT, który dostarczył bardzo dobre wyniki.
+\item Bardzo ważnym czynnikiem wpływającym na rezultat oraz przyszłość pracy był wybór algorytmu detekcji cech w obrazach angiograficznych. Po zapoznaniu się z większością dostępnych algorytmów ostatecznie zdecydowana się na algorytm SIFT, który pozwolił uzyskać bardzo dobre wyniki.
 \item Na początku zakładano, że obrazy angiograficzne będą w rozmiarze 240 na 240 pikseli. Na tym założeniu wybrano algorytm SIFT oraz inne rozwiązania. W trakcie projektu natomiast pojawił się zbiór z obrazami 24 na 240 pikseli. Wykorzystanie wówczas zaimplementowanego algorytmu dało bardzo złe rezultaty, przez co trzeba było stworzyć nowe metody i rozwiązania. Powstał autorski algorytm opisany w sekcji \ref{sec:proponowane_algorytmy:depth_first_search}.
 \end{enumerate}
 
@@ -29,7 +28,7 @@ Podczas realizacji celu niniejszej pracy zdecydowanie największy okres czasu sp
 Program \texttt{mostitch} ma duży potencjał i poprzez modularną budowę jego elementy mogą być wykorzystane w innych projektach w przyszłości. Na obecną chwilę istnieje kilka pomysłów na jego ulepszenia i rozwój:
 
 \begin{itemize}
-\item Dołączenie innych algorytmów ekstrahujących cechy w angiograficznych obrazach OCT (np. SURF, FAST), a następnie porównanie wynikowych mozaik.
+\item Dołączenie innych algorytmów wykrywających cechy w angiograficznych obrazach OCT (np. SURF, FAST), a następnie porównanie wynikowych mozaik.
 \item Implementacja programu okienkowego, w którym użytkownik poprzez przyjazny interfejs ładowałby angiograficzne obrazy z dysku, a następnie przeciągając obrazy ustalałby ich relacje przestrzenne. Takie rozwiązanie wyeliminowałoby plik konfiguracyjny, który jest mniej przyjazny dla użytkownika.
 \item W trakcie tworzenia pracy zdecydowano się na model transformacji bryły sztywnej (translacja i rotacja) ze względu na to, że operacja skalowania generowała zbyt dużo błędów. Czasem jednak lekkie skalowanie jest niezbędne by uzyskać pożądany wynik. Dodanie operacji skalowania, której parametry byłyby mocno ograniczone i kontrolowane przyczyniłoby się do poprawy jakości mozaik.
 \end{itemize}

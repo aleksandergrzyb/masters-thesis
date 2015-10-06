@@ -16,7 +16,7 @@ Program umożliwia konstrukcję mozaik dla dowolnej ilości zbiorów kafelków. 
 \section{Plik konfiguracyjny}
 \label{sec:oprogramowanie:plik_konfiguracyjny}
 
-Do zarządzania plikiem konfiguracyjnym wykorzystano bibliotekę \textbf{libconfig}\footnote{\url{http://www.hyperrealm.com/libconfig/}} umożliwiającą bezproblemowy odczyt pliku konfiguracyjnego z rozszerzeniem \texttt{.cfg}. Format pliku konfiguracyjnego jest bardziej czytelny w porównaniu do powszechnie wykorzystywanych plików XML. Biblioteka również jest świadoma typu zmiennej przez co unika się konwersji typu \texttt{string} na typy takie jak \texttt{int}, czy \texttt{float}.
+Do zarządzania plikiem konfiguracyjnym wykorzystano bibliotekę \textbf{libconfig}\footnote{\url{http://www.hyperrealm.com/libconfig/}} umożliwiającą wygodny odczyt pliku konfiguracyjnego z rozszerzeniem \texttt{.cfg}. Format pliku konfiguracyjnego jest bardziej czytelny w porównaniu do powszechnie wykorzystywanych plików XML. Biblioteka również jest świadoma typu zmiennej przez co unika się konwersji typu \texttt{string} na typy takie jak \texttt{int}, czy \texttt{float}.
 
 W pliku konfiguracyjnym zawarte są informacje:
 
@@ -27,7 +27,17 @@ W pliku konfiguracyjnym zawarte są informacje:
 \item Parametry modyfikujące działanie metod przetwarzania kafelków.
 \end{itemize}
 
-Wszystkie parametry zawarte w pliku konfiguracyjnym są szczegółowo opisane w przykładzie pliku konfiguracyjnego dołączonego do niniejszej pracy o nazwie \texttt{config.cfg}.
+Wszystkie parametry zawarte w pliku konfiguracyjnym są szczegółowo opisane w przykładzie pliku konfiguracyjnego dołączonego do niniejszej pracy o nazwie \texttt{config.cfg}. Poniżej znajduje się fragment pliku konfiguracyjnego \texttt{config.cfg}:
+
+\begin{verbatim}
+mosaicsDirectoryAbsolutePath = "/Users/thesis/mosaics";
+numberOfMosaics = 4;
+tilesBaseName = "tile_XX_YX.tif";
+mosaicsSaveAbsolutePath = "/Users/thesis/output_images";
+angleParameter = 1.00;
+percentOverlap = 0.12;
+shiftParameter = 0.10;
+\end{verbatim}
 
 \section{Dokumentacja}
 \label{sec:oprogramowanie:dokumentacja}
