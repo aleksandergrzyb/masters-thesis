@@ -6,8 +6,6 @@ Thesis was done during my computer science studies at [Poznań University of Tec
 
 ## Purpose
 
-Thesis product is a program called **mostitch** that automatically stitches set of retinal angiography eye images. Below is an example set of input images and the output of program **mostitch**.
+Thesis product is a program called **[mostitch](http://aleksandergrzyb.com/project/2016/08/02/Mostitch.html)** that automatically stitches set of retinal angiography eye images. Below is an example set of input images and the output of **[mostitch](http://aleksandergrzyb.com/project/2016/08/02/Mostitch.html)** program.
 
 ![image](https://s3.amazonaws.com/f.cl.ly/items/1Q0T233Q0B0m3E0c2g1N/effect.png)
-
-Program **mostitch** is available in [this](https://github.com/aleksandergrzyb/mostitch) repository.
